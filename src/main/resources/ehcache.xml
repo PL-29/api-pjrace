@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache xsi:noNamespaceSchemaLocation="ehcache.xsd" 
+    updateCheck="true"
+    monitoring="autodetect"
+    dynamicConfig="true"
+    maxBytesLocalHeap="50M">
+    
+    <!-- 
+    <diskStore path="java.io.tmpdir"/>
+	 -->
+	 
+    <cache name="quoi" 
+        maxBytesLocalHeap="10M"
+        eternal="false"
+        timeToLiveSeconds="3600"
+        maxElementsOnDisk="1000"
+        memoryStoreEvictionPolicy="LRU"
+        statistics="true"/>
+
+    <cache name="quiquoi" 
+        maxBytesLocalHeap="10M"
+        eternal="false"
+        timeToLiveSeconds="3600"
+        maxElementsOnDisk="1000"
+        memoryStoreEvictionPolicy="LRU"
+        statistics="true"/>
+
+    <cache name="ou"
+        maxBytesLocalHeap="10M"
+        eternal="false"
+        timeToLiveSeconds="3600"
+        maxElementsOnDisk="1000"
+        memoryStoreEvictionPolicy="LRU"
+        statistics="true"/>
+        
+	<defaultCache
+		maxEntriesLocalHeap="10000"
+		eternal="false"
+		timeToIdleSeconds="600"
+		timeToLiveSeconds="3600"
+		diskPersistent="false"
+		statistics="true"
+		memoryStoreEvictionPolicy="LRU">
+	</defaultCache>
+        
+</ehcache>

@@ -1,0 +1,32 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:elasticsearch="http://www.springframework.org/schema/data/elasticsearch"
+    xsi:schemaLocation="
+            http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+            http://www.springframework.org/schema/data/elasticsearch  http://www.springframework.org/schema/data/elasticsearch/spring-elasticsearch.xsd">
+
+    <context:property-placeholder location="application.properties" order="1" />
+
+<!-- 
+    <elasticsearch:transport-client id="client" cluster-nodes="${elasticsearch.cluster}" cluster-name="${elasticsearch.cluster.name}" />
+
+    <bean name="mapper" class="fr.solocal.elasticsearch.CustomObjectMapper" />
+
+    <bean name="elasticsearchTemplate" class="org.springframework.data.elasticsearch.core.ElasticsearchTemplate">
+        <constructor-arg name="client" ref="client" />
+        <constructor-arg name="resultsMapper" ref="mapper" />
+    </bean>
+ -->
+    <bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager" p:cache-manager-ref="ehcache" />
+    <bean id="ehcache" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean" p:config-location="classpath:ehcache.xml" />
+    
+    <beans profile="integ">
+        <context:property-placeholder location="application-integ.properties" order="2" />
+    </beans>
+    <beans profile="prod">
+        <context:property-placeholder location="application-prod.properties" order="2" />
+    </beans>
+</beans>
