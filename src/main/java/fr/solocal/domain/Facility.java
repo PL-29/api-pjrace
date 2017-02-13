@@ -6,19 +6,19 @@ import java.util.List;
 /**
  * Created by stage01 on 10/02/17.
  */
-public class Etablissement {
+public class Facility {
     int codeEtab;
     String denomination;
-    String adresse;
+    String address;
     List<Challenge> challenges = new ArrayList<Challenge>();
 
-    public Etablissement(int codeEtab, String denomination, String adresse) {
+    public Facility(int codeEtab, String denomination, String address) {
         this.codeEtab = codeEtab;
         this.denomination = denomination;
-        this.adresse = adresse;
+        this.address = address;
     }
 
-    public Etablissement() {
+    public Facility() {
     }
 
     public int getCodeEtab() {
@@ -35,12 +35,12 @@ public class Etablissement {
         this.denomination = denomination;
     }
 
-    public String getAdresse() {
-        return adresse;
+    public String getAddress() {
+        return address;
     }
 
-    public void setAdresse(String adresse) {
-        this.adresse = adresse;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public List<Challenge> getChallenges() {

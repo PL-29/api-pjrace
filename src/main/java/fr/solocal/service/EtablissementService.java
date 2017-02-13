@@ -1,7 +1,6 @@
 package fr.solocal.service;
 
-import fr.solocal.domain.ChallengeType;
-import fr.solocal.domain.Etablissement;
+import fr.solocal.domain.Facility;
 
 import java.util.Iterator;
 
@@ -10,5 +9,5 @@ import java.util.Iterator;
  */
 public interface EtablissementService {
     //Permet de récupérer les etablissements
-    public Iterator<Etablissement> getAllEtablissements();
+    public Iterator<Facility> getAllEtablissements();
 }

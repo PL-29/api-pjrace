@@ -14,9 +14,9 @@ import java.util.*;
 public class CentralDAOImpl implements CentralDAO{
     private List<ChallengeType> challengeTypes = new ArrayList<ChallengeType>();
     private List<Challenge> challenges = new ArrayList<Challenge>();
-    private List<Etablissement> etablissements = new ArrayList<Etablissement>();
+    private List<Facility> facilities = new ArrayList<Facility>();
     private List<User> users = new ArrayList<>();
-    private List<Resolution> achievements = new ArrayList<>();
+    private List<Achievement> achievements = new ArrayList<>();
 
     public CentralDAOImpl() {
         //---- ChallengeType : PHOTO ----
@@ -29,36 +29,36 @@ public class CentralDAOImpl implements CentralDAO{
 
 
         //---- Etablissements ----
-        Etablissement etab1 = new Etablissement();
+        Facility etab1 = new Facility();
         etab1.setCodeEtab(1205);
-        etab1.setAdresse("1 rue de la République, 35000 Rennes");
+        etab1.setAddress("1 rue de la République, 35000 Rennes");
         etab1.setDenomination("Bar des sports");
 
-        Etablissement etab2 = new Etablissement();
+        Facility etab2 = new Facility();
         etab2.setCodeEtab(1326);
-        etab2.setAdresse("6 rue de la Liberté, 35000 Rennes");
+        etab2.setAddress("6 rue de la Liberté, 35000 Rennes");
         etab2.setDenomination("Gaumont");
 
-        etablissements.add(etab1);
-        etablissements.add(etab2);
+        facilities.add(etab1);
+        facilities.add(etab2);
 
 
         //---- Challenges ----
         Challenge c1 = new Challenge();
         c1.setIdChallenge(1);
-        c1.setEtablissement(etab1);
+        c1.setFacility(etab1);
         c1.setType(type);
         c1.setPoints(100);
 
         Challenge c2 = new Challenge();
         c2.setIdChallenge(2);
-        c2.setEtablissement(etab1);
+        c2.setFacility(etab1);
         c2.setType(type);
         c2.setPoints(200);
 
         Challenge c3 = new Challenge();
         c3.setIdChallenge(3);
-        c3.setEtablissement(etab2);
+        c3.setFacility(etab2);
         c3.setType(type);
         c3.setPoints(300);
 
@@ -67,19 +67,19 @@ public class CentralDAOImpl implements CentralDAO{
         challenges.add(c3);
 
         //---- Resolutions ----
-        Resolution r1 = new Resolution(1, c1,"xxx.png");
-        Resolution r2 = new Resolution(2, c2, "yyyy.png");
-        Resolution r3 = new Resolution(3, c3,"zzz.png");
-        Resolution r4 = new Resolution(1, c2, "aaaa.png");
-        Resolution r5 = new Resolution(1, c3, "bbb.png");
+        Achievement r1 = new Achievement(1, c1,"xxx.png");
+        Achievement r2 = new Achievement(2, c2, "yyyy.png");
+        Achievement r3 = new Achievement(3, c3,"zzz.png");
+        Achievement r4 = new Achievement(1, c2, "aaaa.png");
+        Achievement r5 = new Achievement(1, c3, "bbb.png");
 
         //---- Users ----
         User u1 = new User();
         u1.setIdUser(1);
         u1.setEmail("blabla@gmail.com");
-        u1.setNom("Toto");
+        u1.setLastname("Toto");
         u1.setPassword("xxxx");
-        u1.setPrenom("Tata");
+        u1.setFirstname("Tata");
         u1.getAchievements().add(r1);
         u1.getAchievements().add(r2);
         u1.getAchievements().add(r3);
@@ -87,17 +87,17 @@ public class CentralDAOImpl implements CentralDAO{
         User u2 = new User();
         u2.setIdUser(2);
         u2.setEmail("blablablibli@gmail.com");
-        u2.setNom("yqrmkljghio");
+        u2.setLastname("yqrmkljghio");
         u2.setPassword("xxxx");
-        u2.setPrenom("qklhqh");
+        u2.setFirstname("qklhqh");
         u2.getAchievements().add(r4);
 
         User u3 = new User();
         u3.setIdUser(3);
         u3.setEmail("blablabloblo@gmail.com");
-        u3.setNom("Titi");
+        u3.setLastname("Titi");
         u3.setPassword("xxxx");
-        u3.setPrenom("Tutu");
+        u3.setFirstname("Tutu");
         u3.getAchievements().add(r5);
 
         users.add(u1);
@@ -136,7 +136,7 @@ public class CentralDAOImpl implements CentralDAO{
         List<Challenge> challengesEtablissement = new ArrayList<>();
 
         for(Challenge c : challenges){
-            if(c.getEtablissement().getCodeEtab() == codeEtab){
+            if(c.getFacility().getCodeEtab() == codeEtab){
                 challengesEtablissement.add(c);
             }
         }
@@ -145,9 +145,9 @@ public class CentralDAOImpl implements CentralDAO{
     }
 
     @Override
-    @Timed(absolute = true, name = "etablissements")
-    public Iterator<Etablissement> getAllEtablissements() {
-        return etablissements.iterator();
+    @Timed(absolute = true, name = "facilities")
+    public Iterator<Facility> getAllEtablissements() {
+        return facilities.iterator();
     }
 
     @Override
@@ -166,7 +166,7 @@ public class CentralDAOImpl implements CentralDAO{
 
     @Override
     @Timed(absolute = true, name = "achievements")
-    public Iterator<Resolution> getAllAchievements(int idUser) {
+    public Iterator<Achievement> getAllAchievements(int idUser) {
         for(User u : users){
             if(u.getIdUser() == idUser){
                 return u.getAchievements().iterator();

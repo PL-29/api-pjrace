@@ -3,18 +3,18 @@ package fr.solocal.domain;
 /**
  * Created by stage01 on 10/02/17.
  */
-public class Resolution {
+public class Achievement {
     int idResolution;
     Challenge challenge;
     String urlPhoto;
 
-    public Resolution(int idResolution, Challenge challenge, String urlPhoto) {
+    public Achievement(int idResolution, Challenge challenge, String urlPhoto) {
         this.idResolution = idResolution;
         this.challenge = challenge;
         this.urlPhoto = urlPhoto;
     }
 
-    public Resolution() {
+    public Achievement() {
     }
 
     public int getIdResolution() {

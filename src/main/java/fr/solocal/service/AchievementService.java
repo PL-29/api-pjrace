@@ -1,6 +1,6 @@
 package fr.solocal.service;
 
-import fr.solocal.domain.Resolution;
+import fr.solocal.domain.Achievement;
 
 import java.util.Iterator;
 
@@ -9,7 +9,7 @@ import java.util.Iterator;
  */
 public interface AchievementService {
 
-    public Iterator<Resolution> getAllResolutions(int idUser);
+    public Iterator<Achievement> getAllResolutions(int idUser);
 
     public void achieveChallenge(int idChallenge, int idUSer, String photo);
 }

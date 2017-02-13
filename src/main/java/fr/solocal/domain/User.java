@@ -8,17 +8,17 @@ import java.util.List;
  */
 public class User {
     int idUser;
-    String nom;
-    String prenom;
+    String lastname;
+    String firstname;
     String email;
     String password;
     int rank;
-    List<Resolution> achievements = new ArrayList<>();
+    List<Achievement> achievements = new ArrayList<>();
 
-    public User(int idUser, String nom, String prenom, String email, String password) {
+    public User(int idUser, String lastname, String firstname, String email, String password) {
         this.idUser = idUser;
-        this.nom = nom;
-        this.prenom = prenom;
+        this.lastname = lastname;
+        this.firstname = firstname;
         this.email = email;
         this.rank = 0;
         this.password = password;
@@ -36,20 +36,20 @@ public class User {
         this.idUser = idUser;
     }
 
-    public String getNom() {
-        return nom;
+    public String getLastname() {
+        return lastname;
     }
 
-    public void setNom(String nom) {
-        this.nom = nom;
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
     }
 
-    public String getPrenom() {
-        return prenom;
+    public String getFirstname() {
+        return firstname;
     }
 
-    public void setPrenom(String prenom) {
-        this.prenom = prenom;
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
     }
 
     public String getEmail() {
@@ -76,11 +76,11 @@ public class User {
         this.rank = rank;
     }
 
-    public List<Resolution> getAchievements() {
+    public List<Achievement> getAchievements() {
         return achievements;
     }
 
-    public void setAchievements(List<Resolution> achievements) {
+    public void setAchievements(List<Achievement> achievements) {
         this.achievements = achievements;
     }
 }

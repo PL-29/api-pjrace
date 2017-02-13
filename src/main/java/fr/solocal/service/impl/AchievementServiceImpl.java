@@ -1,7 +1,7 @@
 package fr.solocal.service.impl;
 
 import fr.solocal.dao.CentralDAO;
-import fr.solocal.domain.Resolution;
+import fr.solocal.domain.Achievement;
 import fr.solocal.service.AchievementService;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +18,7 @@ public class AchievementServiceImpl implements AchievementService{
     CentralDAO dao;
 
     @Override
-    public Iterator<Resolution> getAllResolutions(int idUser) {
+    public Iterator<Achievement> getAllResolutions(int idUser) {
         return dao.getAllAchievements(idUser);
     }
 

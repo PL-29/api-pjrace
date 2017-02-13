@@ -1,7 +1,7 @@
 package fr.solocal.service.impl;
 
 import fr.solocal.dao.CentralDAO;
-import fr.solocal.domain.Etablissement;
+import fr.solocal.domain.Facility;
 import fr.solocal.service.EtablissementService;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +18,7 @@ public class EtablissementServiceImpl implements EtablissementService {
     private CentralDAO dao;
 
     @Override
-    public Iterator<Etablissement> getAllEtablissements() {
+    public Iterator<Facility> getAllEtablissements() {
         return dao.getAllEtablissements();
     }
 }

@@ -3,7 +3,6 @@ package fr.solocal.dao;
 import fr.solocal.domain.*;
 
 import java.util.Iterator;
-import java.util.List;
 
 /**
  * Created by stage01 on 10/02/17.
@@ -17,11 +16,11 @@ public interface CentralDAO {
 
     public Iterator<Challenge> getChallengeByCodeEtab(int codeEtab);
 
-    public Iterator<Etablissement> getAllEtablissements();
+    public Iterator<Facility> getAllEtablissements();
 
     public Iterator<User> getRanking();
 
-    public Iterator<Resolution> getAllAchievements(int idUser);
+    public Iterator<Achievement> getAllAchievements(int idUser);
 
     public User connexion(String email, String password);
 

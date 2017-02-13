@@ -74,8 +74,8 @@ public class Controller {
     }
 
     @RequestMapping(value = "etablissements", method = RequestMethod.GET, headers = "Accept=application/json")
-    public Iterator<Etablissement> getAllEtablissements() {
-        Iterator<Etablissement> lstChallenges = etablissementService.getAllEtablissements();
+    public Iterator<Facility> getAllEtablissements() {
+        Iterator<Facility> lstChallenges = etablissementService.getAllEtablissements();
 
         return lstChallenges;
     }
@@ -88,8 +88,8 @@ public class Controller {
     }
 
     @RequestMapping(value = "achievements", method = RequestMethod.GET, headers = "Accept=application/json")
-    public Iterator<Resolution> getAllAchievements() {
-        Iterator<Resolution> lstAchievements = achievementService.getAllResolutions(1);
+    public Iterator<Achievement> getAllAchievements() {
+        Iterator<Achievement> lstAchievements = achievementService.getAllResolutions(1);
 
         return lstAchievements;
     }
