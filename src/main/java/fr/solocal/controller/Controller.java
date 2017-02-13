@@ -1,8 +1,10 @@
 package fr.solocal.controller;
 
+import fr.solocal.domain.Challenge;
 import fr.solocal.domain.ChallengeType;
 import fr.solocal.domain.ListMemoClic;
 import fr.solocal.domain.MemoSearch;
+import fr.solocal.service.ChallengeService;
 import fr.solocal.service.ChallengeTypeService;
 import fr.solocal.service.MemoService;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,17 +17,27 @@ import java.util.Iterator;
 /**
  * Created by stage01 on 10/02/17.
  */
-@RestController("MemoSearchController")
+@RestController("CentralController")
 @RequestMapping(value = "/pjrace_v1")
 public class Controller {
     @Inject
     private ChallengeTypeService challengeTypeService;
 
-    @RequestMapping(value = "challengetype", method = RequestMethod.GET, headers = "Accept=application/json")
+    @Inject
+    private ChallengeService challengeService;
+
+    @RequestMapping(value = "challengetypes", method = RequestMethod.GET, headers = "Accept=application/json")
     public Iterator<ChallengeType> getChallengeTypes() {
         Iterator<ChallengeType> lstChallengeTypes = challengeTypeService.getAllChallengeTypes();
 
         return lstChallengeTypes;
+    }
+
+    @RequestMapping(value = "challenges", method = RequestMethod.GET, headers = "Accept=application/json")
+    public Iterator<Challenge> getChallenges() {
+        Iterator<Challenge> lstChallenges = challengeService.getAllChallenges();
+
+        return lstChallenges;
     }
 
 
