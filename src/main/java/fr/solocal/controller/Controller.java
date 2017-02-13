@@ -1,15 +1,8 @@
 package fr.solocal.controller;
 
-import fr.solocal.domain.Challenge;
-import fr.solocal.domain.ChallengeType;
-import fr.solocal.domain.ListMemoClic;
-import fr.solocal.domain.MemoSearch;
-import fr.solocal.service.ChallengeService;
-import fr.solocal.service.ChallengeTypeService;
-import fr.solocal.service.MemoService;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import fr.solocal.domain.*;
+import fr.solocal.service.*;
+import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
 import java.util.Iterator;
@@ -20,11 +13,22 @@ import java.util.Iterator;
 @RestController("CentralController")
 @RequestMapping(value = "/pjrace_v1")
 public class Controller {
+
     @Inject
     private ChallengeTypeService challengeTypeService;
 
     @Inject
     private ChallengeService challengeService;
+
+    @Inject
+    private EtablissementService etablissementService;
+
+    @Inject
+    private UserService userService;
+
+    @Inject
+    private AchievementService achievementService;
+
 
     @RequestMapping(value = "challengetypes", method = RequestMethod.GET, headers = "Accept=application/json")
     public Iterator<ChallengeType> getChallengeTypes() {
@@ -33,6 +37,11 @@ public class Controller {
         return lstChallengeTypes;
     }
 
+    /**
+     * Renvoie tous les challenges
+     *
+     * @return un itérateur sur la liste des challenges
+     */
     @RequestMapping(value = "challenges", method = RequestMethod.GET, headers = "Accept=application/json")
     public Iterator<Challenge> getChallenges() {
         Iterator<Challenge> lstChallenges = challengeService.getAllChallenges();
@@ -41,19 +50,65 @@ public class Controller {
     }
 
 
-    private MemoService memoService;
+    /**
+     * Renvoie le challenge correspondant à l'id passé en paramètre
+     *
+     * @param idChallenge
+     *
+     * @return un objet Challenge
+     */
+    @RequestMapping(value = "challenge/{idChallenge}",  method = RequestMethod.GET, headers = "Accept=application/json")
+    public Challenge getChallengeById(@PathVariable int idChallenge) {
+        Challenge challenge = challengeService.getChallengeById(idChallenge);
 
-    @RequestMapping(value = "search", method = RequestMethod.GET, headers = "Accept=application/json")
-    public Iterator<MemoSearch> getLastSearch() {
-        Iterator<MemoSearch> lstMemoSearch = memoService.getLastSearch();
-
-        return lstMemoSearch;
+        return challenge;
     }
 
-    @RequestMapping(value = "clics", method = RequestMethod.GET, headers = "Accept=application/json")
-    public ListMemoClic getLastClics() {
-        ListMemoClic lstMemoClic = memoService.getAndRemoveLastClics();
 
-        return lstMemoClic;
+    @RequestMapping(value = "challenge", params = "codeEtab",  method = RequestMethod.GET, headers = "Accept=application/json")
+    public Iterator<Challenge> getChallengesByCodeEtab(@RequestParam(value = "codeEtab") int codeEtab) {
+
+        Iterator<Challenge> lstChallenges = challengeService.getChallengeByCodeEtab(codeEtab);
+
+        return lstChallenges;
+    }
+
+    @RequestMapping(value = "etablissements", method = RequestMethod.GET, headers = "Accept=application/json")
+    public Iterator<Etablissement> getAllEtablissements() {
+        Iterator<Etablissement> lstChallenges = etablissementService.getAllEtablissements();
+
+        return lstChallenges;
+    }
+
+    @RequestMapping(value = "ranking", method = RequestMethod.GET, headers = "Accept=application/json")
+    public Iterator<User> getRanking() {
+        Iterator<User> lstUser = userService.getRanking(1);
+
+        return lstUser;
+    }
+
+    @RequestMapping(value = "achievements", method = RequestMethod.GET, headers = "Accept=application/json")
+    public Iterator<Resolution> getAllAchievements() {
+        Iterator<Resolution> lstAchievements = achievementService.getAllResolutions(1);
+
+        return lstAchievements;
+    }
+
+    @RequestMapping(value = "user", method = RequestMethod.GET, headers = "Accept=application/json")
+    public User connexion() {
+        String email = "blabla@gmail.com";
+        String password = "xxxx";
+        User user = userService.connexion(email, password);
+
+        return user;
+    }
+
+    @RequestMapping(value = "achievement", method = RequestMethod.POST, headers = "Accept=application/json")
+    public void achieveChallenge() {
+        int idChallenge = 0;
+        int idUser = 0;
+        String photo = "";
+
+        achievementService.achieveChallenge(idChallenge, idUser, photo);
     }
 }

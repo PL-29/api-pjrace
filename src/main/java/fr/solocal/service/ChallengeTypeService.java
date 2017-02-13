@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Created by stage01 on 10/02/17.
  */
-public interface ChallengeTypeService {
+public interface ChallengeTypeService  {
     //Permet de récupérer les types de challenge
     public Iterator<ChallengeType> getAllChallengeTypes();
 }

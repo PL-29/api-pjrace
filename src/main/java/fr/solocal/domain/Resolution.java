@@ -5,10 +5,12 @@ package fr.solocal.domain;
  */
 public class Resolution {
     int idResolution;
+    Challenge challenge;
     String urlPhoto;
 
-    public Resolution(int idResolution, String urlPhoto) {
+    public Resolution(int idResolution, Challenge challenge, String urlPhoto) {
         this.idResolution = idResolution;
+        this.challenge = challenge;
         this.urlPhoto = urlPhoto;
     }
 
@@ -17,6 +19,18 @@ public class Resolution {
 
     public int getIdResolution() {
         return idResolution;
+    }
+
+    public void setIdResolution(int idResolution) {
+        this.idResolution = idResolution;
+    }
+
+    public Challenge getChallenge() {
+        return challenge;
+    }
+
+    public void setChallenge(Challenge challenge) {
+        this.challenge = challenge;
     }
 
     public String getUrlPhoto() {

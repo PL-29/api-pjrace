@@ -23,6 +23,10 @@ public class Challenge {
         return idChallenge;
     }
 
+    public void setIdChallenge(int idChallenge) {
+        this.idChallenge = idChallenge;
+    }
+
     public Etablissement getEtablissement() {
         return etablissement;
     }

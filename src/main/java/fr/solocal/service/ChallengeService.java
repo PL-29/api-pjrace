@@ -17,5 +17,5 @@ public interface ChallengeService {
 
 
     //Permet de récupérer un challenge grâce à son codeEtab
-    public List<Challenge> getChallengeByCodeEtab(int codeEtab);
+    public Iterator<Challenge> getChallengeByCodeEtab(int codeEtab);
 }

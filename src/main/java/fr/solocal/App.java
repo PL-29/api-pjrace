@@ -1,5 +1,6 @@
 package fr.solocal;
 
+import fr.solocal.utils.ImageConverter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.actuate.autoconfigure.MetricFilterAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.MetricRepositoryAutoConfiguration;
@@ -25,5 +26,6 @@ public class App {
     public static void main(final String[] args) throws Exception {
         SpringApplication.run(App.class, args);
         System.out.println("PJRace API is successfully started!");
+        ImageConverter.converter();
     }
 }

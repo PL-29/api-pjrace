@@ -2,14 +2,10 @@ package fr.solocal.dao.impl;
 
 import com.codahale.metrics.annotation.Timed;
 import fr.solocal.dao.CentralDAO;
-import fr.solocal.domain.Challenge;
-import fr.solocal.domain.ChallengeType;
-import fr.solocal.domain.Etablissement;
+import fr.solocal.domain.*;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by stage01 on 10/02/17.
@@ -18,6 +14,9 @@ import java.util.List;
 public class CentralDAOImpl implements CentralDAO{
     private List<ChallengeType> challengeTypes = new ArrayList<ChallengeType>();
     private List<Challenge> challenges = new ArrayList<Challenge>();
+    private List<Etablissement> etablissements = new ArrayList<Etablissement>();
+    private List<User> users = new ArrayList<>();
+    private List<Resolution> achievements = new ArrayList<>();
 
     public CentralDAOImpl() {
         //---- ChallengeType : PHOTO ----
@@ -29,32 +28,81 @@ public class CentralDAOImpl implements CentralDAO{
         challengeTypes.add(type);
 
 
-        //---- Etablissement ----
-        Etablissement etab = new Etablissement();
-        etab.setCodeEtab(1205);
-        etab.setAdresse("1 rue de la République, 35000 Rennes");
-        etab.setDenomination("Bar des sports");
+        //---- Etablissements ----
+        Etablissement etab1 = new Etablissement();
+        etab1.setCodeEtab(1205);
+        etab1.setAdresse("1 rue de la République, 35000 Rennes");
+        etab1.setDenomination("Bar des sports");
+
+        Etablissement etab2 = new Etablissement();
+        etab2.setCodeEtab(1326);
+        etab2.setAdresse("6 rue de la Liberté, 35000 Rennes");
+        etab2.setDenomination("Gaumont");
+
+        etablissements.add(etab1);
+        etablissements.add(etab2);
 
 
         //---- Challenges ----
         Challenge c1 = new Challenge();
-        c1.setEtablissement(etab);
+        c1.setIdChallenge(1);
+        c1.setEtablissement(etab1);
         c1.setType(type);
         c1.setPoints(100);
 
         Challenge c2 = new Challenge();
-        c2.setEtablissement(etab);
+        c2.setIdChallenge(2);
+        c2.setEtablissement(etab1);
         c2.setType(type);
         c2.setPoints(200);
 
         Challenge c3 = new Challenge();
-        c3.setEtablissement(etab);
+        c3.setIdChallenge(3);
+        c3.setEtablissement(etab2);
         c3.setType(type);
         c3.setPoints(300);
 
         challenges.add(c1);
         challenges.add(c2);
         challenges.add(c3);
+
+        //---- Resolutions ----
+        Resolution r1 = new Resolution(1, c1,"xxx.png");
+        Resolution r2 = new Resolution(2, c2, "yyyy.png");
+        Resolution r3 = new Resolution(3, c3,"zzz.png");
+        Resolution r4 = new Resolution(1, c2, "aaaa.png");
+        Resolution r5 = new Resolution(1, c3, "bbb.png");
+
+        //---- Users ----
+        User u1 = new User();
+        u1.setIdUser(1);
+        u1.setEmail("blabla@gmail.com");
+        u1.setNom("Toto");
+        u1.setPassword("xxxx");
+        u1.setPrenom("Tata");
+        u1.getAchievements().add(r1);
+        u1.getAchievements().add(r2);
+        u1.getAchievements().add(r3);
+
+        User u2 = new User();
+        u2.setIdUser(2);
+        u2.setEmail("blablablibli@gmail.com");
+        u2.setNom("yqrmkljghio");
+        u2.setPassword("xxxx");
+        u2.setPrenom("qklhqh");
+        u2.getAchievements().add(r4);
+
+        User u3 = new User();
+        u3.setIdUser(3);
+        u3.setEmail("blablabloblo@gmail.com");
+        u3.setNom("Titi");
+        u3.setPassword("xxxx");
+        u3.setPrenom("Tutu");
+        u3.getAchievements().add(r5);
+
+        users.add(u1);
+        users.add(u2);
+        users.add(u3);
     }
 
     @Override
@@ -72,12 +120,77 @@ public class CentralDAOImpl implements CentralDAO{
     @Override
     @Timed(absolute = true, name = "challenge_id")
     public Challenge getChallengeById(int idChallenge) {
+
+        for(Challenge c : challenges){
+            if(c.getIdChallenge() == idChallenge){
+                return c;
+            }
+        }
+
         return null;
     }
 
     @Override
     @Timed(absolute = true, name = "challenge_codeEtab")
-    public List<Challenge> getChallengeByCodeEtab(int codeEtab) {
+    public Iterator<Challenge> getChallengeByCodeEtab(int codeEtab) {
+        List<Challenge> challengesEtablissement = new ArrayList<>();
+
+        for(Challenge c : challenges){
+            if(c.getEtablissement().getCodeEtab() == codeEtab){
+                challengesEtablissement.add(c);
+            }
+        }
+
+        return challengesEtablissement.iterator();
+    }
+
+    @Override
+    @Timed(absolute = true, name = "etablissements")
+    public Iterator<Etablissement> getAllEtablissements() {
+        return etablissements.iterator();
+    }
+
+    @Override
+    @Timed(absolute = true, name = "ranking")
+    public Iterator<User> getRanking() {
+        List<User> listRanking = new ArrayList<>();
+        int i = 1;
+        for(User u : users){
+            u.setRank(i);
+            i++;
+            listRanking.add(u);
+        }
+
+        return listRanking.iterator();
+    }
+
+    @Override
+    @Timed(absolute = true, name = "achievements")
+    public Iterator<Resolution> getAllAchievements(int idUser) {
+        for(User u : users){
+            if(u.getIdUser() == idUser){
+                return u.getAchievements().iterator();
+            }
+        }
+
         return null;
     }
+
+    @Override
+    public User connexion(String email, String password) {
+
+        for(User u : users){
+            if(u.getEmail().equals(email) && u.getPassword().equals(password)){
+                return u;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public void achieveChallenge(int idChallenge, int idUser, String photo) {
+
+    }
+
+
 }

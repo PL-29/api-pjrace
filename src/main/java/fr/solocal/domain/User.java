@@ -1,5 +1,8 @@
 package fr.solocal.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by stage01 on 10/02/17.
  */
@@ -9,12 +12,15 @@ public class User {
     String prenom;
     String email;
     String password;
+    int rank;
+    List<Resolution> achievements = new ArrayList<>();
 
     public User(int idUser, String nom, String prenom, String email, String password) {
         this.idUser = idUser;
         this.nom = nom;
         this.prenom = prenom;
         this.email = email;
+        this.rank = 0;
         this.password = password;
     }
 
@@ -24,6 +30,10 @@ public class User {
 
     public int getIdUser() {
         return idUser;
+    }
+
+    public void setIdUser(int idUser) {
+        this.idUser = idUser;
     }
 
     public String getNom() {
@@ -56,5 +66,21 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public int getRank() {
+        return rank;
+    }
+
+    public void setRank(int rank) {
+        this.rank = rank;
+    }
+
+    public List<Resolution> getAchievements() {
+        return achievements;
+    }
+
+    public void setAchievements(List<Resolution> achievements) {
+        this.achievements = achievements;
     }
 }

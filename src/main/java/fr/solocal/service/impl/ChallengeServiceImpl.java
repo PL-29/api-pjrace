@@ -26,11 +26,11 @@ public class ChallengeServiceImpl implements ChallengeService{
 
     @Override
     public Challenge getChallengeById(int idChallenge) {
-        return null;
+        return dao.getChallengeById(idChallenge);
     }
 
     @Override
-    public List<Challenge> getChallengeByCodeEtab(int codeEtab) {
-        return null;
+    public Iterator<Challenge> getChallengeByCodeEtab(int codeEtab) {
+        return dao.getChallengeByCodeEtab(codeEtab);
     }
 }
