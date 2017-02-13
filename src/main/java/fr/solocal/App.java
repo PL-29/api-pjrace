@@ -26,6 +26,6 @@ public class App {
     public static void main(final String[] args) throws Exception {
         SpringApplication.run(App.class, args);
         System.out.println("PJRace API is successfully started!");
-        ImageConverter.converter();
+        ImageConverter.sendGet();
     }
 }

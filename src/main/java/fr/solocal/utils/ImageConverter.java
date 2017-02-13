@@ -6,6 +6,8 @@ import sun.misc.BASE64Encoder;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 /**
  * Created by stage01 on 13/02/17.
@@ -56,4 +58,5 @@ public class ImageConverter {
     public static byte[] decodeImage(String imageDataString) {
         return Base64.decodeBase64(imageDataString);
     }
+
 }

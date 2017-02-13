@@ -3,8 +3,15 @@ package fr.solocal.dao.impl;
 import com.codahale.metrics.annotation.Timed;
 import fr.solocal.dao.CentralDAO;
 import fr.solocal.domain.*;
+import jdk.nashorn.internal.ir.RuntimeNode;
+import org.apache.http.client.HttpClient;
+import org.hibernate.validator.internal.util.privilegedactions.GetMethod;
 import org.springframework.stereotype.Repository;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.*;
 
 /**
@@ -190,6 +197,41 @@ public class CentralDAOImpl implements CentralDAO{
     @Override
     public void achieveChallenge(int idChallenge, int idUser, String photo) {
 
+    }
+
+    /**
+     * Permet d'envoyer une requête GET à l'URL spécifiée en paramètre
+     *
+     * @param url
+     *
+     * @throws Exception
+     */
+    public void sendGetRequest(String url) throws Exception{
+        URL obj = new URL(url);
+        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+
+        // optional default is GET
+        con.setRequestMethod("GET");
+
+        //add request header
+        //con.setRequestProperty("User-Agent", USER_AGENT);
+
+        int responseCode = con.getResponseCode();
+        System.out.println("\nSending 'GET' request to URL : " + url);
+        System.out.println("Response Code : " + responseCode);
+
+        BufferedReader in = new BufferedReader(
+                new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer response = new StringBuffer();
+
+        while ((inputLine = in.readLine()) != null) {
+            response.append(inputLine);
+        }
+        in.close();
+
+        //print result
+        System.out.println(response.toString());
     }
 
 
