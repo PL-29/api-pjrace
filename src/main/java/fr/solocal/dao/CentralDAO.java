@@ -14,9 +14,9 @@ public interface CentralDAO {
 
     public Challenge getChallengeById(int idChallenge);
 
-    public Iterator<Challenge> getChallengeByCodeEtab(int codeEtab);
+    public Iterator<Challenge> getChallengesByCodeEtab(int codeEtab);
 
-    public Iterator<Facility> getAllEtablissements();
+    public Iterator<Etablissement> getEtablissementsByPosition(double latitude, double longitude);
 
     public Iterator<User> getRanking();
 

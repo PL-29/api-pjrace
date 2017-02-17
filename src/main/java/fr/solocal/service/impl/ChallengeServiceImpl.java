@@ -31,6 +31,6 @@ public class ChallengeServiceImpl implements ChallengeService{
 
     @Override
     public Iterator<Challenge> getChallengeByCodeEtab(int codeEtab) {
-        return dao.getChallengeByCodeEtab(codeEtab);
+        return dao.getChallengesByCodeEtab(codeEtab);
     }
 }

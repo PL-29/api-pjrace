@@ -3,9 +3,6 @@ package fr.solocal.dao.impl;
 import com.codahale.metrics.annotation.Timed;
 import fr.solocal.dao.CentralDAO;
 import fr.solocal.domain.*;
-import jdk.nashorn.internal.ir.RuntimeNode;
-import org.apache.http.client.HttpClient;
-import org.hibernate.validator.internal.util.privilegedactions.GetMethod;
 import org.springframework.stereotype.Repository;
 
 import java.io.BufferedReader;
@@ -21,7 +18,7 @@ import java.util.*;
 public class CentralDAOImpl implements CentralDAO{
     private List<ChallengeType> challengeTypes = new ArrayList<ChallengeType>();
     private List<Challenge> challenges = new ArrayList<Challenge>();
-    private List<Facility> facilities = new ArrayList<Facility>();
+    private List<Etablissement> etablissements = new ArrayList<Etablissement>();
     private List<User> users = new ArrayList<>();
     private List<Achievement> achievements = new ArrayList<>();
 
@@ -36,36 +33,36 @@ public class CentralDAOImpl implements CentralDAO{
 
 
         //---- Etablissements ----
-        Facility etab1 = new Facility();
+        Etablissement etab1 = new Etablissement();
         etab1.setCodeEtab(1205);
         etab1.setAddress("1 rue de la République, 35000 Rennes");
         etab1.setDenomination("Bar des sports");
 
-        Facility etab2 = new Facility();
+        Etablissement etab2 = new Etablissement();
         etab2.setCodeEtab(1326);
         etab2.setAddress("6 rue de la Liberté, 35000 Rennes");
         etab2.setDenomination("Gaumont");
 
-        facilities.add(etab1);
-        facilities.add(etab2);
+        etablissements.add(etab1);
+        etablissements.add(etab2);
 
 
         //---- Challenges ----
         Challenge c1 = new Challenge();
         c1.setIdChallenge(1);
-        c1.setFacility(etab1);
+        c1.setEtablissement(etab1);
         c1.setType(type);
         c1.setPoints(100);
 
         Challenge c2 = new Challenge();
         c2.setIdChallenge(2);
-        c2.setFacility(etab1);
+        c2.setEtablissement(etab1);
         c2.setType(type);
         c2.setPoints(200);
 
         Challenge c3 = new Challenge();
         c3.setIdChallenge(3);
-        c3.setFacility(etab2);
+        c3.setEtablissement(etab2);
         c3.setType(type);
         c3.setPoints(300);
 
@@ -112,18 +109,35 @@ public class CentralDAOImpl implements CentralDAO{
         users.add(u3);
     }
 
+    /**
+     * Renvoie la liste des types de challenges
+     *
+     * @return Un objet Iterator sur la liste des types de challenges
+     */
     @Override
     @Timed(absolute = true, name = "challenge_types")
     public Iterator<ChallengeType> getAllChallengeTypes(){
         return challengeTypes.iterator();
     }
 
+
+    /**
+     * Renvoie la liste des challenges
+     *
+     * @return Un objet Iterator sur la liste des challenges
+     */
     @Override
     @Timed(absolute = true, name = "challenges")
     public Iterator<Challenge> getAllChallenges() {
         return challenges.iterator();
     }
 
+
+    /**
+     * Renvoie un challenge en fonction de son id
+     *
+     * @return Un objet Challenge
+     */
     @Override
     @Timed(absolute = true, name = "challenge_id")
     public Challenge getChallengeById(int idChallenge) {
@@ -137,13 +151,18 @@ public class CentralDAOImpl implements CentralDAO{
         return null;
     }
 
+    /**
+     * Renvoie la liste des challenges d'un établissement en fonction du code etab
+     *
+     * @return Un objet Iterator sur la liste des challenges d'un établissement
+     */
     @Override
     @Timed(absolute = true, name = "challenge_codeEtab")
-    public Iterator<Challenge> getChallengeByCodeEtab(int codeEtab) {
+    public Iterator<Challenge> getChallengesByCodeEtab(int codeEtab) {
         List<Challenge> challengesEtablissement = new ArrayList<>();
 
         for(Challenge c : challenges){
-            if(c.getFacility().getCodeEtab() == codeEtab){
+            if(c.getEtablissement().getCodeEtab() == codeEtab){
                 challengesEtablissement.add(c);
             }
         }
@@ -151,12 +170,29 @@ public class CentralDAOImpl implements CentralDAO{
         return challengesEtablissement.iterator();
     }
 
+    /**
+     * Renvoie la liste des établissements en fonction de la position de l'utilisateur
+     *
+     * @param latitude
+     *      La latitude de l'utilisateur
+     * @param longitude
+     *      La longitude de l'utilisateur
+     *
+     * @return un objet Iterator sur une liste d'établissements
+     */
     @Override
-    @Timed(absolute = true, name = "facilities")
-    public Iterator<Facility> getAllEtablissements() {
-        return facilities.iterator();
+    @Timed(absolute = true, name = "etablissements_position")
+    public Iterator<Etablissement> getEtablissementsByPosition(double latitude, double longitude) {
+        //Récupérer les etablissements dans un périmètre défini et calculé par une fonction
+        //Retourner les établissements du périmètres
+        return etablissements.iterator();
     }
 
+    /**
+     * Renvoie le classement des 10 premiers utilisateurs et de l'utilisateur lui même
+     *
+     * @return un objet Iterator sur une liste d'utilisateurs
+     */
     @Override
     @Timed(absolute = true, name = "ranking")
     public Iterator<User> getRanking() {
@@ -171,6 +207,14 @@ public class CentralDAOImpl implements CentralDAO{
         return listRanking.iterator();
     }
 
+    /**
+     * Permet d'avoir la liste des challenges resolus par un utilisateur
+     *
+     * @param idUser
+     *      L'id de l'utilisateur
+     *
+     * @return Un objet Iterator sur une liste de challenges
+     */
     @Override
     @Timed(absolute = true, name = "achievements")
     public Iterator<Achievement> getAllAchievements(int idUser) {
@@ -183,6 +227,16 @@ public class CentralDAOImpl implements CentralDAO{
         return null;
     }
 
+    /**
+     * Permet la connexion de l'utilisateur à l'application
+     *
+     * @param email
+     *      email de l'utilisateur
+     * @param password
+     *      password de l'utilisateur
+     *
+     * @return un objet User
+     */
     @Override
     public User connexion(String email, String password) {
 
@@ -194,6 +248,16 @@ public class CentralDAOImpl implements CentralDAO{
         return null;
     }
 
+    /**
+     * Enregistre la résolution d'un challenge dans ES
+     *
+     * @param idChallenge
+     *     L'id du challenge résolu
+     * @param idUser
+     *      L'id de l'utilisateur qui le résoud
+     * @param photo
+     *      La photo encodée en base 64
+     */
     @Override
     public void achieveChallenge(int idChallenge, int idUser, String photo) {
 

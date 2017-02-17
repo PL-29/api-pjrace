@@ -5,13 +5,13 @@ package fr.solocal.domain;
  */
 public class Challenge {
     int idChallenge;
-    Facility facility;
+    Etablissement etablissement;
     ChallengeType type;
     int points;
 
-    public Challenge(int idChallenge, Facility facility, ChallengeType type, int points) {
+    public Challenge(int idChallenge, Etablissement etablissement, ChallengeType type, int points) {
         this.idChallenge = idChallenge;
-        this.facility = facility;
+        this.etablissement = etablissement;
         this.type = type;
         this.points = points;
     }
@@ -27,12 +27,12 @@ public class Challenge {
         this.idChallenge = idChallenge;
     }
 
-    public Facility getFacility() {
-        return facility;
+    public Etablissement getEtablissement() {
+        return etablissement;
     }
 
-    public void setFacility(Facility facility) {
-        this.facility = facility;
+    public void setEtablissement(Etablissement etablissement) {
+        this.etablissement = etablissement;
     }
 
     public ChallengeType getType() {

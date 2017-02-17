@@ -1,6 +1,6 @@
 package fr.solocal.service;
 
-import fr.solocal.domain.Facility;
+import fr.solocal.domain.Etablissement;
 
 import java.util.Iterator;
 
@@ -9,5 +9,5 @@ import java.util.Iterator;
  */
 public interface EtablissementService {
     //Permet de récupérer les etablissements
-    public Iterator<Facility> getAllEtablissements();
+    public Iterator<Etablissement> getEtablissementsByPosition(double latitude, double longitude);
 }
