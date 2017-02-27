@@ -3,6 +3,10 @@ package fr.solocal.dao.impl;
 import com.codahale.metrics.annotation.Timed;
 import fr.solocal.dao.CentralDAO;
 import fr.solocal.domain.*;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONString;
 import org.springframework.stereotype.Repository;
 
 import java.io.BufferedReader;
@@ -295,8 +299,23 @@ public class CentralDAOImpl implements CentralDAO{
         in.close();
 
         //print result
-        System.out.println(response.toString());
+        //System.out.println(response.toString());
+        stringToJsonToObject(response.toString());
     }
 
 
+    public void stringToJsonToObject(String response) throws JSONException {
+        JSONObject jsonObject = new JSONObject(response);
+        String inter = jsonObject.getString("hits");
+        JSONObject jsonObject1 = new JSONObject(inter);
+        String inter1 = jsonObject1.getString("hits");
+        JSONArray jsonArray = new JSONArray(inter1);
+
+        for(int i=0; i<jsonArray.length(); i++){
+            JSONObject jsonObj  = jsonArray.getJSONObject(i);
+            //System.out.println(jsonArray.getString(i));
+            System.out.println("code : "+jsonObj.getString("_source"));
+            //System.out.println("adresse : "+jsonObj.getString("adresse"));*/
+        }
+    }
 }

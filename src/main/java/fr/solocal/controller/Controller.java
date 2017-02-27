@@ -2,6 +2,8 @@ package fr.solocal.controller;
 
 import fr.solocal.domain.*;
 import fr.solocal.service.*;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
@@ -47,17 +49,11 @@ public class Controller {
      *
      * @return un objet Iterator sur la liste des challenges
      */
-    /*@RequestMapping(value = "challenges", method = RequestMethod.GET, headers = "Accept=application/json")
+    @RequestMapping(value = "challenges", method = RequestMethod.GET, headers = "Accept=application/json")
     public Iterator<Challenge> getChallenges() {
         Iterator<Challenge> itChallenges = challengeService.getAllChallenges();
 
        return itChallenges;
-    }*/
-
-    @RequestMapping(value = "challenges", method = RequestMethod.GET, headers = "Accept=application/json")
-    public void getChallenges() {
-        Iterator<Challenge> itChallenges = challengeService.getAllChallenges();
-
     }
 
 

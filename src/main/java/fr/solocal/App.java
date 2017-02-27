@@ -1,5 +1,6 @@
 package fr.solocal;
 
+import fr.solocal.dao.CentralDAO;
 import fr.solocal.dao.impl.CentralDAOImpl;
 import fr.solocal.utils.ImageConverter;
 import org.springframework.boot.SpringApplication;
@@ -25,7 +26,9 @@ public class App {
      * @throws Exception If something bad happens
      */
     public static void main(final String[] args) throws Exception {
-        SpringApplication.run(App.class, args);
+        //SpringApplication.run(App.class, args);
         System.out.println("PJRace API is successfully started!");
+        CentralDAOImpl dao = new CentralDAOImpl();
+        dao.sendGetRequest("http://91.134.242.201/elastic-pjrace/pjrace_challenge/_search");
     }
 }
