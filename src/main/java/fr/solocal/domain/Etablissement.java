@@ -10,12 +10,16 @@ public class Etablissement {
     int codeEtab;
     String denomination;
     String address;
+    double latitude;
+    double longitude;
     List<Challenge> challenges = new ArrayList<Challenge>();
 
-    public Etablissement(int codeEtab, String denomination, String address) {
+    public Etablissement(int codeEtab, String denomination, String address, double latitude, double longitude) {
         this.codeEtab = codeEtab;
         this.denomination = denomination;
         this.address = address;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     public Etablissement() {
@@ -41,6 +45,22 @@ public class Etablissement {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 
     public List<Challenge> getChallenges() {
