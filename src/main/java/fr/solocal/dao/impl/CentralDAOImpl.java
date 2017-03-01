@@ -14,6 +14,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.*;
+import org.restlet.ext.json.JsonRepresentation;
 
 /**
  * Created by stage01 on 10/02/17.
@@ -28,7 +29,7 @@ public class CentralDAOImpl implements CentralDAO{
 
     public CentralDAOImpl() {
         //---- ChallengeType : PHOTO ----
-        ChallengeType type = new ChallengeType();
+        /*ChallengeType type = new ChallengeType();
         type.setIdChallengeType(1);
         type.setDescription("Prenez une photo de la devanture de l'établissement");
         type.setDefaultNumberPoints(100);
@@ -110,7 +111,12 @@ public class CentralDAOImpl implements CentralDAO{
 
         users.add(u1);
         users.add(u2);
-        users.add(u3);
+        users.add(u3);*/
+        try {
+            sendGetRequest("http://91.134.242.201/elastic-pjrace/pjrace_challenge/_search");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -144,10 +150,10 @@ public class CentralDAOImpl implements CentralDAO{
      */
     @Override
     @Timed(absolute = true, name = "challenge_id")
-    public Challenge getChallengeById(int idChallenge) {
+    public Challenge getChallengeById(String idChallenge) {
 
         for(Challenge c : challenges){
-            if(c.getIdChallenge() == idChallenge){
+            if(c.getIdChallenge().equals(idChallenge)){
                 return c;
             }
         }
@@ -300,22 +306,41 @@ public class CentralDAOImpl implements CentralDAO{
 
         //print result
         //System.out.println(response.toString());
-        stringToJsonToObject(response.toString());
+        parsingJson(response.toString());
     }
 
-
-    public void stringToJsonToObject(String response) throws JSONException {
+    public void parsingJson(String response) throws JSONException {
         JSONObject jsonObject = new JSONObject(response);
-        String inter = jsonObject.getString("hits");
-        JSONObject jsonObject1 = new JSONObject(inter);
-        String inter1 = jsonObject1.getString("hits");
-        JSONArray jsonArray = new JSONArray(inter1);
+        String hits = jsonObject.getJSONObject("hits").getString("hits");
+        JSONArray jsonArray = new JSONArray(hits);
 
         for(int i=0; i<jsonArray.length(); i++){
-            JSONObject jsonObj  = jsonArray.getJSONObject(i);
-            //System.out.println(jsonArray.getString(i));
-            System.out.println("code : "+jsonObj.getString("_source"));
-            //System.out.println("adresse : "+jsonObj.getString("adresse"));*/
+            JSONObject hit = jsonArray.getJSONObject(i);
+            JSONObject source  = jsonArray.getJSONObject(i).getJSONObject("_source");
+
+            //Attributs Challenge
+            String challengeId = hit.getString("_id");
+            int points = source.getInt("points");
+
+            //Attributs Etablissement
+            String etabAdresse = source.getString("adresse");
+            int codeEtab = source.getInt("code_etab");
+            String denom = source.getString("denom");
+            double latitude = source.getJSONObject("_geo").getDouble("lat");
+            double longitude = source.getJSONObject("_geo").getDouble("lon");
+
+            //Attributs ChallengeType
+            String codeType = source.getString("code");
+
+            //Instanciation des objets
+            Etablissement etab = new Etablissement(codeEtab, denom, etabAdresse, latitude, longitude );
+            etablissements.add(etab);
+
+            ChallengeType challengeType = new ChallengeType(1, codeType, 100, "blabla");
+            challengeTypes.add(challengeType);
+
+            Challenge challenge = new Challenge(challengeId, etab, challengeType, points);
+            challenges.add(challenge);
         }
     }
 }

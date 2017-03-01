@@ -12,7 +12,7 @@ public interface CentralDAO {
 
     public Iterator<Challenge> getAllChallenges();
 
-    public Challenge getChallengeById(int idChallenge);
+    public Challenge getChallengeById(String idChallenge);
 
     public Iterator<Challenge> getChallengesByCodeEtab(int codeEtab);
 
