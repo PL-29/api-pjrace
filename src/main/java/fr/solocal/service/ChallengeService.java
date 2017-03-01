@@ -13,7 +13,7 @@ public interface ChallengeService {
     public Iterator<Challenge> getAllChallenges();
 
     //Permet de récupérer un challenge grâce à son id
-    public Challenge getChallengeById(int idChallenge);
+    public Challenge getChallengeById(String idChallenge);
 
 
     //Permet de récupérer un challenge grâce à son codeEtab

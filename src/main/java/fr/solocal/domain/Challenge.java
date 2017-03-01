@@ -4,12 +4,12 @@ package fr.solocal.domain;
  * Created by stage01 on 10/02/17.
  */
 public class Challenge {
-    int idChallenge;
+    String idChallenge;
     Etablissement etablissement;
     ChallengeType type;
     int points;
 
-    public Challenge(int idChallenge, Etablissement etablissement, ChallengeType type, int points) {
+    public Challenge(String idChallenge, Etablissement etablissement, ChallengeType type, int points) {
         this.idChallenge = idChallenge;
         this.etablissement = etablissement;
         this.type = type;
@@ -19,11 +19,11 @@ public class Challenge {
     public Challenge() {
     }
 
-    public int getIdChallenge() {
+    public String getIdChallenge() {
         return idChallenge;
     }
 
-    public void setIdChallenge(int idChallenge) {
+    public void setIdChallenge(String idChallenge) {
         this.idChallenge = idChallenge;
     }
 

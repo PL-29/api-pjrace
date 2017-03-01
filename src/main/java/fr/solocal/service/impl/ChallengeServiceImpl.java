@@ -25,7 +25,7 @@ public class ChallengeServiceImpl implements ChallengeService{
     }
 
     @Override
-    public Challenge getChallengeById(int idChallenge) {
+    public Challenge getChallengeById(String idChallenge) {
         return dao.getChallengeById(idChallenge);
     }
 
