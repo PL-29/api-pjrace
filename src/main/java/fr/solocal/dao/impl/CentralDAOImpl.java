@@ -335,12 +335,13 @@ public class CentralDAOImpl implements CentralDAO{
     }
 
     /**
-     * Création d'un utilisateur lors de sa première connexion
-     *
+     * Requête POST pour créer un utilisateur
+     * @param u
+     *      Un objet User, qui permet d'initialiser un utilisateur dans ES lors de sa première connexion
      * @throws Exception
      */
-    public static void sendPostRequest() throws Exception {
-        String url="http://91.134.242.201/elastic-pjrace/pjrace_challenge/user/plollivier@test.com";
+    public void initializeUser(User u) throws Exception {
+        String url="http://91.134.242.201/elastic-pjrace/pjrace_challenge/user/"+u.getEmail();
         URL object=new URL(url);
 
         HttpURLConnection con = (HttpURLConnection) object.openConnection();
@@ -351,10 +352,49 @@ public class CentralDAOImpl implements CentralDAO{
         con.setRequestMethod("POST");
 
         JSONObject jsonUser  = new JSONObject();
-        jsonUser.put("lastname","PL");
-        jsonUser.put("firstname", "Ollivier");
-        jsonUser.put("email", "plollivier@test.com");
+        jsonUser.put("lastname",u.getLastname());
+        jsonUser.put("firstname", u.getFirstname());
+        jsonUser.put("email", u.getEmail());
         jsonUser.put("challenges", (Collection) null);
+        jsonUser.put("score", 0);
+
+        OutputStreamWriter wr = new OutputStreamWriter(con.getOutputStream());
+        wr.write(jsonUser.toString());
+        wr.flush();
+
+        StringBuilder sb = new StringBuilder();
+        int HttpResult = con.getResponseCode();
+        if (HttpResult == HttpURLConnection.HTTP_OK) {
+            BufferedReader br = new BufferedReader(
+                    new InputStreamReader(con.getInputStream(), "utf-8"));
+            String line = null;
+            while ((line = br.readLine()) != null) {
+                sb.append(line + "\n");
+            }
+            br.close();
+            System.out.println("" + sb.toString());
+        } else {
+            System.out.println(con.getResponseMessage());
+        }
+    }
+
+    public void updateUser(User u) throws Exception {
+        String url="http://91.134.242.201/elastic-pjrace/pjrace_challenge/user/"+u.getEmail()+"/_update";
+        URL object=new URL(url);
+
+        HttpURLConnection con = (HttpURLConnection) object.openConnection();
+        con.setDoOutput(true);
+        con.setDoInput(true);
+        con.setRequestProperty("Content-Type", "application/json");
+        con.setRequestProperty("Accept", "application/json");
+        con.setRequestMethod("POST");
+
+        JSONObject jsonUser  = new JSONObject();
+        jsonUser.put("lastname",u.getLastname());
+        jsonUser.put("firstname", u.getFirstname());
+        jsonUser.put("email", u.getEmail());
+        jsonUser.put("challenges", (Collection) null);
+        jsonUser.put("score", 0);
 
         OutputStreamWriter wr = new OutputStreamWriter(con.getOutputStream());
         wr.write(jsonUser.toString());
