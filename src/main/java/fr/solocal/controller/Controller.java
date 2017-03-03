@@ -95,9 +95,7 @@ public class Controller {
      * @return un objet Iterator sur une liste des établissements
      */
     @RequestMapping(value = "etablissements", method = RequestMethod.GET, headers = "Accept=application/json")
-    public Iterator<Etablissement> getAllEtablissements() {
-        double latitude = 0.1555;
-        double longitude = 151.6;
+    public Iterator<Etablissement> getAllEtablissements(@RequestParam(value = "lat") double latitude, @RequestParam(value = "lon") double longitude) {
         Iterator<Etablissement> itEtablissement = etablissementService.getEtablissementsByPosition(latitude, longitude);
 
         return itEtablissement;
