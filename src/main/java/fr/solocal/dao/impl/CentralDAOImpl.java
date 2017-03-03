@@ -3,6 +3,14 @@ package fr.solocal.dao.impl;
 import com.codahale.metrics.annotation.Timed;
 import fr.solocal.dao.CentralDAO;
 import fr.solocal.domain.*;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.elasticsearch.client.Client;
+import org.elasticsearch.node.Node;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -12,8 +20,11 @@ import org.springframework.stereotype.Repository;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
+
+import static org.elasticsearch.node.NodeBuilder.nodeBuilder;
 
 /**
  * Created by stage01 on 10/02/17.
@@ -27,54 +38,9 @@ public class CentralDAOImpl implements CentralDAO{
     private List<Achievement> achievements = new ArrayList<>();
 
     public CentralDAOImpl() {
-        //---- ChallengeType : PHOTO ----
-        /*ChallengeType type = new ChallengeType();
-        type.setIdChallengeType(1);
-        type.setDescription("Prenez une photo de la devanture de l'établissement");
-        type.setDefaultNumberPoints(100);
-        type.setTitle("Photo");
-        challengeTypes.add(type);
 
 
-        //---- Etablissements ----
-        Etablissement etab1 = new Etablissement();
-        etab1.setCodeEtab(1205);
-        etab1.setAddress("1 rue de la République, 35000 Rennes");
-        etab1.setDenomination("Bar des sports");
-
-        Etablissement etab2 = new Etablissement();
-        etab2.setCodeEtab(1326);
-        etab2.setAddress("6 rue de la Liberté, 35000 Rennes");
-        etab2.setDenomination("Gaumont");
-
-        etablissements.add(etab1);
-        etablissements.add(etab2);
-
-
-        //---- Challenges ----
-        Challenge c1 = new Challenge();
-        c1.setIdChallenge(1);
-        c1.setEtablissement(etab1);
-        c1.setType(type);
-        c1.setPoints(100);
-
-        Challenge c2 = new Challenge();
-        c2.setIdChallenge(2);
-        c2.setEtablissement(etab1);
-        c2.setType(type);
-        c2.setPoints(200);
-
-        Challenge c3 = new Challenge();
-        c3.setIdChallenge(3);
-        c3.setEtablissement(etab2);
-        c3.setType(type);
-        c3.setPoints(300);
-
-        challenges.add(c1);
-        challenges.add(c2);
-        challenges.add(c3);
-
-        //---- Resolutions ----
+       /* //---- Resolutions ----
         Achievement r1 = new Achievement(1, c1,"xxx.png");
         Achievement r2 = new Achievement(2, c2, "yyyy.png");
         Achievement r3 = new Achievement(3, c3,"zzz.png");
@@ -192,9 +158,13 @@ public class CentralDAOImpl implements CentralDAO{
     @Override
     @Timed(absolute = true, name = "etablissements_position")
     public Iterator<Etablissement> getEtablissementsByPosition(double latitude, double longitude) {
-        //Récupérer les etablissements dans un périmètre défini et calculé par une fonction
-        //Retourner les établissements du périmètres
-        return etablissements.iterator();
+        List<Etablissement> etabsByPos = new ArrayList<>();
+        for(Etablissement e : etablissements){
+            if(e.getLatitude() == latitude && e.getLongitude() == longitude){
+                etabsByPos.add(e);
+            }
+        }
+        return etabsByPos.iterator();
     }
 
     /**
@@ -344,4 +314,34 @@ public class CentralDAOImpl implements CentralDAO{
             challenges.add(challenge);
         }
     }
+
+    /**
+     * Retourne la map correspondant à la structure du document user lors de la première connexion
+     *
+     * @param userId
+     * @param userGroupe
+     * @return
+     */
+    public Map<String, Object> initialUserJsonDocument(String userId, String userGroupe){
+        Map<String, Object> jsonDocument = new HashMap<String, Object>();
+
+        jsonDocument.put("userId", userId);
+        jsonDocument.put("userGroupe", userGroupe);
+        jsonDocument.put("nbPoints", 0);
+        jsonDocument.put("challenges", null);
+
+        return jsonDocument;
+    }
+
+    private void sendPostRequest(String url) throws Exception {
+        Node node = nodeBuilder().clusterName("somethingstupid").client(true).node();
+        Client client   = node.client();
+
+        client.prepareIndex("testindex", "article")
+                .setSource(initialUserJsonDocument("userIdTest", "Rennes"))
+                .execute().actionGet();
+
+        node.close();
+    }
+
 }
