@@ -44,20 +44,7 @@ public class Controller {
         return itChallengeTypes;
     }
 
-    /**
-     * Renvoie la liste des challenges
-     *
-     * @return un objet Iterator sur la liste des challenges
-     */
-    @RequestMapping(value = "challenges", method = RequestMethod.GET, headers = "Accept=application/json")
-    public Iterator<Challenge> getChallenges() {
-        Iterator<Challenge> itChallenges = challengeService.getAllChallenges();
-
-       return itChallenges;
-    }
-
-
-    /**
+     /**
      * Renvoie le challenge correspondant à l'id passé en paramètre
      *
      * @param idChallenge
@@ -102,28 +89,27 @@ public class Controller {
     }
 
     /**
-     * Renvoie une liste d'utilisateurs correspondant au classement (les 10 premiers ainsi que l'utilisateur)
-     *
-     * @return un objet Iterator sur une liste d'utilisateurs
-     */
-    @RequestMapping(value = "ranking", method = RequestMethod.GET, headers = "Accept=application/json")
-    public Iterator<User> getRanking() {
-        Iterator<User> lstUser = userService.getRanking(1);
-
-        return lstUser;
-    }
-
-
-    /**
      * Renvoie la liste des résolutions de challenges effectuées par un utilisateur en fonction de son id
      *
      * @return un objet Iterator sur une liste de résolutions de challenges
      */
-    @RequestMapping(value = "achievements", method = RequestMethod.GET, headers = "Accept=application/json")
-    public Iterator<Achievement> getAllAchievements() {
-        Iterator<Achievement> itAchievements = achievementService.getAllResolutions(1);
+    @RequestMapping(value = "achievement", method = RequestMethod.GET, headers = "Accept=application/json")
+    public Iterator<Achievement> getAllAchievements(@RequestParam(value = "id") int idUser) {
+        Iterator<Achievement> itAchievements = achievementService.getAllResolutions(idUser);
 
         return itAchievements;
+    }
+
+    /**
+     *  Méthode permettant de résoudre un challenge
+     */
+    @RequestMapping(value = "achievement", method = RequestMethod.POST, headers = "Accept=application/json")
+    public void achieveChallenge() {
+        int idChallenge = 0;
+        int idUser = 0;
+        String photo = "";
+
+        achievementService.achieveChallenge(idChallenge, idUser, photo);
     }
 
     /**
@@ -140,16 +126,15 @@ public class Controller {
         return user;
     }
 
-
     /**
-     *  Méthode permettant de résoudre un challenge
+     * Renvoie une liste d'utilisateurs correspondant au classement (les 10 premiers ainsi que l'utilisateur)
+     *
+     * @return un objet Iterator sur une liste d'utilisateurs
      */
-    @RequestMapping(value = "achievement", method = RequestMethod.POST, headers = "Accept=application/json")
-    public void achieveChallenge() {
-        int idChallenge = 0;
-        int idUser = 0;
-        String photo = "";
+    @RequestMapping(value = "ranking", method = RequestMethod.GET, headers = "Accept=application/json")
+    public Iterator<User> getRanking() {
+        Iterator<User> lstUser = userService.getRanking(1);
 
-        achievementService.achieveChallenge(idChallenge, idUser, photo);
+        return lstUser;
     }
 }

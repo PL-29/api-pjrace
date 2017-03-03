@@ -19,6 +19,7 @@ import org.springframework.stereotype.Repository;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -333,15 +334,46 @@ public class CentralDAOImpl implements CentralDAO{
         return jsonDocument;
     }
 
-    private void sendPostRequest(String url) throws Exception {
-        Node node = nodeBuilder().clusterName("somethingstupid").client(true).node();
-        Client client   = node.client();
+    /**
+     * Création d'un utilisateur lors de sa première connexion
+     *
+     * @throws Exception
+     */
+    public static void sendPostRequest() throws Exception {
+        String url="http://91.134.242.201/elastic-pjrace/pjrace_challenge/user/plollivier@test.com";
+        URL object=new URL(url);
 
-        client.prepareIndex("testindex", "article")
-                .setSource(initialUserJsonDocument("userIdTest", "Rennes"))
-                .execute().actionGet();
+        HttpURLConnection con = (HttpURLConnection) object.openConnection();
+        con.setDoOutput(true);
+        con.setDoInput(true);
+        con.setRequestProperty("Content-Type", "application/json");
+        con.setRequestProperty("Accept", "application/json");
+        con.setRequestMethod("POST");
 
-        node.close();
+        JSONObject jsonUser  = new JSONObject();
+        jsonUser.put("lastname","PL");
+        jsonUser.put("firstname", "Ollivier");
+        jsonUser.put("email", "plollivier@test.com");
+        jsonUser.put("challenges", (Collection) null);
+
+        OutputStreamWriter wr = new OutputStreamWriter(con.getOutputStream());
+        wr.write(jsonUser.toString());
+        wr.flush();
+
+        StringBuilder sb = new StringBuilder();
+        int HttpResult = con.getResponseCode();
+        if (HttpResult == HttpURLConnection.HTTP_OK) {
+            BufferedReader br = new BufferedReader(
+                    new InputStreamReader(con.getInputStream(), "utf-8"));
+            String line = null;
+            while ((line = br.readLine()) != null) {
+                sb.append(line + "\n");
+            }
+            br.close();
+            System.out.println("" + sb.toString());
+        } else {
+            System.out.println(con.getResponseMessage());
+        }
     }
 
 }
