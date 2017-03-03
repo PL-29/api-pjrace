@@ -14,7 +14,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.*;
-import org.restlet.ext.json.JsonRepresentation;
 
 /**
  * Created by stage01 on 10/02/17.
@@ -287,9 +286,6 @@ public class CentralDAOImpl implements CentralDAO{
         // optional default is GET
         con.setRequestMethod("GET");
 
-        //add request header
-        //con.setRequestProperty("User-Agent", USER_AGENT);
-
         int responseCode = con.getResponseCode();
         System.out.println("\nSending 'GET' request to URL : " + url);
         System.out.println("Response Code : " + responseCode);
@@ -304,11 +300,16 @@ public class CentralDAOImpl implements CentralDAO{
         }
         in.close();
 
-        //print result
-        //System.out.println(response.toString());
         parsingJson(response.toString());
     }
 
+    /**
+     * Permet d'instanciater des objets métiers des données json retournées par ES
+     *
+     * @param response
+     *      Chaîne de caractères contenant la réponse d'une requête au moteur ES
+     * @throws JSONException
+     */
     public void parsingJson(String response) throws JSONException {
         JSONObject jsonObject = new JSONObject(response);
         String hits = jsonObject.getJSONObject("hits").getString("hits");

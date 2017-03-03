@@ -66,7 +66,7 @@ public class Controller {
      * @return un objet Challenge
      */
     @RequestMapping(value = "challenge/{idChallenge}",  method = RequestMethod.GET, headers = "Accept=application/json")
-    public Challenge getChallengeById(@PathVariable int idChallenge) {
+    public Challenge getChallengeById(@PathVariable String idChallenge) {
         Challenge challenge = challengeService.getChallengeById(idChallenge);
 
         return challenge;
