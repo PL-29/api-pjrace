@@ -83,4 +83,13 @@ public class User {
     public void setAchievements(List<Achievement> achievements) {
         this.achievements = achievements;
     }
+
+    public int getTotalScore(){
+        int totalScore = 0;
+        for(Achievement a : achievements){
+            totalScore+= a.getChallenge().getPoints();
+        }
+
+        return totalScore;
+    }
 }

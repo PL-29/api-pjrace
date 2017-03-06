@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * Created by stage01 on 10/02/17.
@@ -82,10 +83,10 @@ public class Controller {
      * @return un objet Iterator sur une liste des établissements
      */
     @RequestMapping(value = "etablissements", method = RequestMethod.GET, headers = "Accept=application/json")
-    public Iterator<Etablissement> getAllEtablissements(@RequestParam(value = "lat") double latitude, @RequestParam(value = "lon") double longitude) {
-        Iterator<Etablissement> itEtablissement = etablissementService.getEtablissementsByPosition(latitude, longitude);
+    public Iterator<Etablissement> getAllEtablissements(@RequestParam(value = "lat") double latitude, @RequestParam(value = "lon") double longitude, @RequestParam(value = "ray") int rayon) {
+        Iterator<Etablissement> lstEtablissement = etablissementService.getEtablissementsByPosition(latitude, longitude, rayon);
 
-        return itEtablissement;
+        return lstEtablissement;
     }
 
     /**

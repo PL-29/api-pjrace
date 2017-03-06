@@ -10,5 +10,5 @@ import java.util.List;
  */
 public interface EtablissementService {
     //Permet de récupérer les etablissements
-    public List<Etablissement> getEtablissementsByPosition(double latitude, double longitude, int rayon);
+    public Iterator<Etablissement> getEtablissementsByPosition(double latitude, double longitude, int rayon);
 }
