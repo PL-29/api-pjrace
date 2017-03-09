@@ -3,26 +3,15 @@ package fr.solocal.dao.impl;
 import com.codahale.metrics.annotation.Timed;
 import fr.solocal.dao.CentralDAO;
 import fr.solocal.domain.*;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.elasticsearch.action.get.GetResponse;
+
 import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.client.Client;
 import org.elasticsearch.client.transport.TransportClient;
-import org.elasticsearch.common.settings.ImmutableSettings;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
-import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.node.Node;
+import org.elasticsearch.transport.client.PreBuiltTransportClient;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.JSONString;
-import org.springframework.expression.spel.ast.Indexer;
 import org.springframework.stereotype.Repository;
 
 import java.io.BufferedReader;
@@ -31,7 +20,6 @@ import java.io.OutputStreamWriter;
 import java.net.*;
 import java.util.*;
 
-import static org.elasticsearch.node.NodeBuilder.nodeBuilder;
 
 /**
  * Created by stage01 on 10/02/17.
@@ -84,11 +72,11 @@ public class CentralDAOImpl implements CentralDAO{
         users.add(u1);
         users.add(u2);
         users.add(u3);*/
-        try {
+        /*try {
             sendGetRequest("http://91.134.242.201/elastic-pjrace/pjrace_challenge/_search");
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     /**
@@ -122,10 +110,10 @@ public class CentralDAOImpl implements CentralDAO{
      */
     @Override
     @Timed(absolute = true, name = "challenge_id")
-    public Challenge getChallengeById(String idChallenge) {
+    public Challenge getChallengeById(String pIdChallenge) {
 
         for(Challenge c : challenges){
-            if(c.getIdChallenge().equals(idChallenge)){
+            if(c.getIdChallenge().equals(pIdChallenge)){
                 return c;
             }
         }
@@ -140,11 +128,11 @@ public class CentralDAOImpl implements CentralDAO{
      */
     @Override
     @Timed(absolute = true, name = "challenge_codeEtab")
-    public Iterator<Challenge> getChallengesByCodeEtab(int codeEtab) {
+    public Iterator<Challenge> getChallengesByCodeEtab(int pCodeEtab) {
         List<Challenge> challengesEtablissement = new ArrayList<>();
 
         for(Challenge c : challenges){
-            if(c.getEtablissement().getCodeEtab() == codeEtab){
+            if(c.getEtablissement().getCodeEtab() == pCodeEtab){
                 challengesEtablissement.add(c);
             }
         }
@@ -155,19 +143,19 @@ public class CentralDAOImpl implements CentralDAO{
     /**
      * Renvoie la liste des établissements en fonction de la position de l'utilisateur
      *
-     * @param latitude
+     * @param pLatitude
      *      La latitude de l'utilisateur
-     * @param longitude
+     * @param pLongitude
      *      La longitude de l'utilisateur
      *
      * @return un objet Iterator sur une liste d'établissements
      */
     @Override
     @Timed(absolute = true, name = "etablissements_position")
-    public Iterator<Etablissement> getEtablissementsByPosition(double latitude, double longitude) {
+    public Iterator<Etablissement> getEtablissementsByPosition(double pLatitude, double pLongitude) {
         List<Etablissement> etabsByPos = new ArrayList<>();
         for(Etablissement e : etablissements){
-            if(e.getLatitude() == latitude && e.getLongitude() == longitude){
+            if(e.getLatitude() == pLatitude && e.getLongitude() == pLongitude){
                 etabsByPos.add(e);
             }
         }
@@ -196,16 +184,16 @@ public class CentralDAOImpl implements CentralDAO{
     /**
      * Permet d'avoir la liste des challenges resolus par un utilisateur
      *
-     * @param idUser
+     * @param pIdUser
      *      L'id de l'utilisateur
      *
      * @return Un objet Iterator sur une liste de challenges
      */
     @Override
     @Timed(absolute = true, name = "achievements")
-    public Iterator<Achievement> getAllAchievements(int idUser) {
+    public Iterator<Achievement> getAllAchievements(int pIdUser) {
         for(User u : users){
-            if(u.getIdUser() == idUser){
+            if(u.getIdUser() == pIdUser){
                 return u.getAchievements().iterator();
             }
         }
@@ -216,18 +204,18 @@ public class CentralDAOImpl implements CentralDAO{
     /**
      * Permet la connexion de l'utilisateur à l'application
      *
-     * @param email
+     * @param pEmail
      *      email de l'utilisateur
-     * @param password
+     * @param pPassword
      *      password de l'utilisateur
      *
      * @return un objet User
      */
     @Override
-    public User connexion(String email, String password) {
+    public User connexion(String pEmail, String pPassword) {
 
         for(User u : users){
-            if(u.getEmail().equals(email) && u.getPassword().equals(password)){
+            if(u.getEmail().equals(pEmail) && u.getPassword().equals(pPassword)){
                 return u;
             }
         }
@@ -237,34 +225,34 @@ public class CentralDAOImpl implements CentralDAO{
     /**
      * Enregistre la résolution d'un challenge dans ES
      *
-     * @param idChallenge
+     * @param pIdChallenge
      *     L'id du challenge résolu
-     * @param idUser
+     * @param pIdUser
      *      L'id de l'utilisateur qui le résoud
-     * @param photo
+     * @param pPhoto
      *      La photo encodée en base 64
      */
     @Override
-    public void achieveChallenge(int idChallenge, int idUser, String photo) {
+    public void achieveChallenge(int pIdChallenge, int pIdUser, String pPhoto) {
 
     }
 
     /**
      * Permet d'envoyer une requête GET à l'URL spécifiée en paramètre
      *
-     * @param url
+     * @param pUrl
      *
      * @throws Exception
      */
-    public void sendGetRequest(String url) throws Exception{
-        URL obj = new URL(url);
+    public void sendGetRequest(String pUrl) throws Exception{
+        URL obj = new URL(pUrl);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
         // optional default is GET
         con.setRequestMethod("GET");
 
         int responseCode = con.getResponseCode();
-        System.out.println("\nSending 'GET' request to URL : " + url);
+        System.out.println("\nSending 'GET' request to URL : " + pUrl);
         System.out.println("Response Code : " + responseCode);
 
         BufferedReader in = new BufferedReader(
@@ -325,15 +313,15 @@ public class CentralDAOImpl implements CentralDAO{
     /**
      * Retourne la map correspondant à la structure du document user lors de la première connexion
      *
-     * @param userId
-     * @param userGroupe
+     * @param pUserId
+     * @param pUserGroupe
      * @return
      */
-    public Map<String, Object> initialUserJsonDocument(String userId, String userGroupe){
+    public Map<String, Object> initialUserJsonDocument(String pUserId, String pUserGroupe){
         Map<String, Object> jsonDocument = new HashMap<String, Object>();
 
-        jsonDocument.put("userId", userId);
-        jsonDocument.put("userGroupe", userGroupe);
+        jsonDocument.put("userId", pUserId);
+        jsonDocument.put("userGroupe", pUserGroupe);
         jsonDocument.put("nbPoints", 0);
         jsonDocument.put("challenges", null);
 
@@ -342,7 +330,7 @@ public class CentralDAOImpl implements CentralDAO{
 
     /**
      * Requête POST pour créer un utilisateur
-     * @param u
+     * @param pUser
      *      Un objet User, qui permet d'initialiser un utilisateur dans ES lors de sa première connexion
      * @throws Exception
      */
@@ -388,8 +376,8 @@ public class CentralDAOImpl implements CentralDAO{
         }
     }*/
 
-    public void updateUser(User u) throws Exception {
-        String url="http://91.134.242.201/elastic-pjrace/pjrace_challenge/user/"+u.getEmail()+"/_update";
+    public void updateUser(User pUser) throws Exception {
+        String url="http://91.134.242.201/elastic-pjrace/pjrace_challenge/user/"+pUser.getEmail()+"/_update";
         URL object=new URL(url);
 
         HttpURLConnection con = (HttpURLConnection) object.openConnection();
@@ -422,23 +410,25 @@ public class CentralDAOImpl implements CentralDAO{
         }
     }
 
-    public void testGet() throws UnknownHostException {
-        Settings settings = ImmutableSettings.settingsBuilder()
-                .put("client.transport.ignore_cluster_name", true)
-                .put("client.transport.sniff", false)
-                .build();
-        TransportClient client = new TransportClient(settings);
-        client.addTransportAddress(new InetSocketTransportAddress("91.134.242.201", 9300));
+    public void connexionToEs() throws UnknownHostException {
+        String clusterName = "pjrace";
+        String serverAddress = "91.134.242.201";
 
         try{
+            Settings settings = Settings.builder()
+                    .put("cluster.name", clusterName)
+                    //.put("client.transport.sniff", false)
+                    .build();
+            TransportClient client = new PreBuiltTransportClient(settings);
+            client.addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName(serverAddress), 9300));
+
             SearchResponse response = client.prepareSearch().execute().actionGet();
             String output = response.toString();
             System.out.println(output);
+            client.close();
         }catch(Exception e){
             e.printStackTrace();
         }
-        client.close();
-
     }
 
     /**
