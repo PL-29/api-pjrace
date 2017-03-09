@@ -7,67 +7,70 @@ import java.util.List;
  * Created by stage01 on 10/02/17.
  */
 public class Etablissement {
-    int codeEtab;
-    String denomination;
-    String address;
-    double latitude;
-    double longitude;
-    List<Challenge> challenges = new ArrayList<Challenge>();
+    int pCodeEtab;
+    String pDenomination;
+    String pAddress;
+    double pLatitude;
+    double pLongitude;
+    List<Challenge> pChallenges = new ArrayList<Challenge>();
 
-    public Etablissement(int codeEtab, String denomination, String address, double latitude, double longitude) {
-        this.codeEtab = codeEtab;
-        this.denomination = denomination;
-        this.address = address;
-        this.latitude = latitude;
-        this.longitude = longitude;
+    public Etablissement(int pCodeEtab, String pDenomination, String pAddress, double pLatitude, double pLongitude, List<Challenge> pChallenges) {
+        this.pCodeEtab = pCodeEtab;
+        this.pDenomination = pDenomination;
+        this.pAddress = pAddress;
+        this.pLatitude = pLatitude;
+        this.pLongitude = pLongitude;
+        this.pChallenges = pChallenges;
     }
 
     public Etablissement() {
     }
 
-    public int getCodeEtab() {
-        return codeEtab;
+    public int getpCodeEtab() {
+        return pCodeEtab;
     }
 
-    public void setCodeEtab(int codeEtab) { this.codeEtab = codeEtab; }
-
-    public String getDenomination() {
-        return denomination;
+    public void setpCodeEtab(int pCodeEtab) {
+        this.pCodeEtab = pCodeEtab;
     }
 
-    public void setDenomination(String denomination) {
-        this.denomination = denomination;
+    public String getpDenomination() {
+        return pDenomination;
     }
 
-    public String getAddress() {
-        return address;
+    public void setpDenomination(String pDenomination) {
+        this.pDenomination = pDenomination;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public String getpAddress() {
+        return pAddress;
     }
 
-    public double getLatitude() {
-        return latitude;
+    public void setpAddress(String pAddress) {
+        this.pAddress = pAddress;
     }
 
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
+    public double getpLatitude() {
+        return pLatitude;
     }
 
-    public double getLongitude() {
-        return longitude;
+    public void setpLatitude(double pLatitude) {
+        this.pLatitude = pLatitude;
     }
 
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
+    public double getpLongitude() {
+        return pLongitude;
     }
 
-    public List<Challenge> getChallenges() {
-        return challenges;
+    public void setpLongitude(double pLongitude) {
+        this.pLongitude = pLongitude;
     }
 
-    public void setChallenges(List<Challenge> challenges) {
-        this.challenges = challenges;
+    public List<Challenge> getpChallenges() {
+        return pChallenges;
+    }
+
+    public void setpChallenges(List<Challenge> pChallenges) {
+        this.pChallenges = pChallenges;
     }
 }

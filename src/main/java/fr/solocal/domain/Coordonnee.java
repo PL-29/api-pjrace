@@ -9,43 +9,45 @@ import java.io.Serializable;
  */
 public class Coordonnee implements Serializable {
 
-    private static final long serialVersionUID = -1676589098064280755L;
+    private static final long pSerialVersionUID = -1676589098064280755L;
 
     /** La latitude de la localité */
-    private float lat;
+    private float pLat;
 
     /** La longitude de la localité */
-    private float lng;
+    private float pLng;
 
     public Coordonnee() {
         super();
     }
 
-    public Coordonnee(final float latitude, final float longitude) {
+    public Coordonnee(final float pLatitude, final float pLongitude) {
         super();
-        this.lat = latitude;
-        this.lng = longitude;
+        this.pLat = pLatitude;
+        this.pLng = pLongitude;
     }
+
+
 
     public float getLat() {
-        return lat;
+        return pLat;
     }
 
-    public void setLat(final float latitude) {
-        this.lat = latitude;
+    public void setLat(final float pLatitude) {
+        this.pLat = pLatitude;
     }
 
-    public float getLng() {
-        return lng;
+    public float getpLng() {
+        return pLng;
     }
 
-    public void setLng(final float longitude) {
-        this.lng = longitude;
+    public void setpLng(final float pLongitude) {
+        this.pLng = pLongitude;
     }
 
     @Override
     public String toString() {
-        return "Coordonnee [latitude=" + lat + ", longitude=" + lng + "]";
+        return "Coordonnee [pLatitude=" + pLat + ", pLongitude=" + pLng + "]";
     }
 
 }

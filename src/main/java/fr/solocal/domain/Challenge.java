@@ -4,50 +4,50 @@ package fr.solocal.domain;
  * Created by stage01 on 10/02/17.
  */
 public class Challenge {
-    String idChallenge;
-    Etablissement etablissement;
-    ChallengeType type;
-    int points;
+    String pIdChallenge;
+    Etablissement pEtablissement;
+    ChallengeType pType;
+    int pPoints;
 
-    public Challenge(String idChallenge, Etablissement etablissement, ChallengeType type, int points) {
-        this.idChallenge = idChallenge;
-        this.etablissement = etablissement;
-        this.type = type;
-        this.points = points;
+    public Challenge(String pIdChallenge, Etablissement pEtablissement, ChallengeType pType, int pPoints) {
+        this.pIdChallenge = pIdChallenge;
+        this.pEtablissement = pEtablissement;
+        this.pType = pType;
+        this.pPoints = pPoints;
     }
 
     public Challenge() {
     }
 
-    public String getIdChallenge() {
-        return idChallenge;
+    public String getpIdChallenge() {
+        return pIdChallenge;
     }
 
-    public void setIdChallenge(String idChallenge) {
-        this.idChallenge = idChallenge;
+    public void setpIdChallenge(String pIdChallenge) {
+        this.pIdChallenge = pIdChallenge;
     }
 
-    public Etablissement getEtablissement() {
-        return etablissement;
+    public Etablissement getpEtablissement() {
+        return pEtablissement;
     }
 
-    public void setEtablissement(Etablissement etablissement) {
-        this.etablissement = etablissement;
+    public void setpEtablissement(Etablissement pEtablissement) {
+        this.pEtablissement = pEtablissement;
     }
 
-    public ChallengeType getType() {
-        return type;
+    public ChallengeType getpType() {
+        return pType;
     }
 
-    public void setType(ChallengeType type) {
-        this.type = type;
+    public void setpType(ChallengeType pType) {
+        this.pType = pType;
     }
 
-    public int getPoints() {
-        return points;
+    public int getpPoints() {
+        return pPoints;
     }
 
-    public void setPoints(int points) {
-        this.points = points;
+    public void setpPoints(int pPoints) {
+        this.pPoints = pPoints;
     }
 }
