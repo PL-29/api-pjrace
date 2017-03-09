@@ -9,20 +9,26 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.elasticsearch.action.get.GetResponse;
+import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.Client;
+import org.elasticsearch.client.transport.TransportClient;
+import org.elasticsearch.common.settings.ImmutableSettings;
+import org.elasticsearch.common.settings.Settings;
+import org.elasticsearch.common.transport.InetSocketTransportAddress;
+import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.node.Node;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONString;
+import org.springframework.expression.spel.ast.Indexer;
 import org.springframework.stereotype.Repository;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.*;
 import java.util.*;
 
 import static org.elasticsearch.node.NodeBuilder.nodeBuilder;
@@ -340,7 +346,11 @@ public class CentralDAOImpl implements CentralDAO{
      *      Un objet User, qui permet d'initialiser un utilisateur dans ES lors de sa première connexion
      * @throws Exception
      */
-    public void initializeUser(User u) throws Exception {
+    /*public void initializeUser(User pUser) throws Exception {
+        ArrayList<String> lstTemp = new ArrayList<>();
+        coll.add("test");
+        coll.add("test2");
+
         String url="http://91.134.242.201/elastic-pjrace/pjrace_challenge/user/"+u.getEmail();
         URL object=new URL(url);
 
@@ -355,7 +365,7 @@ public class CentralDAOImpl implements CentralDAO{
         jsonUser.put("lastname",u.getLastname());
         jsonUser.put("firstname", u.getFirstname());
         jsonUser.put("email", u.getEmail());
-        jsonUser.put("challenges", (Collection) null);
+        jsonUser.put("challenges", coll);
         jsonUser.put("score", 0);
 
         OutputStreamWriter wr = new OutputStreamWriter(con.getOutputStream());
@@ -376,7 +386,7 @@ public class CentralDAOImpl implements CentralDAO{
         } else {
             System.out.println(con.getResponseMessage());
         }
-    }
+    }*/
 
     public void updateUser(User u) throws Exception {
         String url="http://91.134.242.201/elastic-pjrace/pjrace_challenge/user/"+u.getEmail()+"/_update";
@@ -389,12 +399,8 @@ public class CentralDAOImpl implements CentralDAO{
         con.setRequestProperty("Accept", "application/json");
         con.setRequestMethod("POST");
 
-        JSONObject jsonUser  = new JSONObject();
-        jsonUser.put("lastname",u.getLastname());
-        jsonUser.put("firstname", u.getFirstname());
-        jsonUser.put("email", u.getEmail());
-        jsonUser.put("challenges", (Collection) null);
-        jsonUser.put("score", 0);
+        JSONObject jsonUser = new JSONObject();
+
 
         OutputStreamWriter wr = new OutputStreamWriter(con.getOutputStream());
         wr.write(jsonUser.toString());
@@ -416,4 +422,46 @@ public class CentralDAOImpl implements CentralDAO{
         }
     }
 
+    public void testGet() throws UnknownHostException {
+        Settings settings = ImmutableSettings.settingsBuilder()
+                .put("client.transport.ignore_cluster_name", true)
+                .put("client.transport.sniff", false)
+                .build();
+        TransportClient client = new TransportClient(settings);
+        client.addTransportAddress(new InetSocketTransportAddress("91.134.242.201", 9300));
+
+        try{
+            SearchResponse response = client.prepareSearch().execute().actionGet();
+            String output = response.toString();
+            System.out.println(output);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        client.close();
+
+    }
+
+    /**
+     * Renvoie le fichier JSON permettant d'update la liste des challenges et le score d'un utilisateur
+     *
+     * @param u
+     *      L'utilisateur à update
+     *
+     * @return un objet JSONObject contenant les informations pour update l'utilisateur
+     *
+     * @throws JSONException
+     */
+    /*public JSONObject updateChallengesUser(User u) throws JSONException {
+        JSONObject jsonUpdate2 = new JSONObject();
+        jsonUpdate2.put("challenges","chall3");
+
+        JSONObject jsonUpdate1 = new JSONObject();
+        jsonUpdate1.put("inline", "ctx._source.score +="+u.getTotalScore()+";ctx._source.challenges.add(params.challenges)");
+        jsonUpdate1.put("params", jsonUpdate2);
+
+        JSONObject jsonUpdate = new JSONObject();
+        jsonUpdate.put("script", jsonUpdate1);
+
+        return jsonUpdate;
+    }*/
 }

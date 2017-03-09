@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class EtablissementDAOImpl implements EtablissementDAO{
     @Override
-    public List<Etablissement> getEtablissementsByPosition(double latitude, double longitude, int rayon) {
+    public List<Etablissement> getEtablissementsByPosition(double pLatitude, double pLongitude, int pRayon) {
         return null;
     }
 }

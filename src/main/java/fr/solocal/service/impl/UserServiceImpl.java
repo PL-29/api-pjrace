@@ -18,12 +18,12 @@ public class UserServiceImpl implements UserService{
     private CentralDAO dao;
 
     @Override
-    public Iterator<User> getRanking(int idUser) {
+    public Iterator<User> getRanking(int pIdUser) {
         return dao.getRanking();
     }
 
     @Override
-    public User connexion(String email, String password) {
-        return dao.connexion(email, password);
+    public User connexion(String pEmail, String pPassword) {
+        return dao.connexion(pEmail, pPassword);
     }
 }

@@ -48,14 +48,14 @@ public class Controller {
      /**
      * Renvoie le challenge correspondant à l'id passé en paramètre
      *
-     * @param idChallenge
+     * @param pIdChallenge
      *      L'id du challenge
      *
      * @return un objet Challenge
      */
     @RequestMapping(value = "challenge/{idChallenge}",  method = RequestMethod.GET, headers = "Accept=application/json")
-    public Challenge getChallengeById(@PathVariable String idChallenge) {
-        Challenge challenge = challengeService.getChallengeById(idChallenge);
+    public Challenge getChallengeById(@PathVariable String pIdChallenge) {
+        Challenge challenge = challengeService.getChallengeById(pIdChallenge);
 
         return challenge;
     }
@@ -64,15 +64,15 @@ public class Controller {
     /**
      * Renvoie la liste des challenges correspondants à l'id passé en paramètre
      *
-     * @param codeEtab
+     * @param pCodeEtab
      *      Le code de l'établissement
      *
      * @return un objet Iterator sur la liste des challenges de l'établissement
      */
     @RequestMapping(value = "challenge", params = "codeEtab",  method = RequestMethod.GET, headers = "Accept=application/json")
-    public Iterator<Challenge> getChallengesByCodeEtab(@RequestParam(value = "codeEtab") int codeEtab) {
+    public Iterator<Challenge> getChallengesByCodeEtab(@RequestParam(value = "codeEtab") int pCodeEtab) {
 
-        Iterator<Challenge> itChallenges = challengeService.getChallengeByCodeEtab(codeEtab);
+        Iterator<Challenge> itChallenges = challengeService.getChallengeByCodeEtab(pCodeEtab);
 
         return itChallenges;
     }
@@ -83,8 +83,8 @@ public class Controller {
      * @return un objet Iterator sur une liste des établissements
      */
     @RequestMapping(value = "etablissements", method = RequestMethod.GET, headers = "Accept=application/json")
-    public Iterator<Etablissement> getAllEtablissements(@RequestParam(value = "lat") double latitude, @RequestParam(value = "lon") double longitude, @RequestParam(value = "ray") int rayon) {
-        Iterator<Etablissement> lstEtablissement = etablissementService.getEtablissementsByPosition(latitude, longitude, rayon);
+    public Iterator<Etablissement> getAllEtablissements(@RequestParam(value = "lat") double pLatitude, @RequestParam(value = "lon") double pLongitude, @RequestParam(value = "ray") int pRayon) {
+        Iterator<Etablissement> lstEtablissement = etablissementService.getEtablissementsByPosition(pLatitude, pLongitude, pRayon);
 
         return lstEtablissement;
     }
@@ -95,14 +95,15 @@ public class Controller {
      * @return un objet Iterator sur une liste de résolutions de challenges
      */
     @RequestMapping(value = "achievement", method = RequestMethod.GET, headers = "Accept=application/json")
-    public Iterator<Achievement> getAllAchievements(@RequestParam(value = "id") int idUser) {
-        Iterator<Achievement> itAchievements = achievementService.getAllResolutions(idUser);
+    public Iterator<Achievement> getAllAchievements(@RequestParam(value = "id") int pIdUser) {
+        Iterator<Achievement> itAchievements = achievementService.getAllResolutions(pIdUser);
 
         return itAchievements;
     }
 
     /**
      *  Méthode permettant de résoudre un challenge
+     *  TODO: Rajouter idChallenge, idUser, photo en paramètre
      */
     @RequestMapping(value = "achievement", method = RequestMethod.POST, headers = "Accept=application/json")
     public void achieveChallenge() {
@@ -115,6 +116,7 @@ public class Controller {
 
     /**
      * Renvoie les informations d'un utilisateur, correspond à la connexion
+     * TODO:Rajouter email et password en paramètre
      *
      * @return un objet User
      */
@@ -133,8 +135,8 @@ public class Controller {
      * @return un objet Iterator sur une liste d'utilisateurs
      */
     @RequestMapping(value = "ranking", method = RequestMethod.GET, headers = "Accept=application/json")
-    public Iterator<User> getRanking() {
-        Iterator<User> lstUser = userService.getRanking(1);
+    public Iterator<User> getRanking(@RequestParam(value = "id") int pIdUser) {
+        Iterator<User> lstUser = userService.getRanking(pIdUser);
 
         return lstUser;
     }

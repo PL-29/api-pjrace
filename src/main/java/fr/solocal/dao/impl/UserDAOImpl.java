@@ -16,17 +16,17 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public List<Achievement> getAllAchievements(int idUser) {
+    public List<Achievement> getAllAchievements(int pIdUser) {
         return null;
     }
 
     @Override
-    public User connexion(String email, String password) {
+    public User connexion(String pEmail, String pPassword) {
         return null;
     }
 
     @Override
-    public void achieveChallenge(int idChallenge, int idUser, String photo) {
+    public void achieveChallenge(int pIdChallenge, int pIdUser, String pPhoto) {
 
     }
 }

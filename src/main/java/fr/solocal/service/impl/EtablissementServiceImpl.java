@@ -20,7 +20,7 @@ public class EtablissementServiceImpl implements EtablissementService {
     private CentralDAO dao;
 
     @Override
-    public Iterator<Etablissement> getEtablissementsByPosition(double latitude, double longitude, int rayon) {
-        return dao.getEtablissementsByPosition(latitude, longitude);
+    public Iterator<Etablissement> getEtablissementsByPosition(double pLatitude, double pLongitude, int pRayon) {
+        return dao.getEtablissementsByPosition(pLatitude, pLongitude);
     }
 }

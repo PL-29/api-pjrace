@@ -25,12 +25,12 @@ public class ChallengeServiceImpl implements ChallengeService{
     }
 
     @Override
-    public Challenge getChallengeById(String idChallenge) {
-        return dao.getChallengeById(idChallenge);
+    public Challenge getChallengeById(String pIdChallenge) {
+        return dao.getChallengeById(pIdChallenge);
     }
 
     @Override
-    public Iterator<Challenge> getChallengeByCodeEtab(int codeEtab) {
-        return dao.getChallengesByCodeEtab(codeEtab);
+    public Iterator<Challenge> getChallengeByCodeEtab(int pCodeEtab) {
+        return dao.getChallengesByCodeEtab(pCodeEtab);
     }
 }
