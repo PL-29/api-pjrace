@@ -4,40 +4,40 @@ package fr.solocal.domain;
  * Created by stage01 on 10/02/17.
  */
 public class Achievement {
-    int pIdResolution;
-    Challenge pChallenge;
-    String pUrlPhoto;
+    int idResolution;
+    Challenge challenge;
+    String urlPhoto;
 
     public Achievement(int pIdResolution, Challenge pChallenge, String pUrlPhoto) {
-        this.pIdResolution = pIdResolution;
-        this.pChallenge = pChallenge;
-        this.pUrlPhoto = pUrlPhoto;
+        this.idResolution = pIdResolution;
+        this.challenge = pChallenge;
+        this.urlPhoto = pUrlPhoto;
     }
 
     public Achievement() {
     }
 
-    public int getpIdResolution() {
-        return pIdResolution;
+    public int getIdResolution() {
+        return idResolution;
     }
 
-    public void setpIdResolution(int pIdResolution) {
-        this.pIdResolution = pIdResolution;
+    public void setIdResolution(int pIdResolution) {
+        this.idResolution = pIdResolution;
     }
 
-    public Challenge getpChallenge() {
-        return pChallenge;
+    public Challenge getChallenge() {
+        return challenge;
     }
 
-    public void setpChallenge(Challenge pChallenge) {
-        this.pChallenge = pChallenge;
+    public void setChallenge(Challenge pChallenge) {
+        this.challenge = pChallenge;
     }
 
-    public String getpUrlPhoto() {
-        return pUrlPhoto;
+    public String getUrlPhoto() {
+        return urlPhoto;
     }
 
-    public void setpUrlPhoto(String pUrlPhoto) {
-        this.pUrlPhoto = pUrlPhoto;
+    public void setUrlPhoto(String pUrlPhoto) {
+        this.urlPhoto = pUrlPhoto;
     }
 }

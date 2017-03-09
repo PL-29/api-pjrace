@@ -12,10 +12,10 @@ public class Coordonnee implements Serializable {
     private static final long pSerialVersionUID = -1676589098064280755L;
 
     /** La latitude de la localité */
-    private float pLat;
+    private float lat;
 
     /** La longitude de la localité */
-    private float pLng;
+    private float lng;
 
     public Coordonnee() {
         super();
@@ -23,31 +23,31 @@ public class Coordonnee implements Serializable {
 
     public Coordonnee(final float pLatitude, final float pLongitude) {
         super();
-        this.pLat = pLatitude;
-        this.pLng = pLongitude;
+        this.lat = pLatitude;
+        this.lng = pLongitude;
     }
 
 
 
     public float getLat() {
-        return pLat;
+        return lat;
     }
 
     public void setLat(final float pLatitude) {
-        this.pLat = pLatitude;
+        this.lat = pLatitude;
     }
 
-    public float getpLng() {
-        return pLng;
+    public float getLng() {
+        return lng;
     }
 
-    public void setpLng(final float pLongitude) {
-        this.pLng = pLongitude;
+    public void setLng(final float pLongitude) {
+        this.lng = pLongitude;
     }
 
     @Override
     public String toString() {
-        return "Coordonnee [pLatitude=" + pLat + ", pLongitude=" + pLng + "]";
+        return "Coordonnee [latitude=" + lat + ", longitude=" + lng + "]";
     }
 
 }

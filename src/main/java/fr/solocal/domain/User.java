@@ -7,86 +7,86 @@ import java.util.List;
  * Created by stage01 on 10/02/17.
  */
 public class User {
-    int pIdUser;
-    String pLastname;
-    String pFirstname;
-    String pEmail;
-    String pPassword;
-    int pRank;
-    List<Achievement> pAchievements = new ArrayList<>();
+    int idUser;
+    String lastname;
+    String firstname;
+    String email;
+    String password;
+    int rank;
+    List<Achievement> achievements = new ArrayList<>();
 
     public User(int pIdUser, String pLastname, String pFirstname, String pEmail, String pPassword, int pRank, List<Achievement> pAchievements) {
-        this.pIdUser = pIdUser;
-        this.pLastname = pLastname;
-        this.pFirstname = pFirstname;
-        this.pEmail = pEmail;
-        this.pPassword = pPassword;
-        this.pRank = pRank;
-        this.pAchievements = pAchievements;
+        this.idUser = pIdUser;
+        this.lastname = pLastname;
+        this.firstname = pFirstname;
+        this.email = pEmail;
+        this.password = pPassword;
+        this.rank = pRank;
+        this.achievements = pAchievements;
     }
 
     public User() {
     }
 
-    public int getpIdUser() {
-        return pIdUser;
+    public int getIdUser() {
+        return idUser;
     }
 
-    public void setpIdUser(int pIdUser) {
-        this.pIdUser = pIdUser;
+    public void setIdUser(int pIdUser) {
+        this.idUser = pIdUser;
     }
 
-    public String getpLastname() {
-        return pLastname;
+    public String getLastname() {
+        return lastname;
     }
 
-    public void setpLastname(String pLastname) {
-        this.pLastname = pLastname;
+    public void setLastname(String pLastname) {
+        this.lastname = pLastname;
     }
 
-    public String getpFirstname() {
-        return pFirstname;
+    public String getFirstname() {
+        return firstname;
     }
 
-    public void setpFirstname(String pFirstname) {
-        this.pFirstname = pFirstname;
+    public void setFirstname(String pFirstname) {
+        this.firstname = pFirstname;
     }
 
-    public String getpEmail() {
-        return pEmail;
+    public String getEmail() {
+        return email;
     }
 
-    public void setpEmail(String pEmail) {
-        this.pEmail = pEmail;
+    public void setEmail(String pEmail) {
+        this.email = pEmail;
     }
 
-    public String getpPassword() {
-        return pPassword;
+    public String getPassword() {
+        return password;
     }
 
-    public void setpPassword(String pPassword) {
-        this.pPassword = pPassword;
+    public void setPassword(String pPassword) {
+        this.password = pPassword;
     }
 
-    public int getpRank() {
-        return pRank;
+    public int getRank() {
+        return rank;
     }
 
-    public void setpRank(int pRank) {
-        this.pRank = pRank;
+    public void setRank(int pRank) {
+        this.rank = pRank;
     }
 
-    public List<Achievement> getpAchievements() {
-        return pAchievements;
+    public List<Achievement> getAchievements() {
+        return achievements;
     }
 
-    public void setpAchievements(List<Achievement> pAchievements) {
-        this.pAchievements = pAchievements;
+    public void setAchievements(List<Achievement> pAchievements) {
+        this.achievements = pAchievements;
     }
 
     public int getTotalScore(){
         int totalScore = 0;
-        for(Achievement a : pAchievements){
+        for(Achievement a : achievements){
             totalScore+= a.getpChallenge().getpPoints();
         }
 

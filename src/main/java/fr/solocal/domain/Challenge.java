@@ -4,50 +4,50 @@ package fr.solocal.domain;
  * Created by stage01 on 10/02/17.
  */
 public class Challenge {
-    String pIdChallenge;
-    Etablissement pEtablissement;
-    ChallengeType pType;
-    int pPoints;
+    String idChallenge;
+    Etablissement etablissement;
+    ChallengeType type;
+    int points;
 
     public Challenge(String pIdChallenge, Etablissement pEtablissement, ChallengeType pType, int pPoints) {
-        this.pIdChallenge = pIdChallenge;
-        this.pEtablissement = pEtablissement;
-        this.pType = pType;
-        this.pPoints = pPoints;
+        this.idChallenge = pIdChallenge;
+        this.etablissement = pEtablissement;
+        this.type = pType;
+        this.points = pPoints;
     }
 
     public Challenge() {
     }
 
-    public String getpIdChallenge() {
-        return pIdChallenge;
+    public String getIdChallenge() {
+        return idChallenge;
     }
 
-    public void setpIdChallenge(String pIdChallenge) {
-        this.pIdChallenge = pIdChallenge;
+    public void setIdChallenge(String pIdChallenge) {
+        this.idChallenge = pIdChallenge;
     }
 
-    public Etablissement getpEtablissement() {
-        return pEtablissement;
+    public Etablissement getEtablissement() {
+        return etablissement;
     }
 
-    public void setpEtablissement(Etablissement pEtablissement) {
-        this.pEtablissement = pEtablissement;
+    public void setEtablissement(Etablissement pEtablissement) {
+        this.etablissement = pEtablissement;
     }
 
-    public ChallengeType getpType() {
-        return pType;
+    public ChallengeType getType() {
+        return type;
     }
 
-    public void setpType(ChallengeType pType) {
-        this.pType = pType;
+    public void setType(ChallengeType pType) {
+        this.type = pType;
     }
 
-    public int getpPoints() {
-        return pPoints;
+    public int getPoints() {
+        return points;
     }
 
-    public void setpPoints(int pPoints) {
-        this.pPoints = pPoints;
+    public void setPoints(int pPoints) {
+        this.points = pPoints;
     }
 }

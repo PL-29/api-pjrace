@@ -4,50 +4,50 @@ package fr.solocal.domain;
  * Created by stage01 on 10/02/17.
  */
 public class ChallengeType {
-    int pIdChallengeType;
-    String pTitle;
-    int pDefaultNumberPoints;
-    String pDescription;
+    int idChallengeType;
+    String title;
+    int defaultNumberPoints;
+    String description;
 
     public ChallengeType(int pIdChallengeType, String pTitle, int pDefaultNumberPoints, String pDescription) {
-        this.pIdChallengeType = pIdChallengeType;
-        this.pTitle = pTitle;
-        this.pDefaultNumberPoints = pDefaultNumberPoints;
-        this.pDescription = pDescription;
+        this.idChallengeType = pIdChallengeType;
+        this.title = pTitle;
+        this.defaultNumberPoints = pDefaultNumberPoints;
+        this.description = pDescription;
     }
 
     public ChallengeType() {
     }
 
     public int getpIdChallengeType() {
-        return pIdChallengeType;
+        return idChallengeType;
     }
 
     public void setpIdChallengeType(int pIdChallengeType) {
-        this.pIdChallengeType = pIdChallengeType;
+        this.idChallengeType = pIdChallengeType;
     }
 
-    public String getpTitle() {
-        return pTitle;
+    public String getTitle() {
+        return title;
     }
 
-    public void setpTitle(String pTitle) {
-        this.pTitle = pTitle;
+    public void setTitle(String pTitle) {
+        this.title = pTitle;
     }
 
-    public int getpDefaultNumberPoints() {
-        return pDefaultNumberPoints;
+    public int getDefaultNumberPoints() {
+        return defaultNumberPoints;
     }
 
-    public void setpDefaultNumberPoints(int pDefaultNumberPoints) {
-        this.pDefaultNumberPoints = pDefaultNumberPoints;
+    public void setDefaultNumberPoints(int pDefaultNumberPoints) {
+        this.defaultNumberPoints = pDefaultNumberPoints;
     }
 
-    public String getpDescription() {
-        return pDescription;
+    public String getDescription() {
+        return description;
     }
 
-    public void setpDescription(String pDescription) {
-        this.pDescription = pDescription;
+    public void setDescription(String pDescription) {
+        this.description = pDescription;
     }
 }
