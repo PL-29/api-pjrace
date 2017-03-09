@@ -9,7 +9,7 @@ import java.util.Iterator;
  */
 public interface AchievementService {
 
-    public Iterator<Achievement> getAllResolutions(int idUser);
+    public Iterator<Achievement> getAllResolutions(int pIdUser);
 
-    public void achieveChallenge(int idChallenge, int idUSer, String photo);
+    public void achieveChallenge(int pIdChallenge, int pIdUser, String pPhoto);
 }

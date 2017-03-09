@@ -11,7 +11,7 @@ import java.util.List;
 public interface ChallengeDAO {
     public List<Challenge> getAllChallenges();
 
-    public Challenge getChallengeById(String idChallenge);
+    public Challenge getChallengeById(String pIdChallenge);
 
-    public List<Challenge> getChallengesByCodeEtab(int codeEtab);
+    public List<Challenge> getChallengesByCodeEtab(int pCodeEtab);
 }

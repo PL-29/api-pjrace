@@ -18,12 +18,12 @@ public class ChallengeDAOImpl implements ChallengeDAO{
     }
 
     @Override
-    public Challenge getChallengeById(String idChallenge) {
+    public Challenge getChallengeById(String pIdChallenge) {
         return null;
     }
 
     @Override
-    public List<Challenge> getChallengesByCodeEtab(int codeEtab) {
+    public List<Challenge> getChallengesByCodeEtab(int pCodeEtab) {
         return null;
     }
 }

@@ -18,12 +18,12 @@ public class AchievementServiceImpl implements AchievementService{
     CentralDAO dao;
 
     @Override
-    public Iterator<Achievement> getAllResolutions(int idUser) {
-        return dao.getAllAchievements(idUser);
+    public Iterator<Achievement> getAllResolutions(int pIdUser) {
+        return dao.getAllAchievements(pIdUser);
     }
 
     @Override
-    public void achieveChallenge(int idChallenge, int idUSer, String photo) {
-        dao.achieveChallenge(idChallenge, idUSer, photo);
+    public void achieveChallenge(int pIdChallenge, int pIdUser, String pPhoto) {
+        dao.achieveChallenge(pIdChallenge, pIdUser, pPhoto);
     }
 }
