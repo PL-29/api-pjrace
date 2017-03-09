@@ -86,8 +86,8 @@ public class User {
 
     public int getTotalScore(){
         int totalScore = 0;
-        for(Achievement a : achievements){
-            totalScore+= a.getpChallenge().getpPoints();
+        for(Achievement achivevement : achievements){
+            totalScore+= achivevement.getChallenge().getPoints();
         }
 
         return totalScore;
