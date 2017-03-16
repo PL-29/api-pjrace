@@ -8,9 +8,9 @@
   <name>API - PJRace</name>
   <url>http://maven.apache.org</url>
 
-    <scm>
-      <connection>scm:git:git@github.com:fchantrel/PJRace-API.git</connection>
-      <tag>v1.0.5</tag>
+  <scm>
+    <connection>scm:git:git@github.com:fchantrel/PJRace-API.git</connection>
+    <tag>v1.0.5</tag>
   </scm>
 
   <!-- Set version(s) used for dependencies -->
@@ -23,9 +23,9 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <metrics-spring.version>3.0.3</metrics-spring.version>
-        <dropwizard-metrics.version>3.1.2</dropwizard-metrics.version>
+    <dropwizard-metrics.version>3.1.2</dropwizard-metrics.version>
     <javax.inject.version>1</javax.inject.version>
-        <maven.javadoc.failOnError>false</maven.javadoc.failOnError>
+    <maven.javadoc.failOnError>false</maven.javadoc.failOnError>
   </properties>
 
   <dependencies>
@@ -133,7 +133,7 @@
       <version>1.2</version>
     </dependency>
 
-     <dependency>
+    <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-pool2</artifactId>
       <version>2.2</version>
@@ -163,43 +163,10 @@
       <version>20090211</version>
     </dependency>
 
-    <!-- https://mvnrepository.com/artifact/org.elasticsearch/elasticsearch -->
     <dependency>
-      <groupId>org.elasticsearch</groupId>
-      <artifactId>elasticsearch</artifactId>
-      <version>5.2.0</version>
-    </dependency>
-
-    <!-- https://mvnrepository.com/artifact/org.elasticsearch.client/transport -->
-    <dependency>
-      <groupId>org.elasticsearch.client</groupId>
-      <artifactId>transport</artifactId>
-      <version>5.2.0</version>
-    </dependency>
-
-    <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-to-slf4j -->
-    <dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-to-slf4j</artifactId>
-      <version>2.6.2</version>
-    </dependency>
-    <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
-    <dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-core</artifactId>
-      <version>2.6.2</version>
-    </dependency>
-    <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-api -->
-    <dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-api</artifactId>
-      <version>2.6.2</version>
-    </dependency>
-
-    <dependency>
-        <groupId>biz.paluch.redis</groupId>
-        <artifactId>lettuce</artifactId>
-        <version>3.2.Final</version>
+      <groupId>biz.paluch.redis</groupId>
+      <artifactId>lettuce</artifactId>
+      <version>3.2.Final</version>
     </dependency>
 
     <dependency>
@@ -207,11 +174,11 @@
       <artifactId>algoliasearch</artifactId>
       <version>1.3.14</version>
     </dependency>
-    
+
     <dependency>
-        <groupId>net.sf.trove4j</groupId>
-        <artifactId>trove4j</artifactId>
-        <version>3.0.3</version>
+      <groupId>net.sf.trove4j</groupId>
+      <artifactId>trove4j</artifactId>
+      <version>3.0.3</version>
     </dependency>
 
     <!-- Tests -->
@@ -226,48 +193,94 @@
         </exclusion>
       </exclusions>
     </dependency>
-      <dependency>
-          <groupId>junit</groupId>
-          <artifactId>junit</artifactId>
-      </dependency>
     <dependency>
-      <groupId>org.elasticsearch</groupId>
-      <artifactId>elasticsearch</artifactId>
-      <version>5.2.0</version>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+    </dependency>
+
+
+
+
+    <!-- https://mvnrepository.com/artifact/org.springframework.data/spring-data-elasticsearch -->
+    <dependency>
+      <groupId>org.springframework.data</groupId>
+      <artifactId>spring-data-elasticsearch</artifactId>
+      <version>2.1.0.RELEASE</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/org.springframework/spring-core -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-core</artifactId>
+      <version>5.0.0.M1</version>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/org.springframework/spring-context -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context</artifactId>
+      <version>5.0.0.M1</version>
     </dependency>
     <dependency>
-      <groupId>org.elasticsearch</groupId>
-      <artifactId>elasticsearch</artifactId>
-      <version>5.2.0</version>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-test</artifactId>
+      <version>4.2.5.RELEASE</version>
     </dependency>
+
     <dependency>
-      <groupId>org.elasticsearch</groupId>
-      <artifactId>elasticsearch</artifactId>
-      <version>5.2.2</version>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-beans</artifactId>
+      <version>5.0.0.M1</version>
     </dependency>
-    <dependency>
-      <groupId>org.elasticsearch</groupId>
-      <artifactId>elasticsearch</artifactId>
-      <version>1.7.0</version>
-    </dependency>
+
+    <!-- DEPENDENCIES FOR ELASTICSEARCH CLIENT -->
     <dependency>
       <groupId>org.elasticsearch</groupId>
       <artifactId>elasticsearch</artifactId>
       <version>5.2.0</version>
     </dependency>
 
+    <dependency>
+      <groupId>org.elasticsearch.client</groupId>
+      <artifactId>transport</artifactId>
+      <version>5.2.0</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-api</artifactId>
+      <version>2.6.2</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-core</artifactId>
+      <version>2.6.2</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-web</artifactId>
+      <version>2.6.2</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-to-slf4j</artifactId>
+      <version>2.6.2</version>
+    </dependency>
+
+
+
   </dependencies>
+
   <build>
     <plugins>
       <!-- The Spring Boot plugin to quickly start project -->
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
-<!--                 <configuration> -->
-<!--                     <jvmArguments> -->
-<!--                         -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005 -->
-<!--                     </jvmArguments> -->
-<!--                 </configuration> -->
+        <!--                 <configuration> -->
+        <!--                     <jvmArguments> -->
+        <!--                         -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005 -->
+        <!--                     </jvmArguments> -->
+        <!--                 </configuration> -->
 
         <!-- Use Spring loaded to do hot-swaping -->
         <dependencies>
@@ -291,16 +304,16 @@
       </plugin>
 
 
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-release-plugin</artifactId>
-                <version>2.5.2</version>
-                <configuration>
-                    <tagNameFormat>v@{project.version}</tagNameFormat>
-                    <scmCommentPrefix>[TECH] release: </scmCommentPrefix>
-                    <goals>install</goals>
-                </configuration>
-            </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-release-plugin</artifactId>
+        <version>2.5.2</version>
+        <configuration>
+          <tagNameFormat>v@{project.version}</tagNameFormat>
+          <scmCommentPrefix>[TECH] release: </scmCommentPrefix>
+          <goals>install</goals>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
 

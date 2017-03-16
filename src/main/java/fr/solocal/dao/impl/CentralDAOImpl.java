@@ -8,6 +8,7 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
+//import org.elasticsearch.transport.client.PreBuiltTransportClient;/
 import org.elasticsearch.transport.client.PreBuiltTransportClient;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -106,7 +107,7 @@ public class CentralDAOImpl implements CentralDAO{
     /**
      * Renvoie un challenge en fonction de son id
      *
-     * @return Un objet Challenge
+     * @return Un objet ChallengeSpring
      */
     @Override
     @Timed(absolute = true, name = "challenge_id")
@@ -284,7 +285,7 @@ public class CentralDAOImpl implements CentralDAO{
             JSONObject hit = jsonArray.getJSONObject(i);
             JSONObject source  = jsonArray.getJSONObject(i).getJSONObject("_source");
 
-            //Attributs Challenge
+            //Attributs ChallengeSpring
             String challengeId = hit.getString("_id");
             int points = source.getInt("points");
 
@@ -417,12 +418,13 @@ public class CentralDAOImpl implements CentralDAO{
         try{
             Settings settings = Settings.builder()
                     .put("cluster.name", clusterName)
-                    //.put("client.transport.sniff", false)
+                    .put("client.transport.sniff", true)
                     .build();
             TransportClient client = new PreBuiltTransportClient(settings);
+
             client.addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName(serverAddress), 9300));
 
-            SearchResponse response = client.prepareSearch().execute().actionGet();
+            SearchResponse response = client.prepareSearch("pjrace-challenge", "challenge", "55726722_photo").execute().actionGet();
             String output = response.toString();
             System.out.println(output);
             client.close();

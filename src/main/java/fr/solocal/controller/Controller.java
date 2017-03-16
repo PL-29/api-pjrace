@@ -51,7 +51,7 @@ public class Controller {
      * @param pIdChallenge
      *      L'id du challenge
      *
-     * @return un objet Challenge
+     * @return un objet ChallengeSpring
      */
     @RequestMapping(value = "challenge/{idChallenge}",  method = RequestMethod.GET, headers = "Accept=application/json")
     public Challenge getChallengeById(@PathVariable String pIdChallenge) {
