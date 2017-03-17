@@ -11,62 +11,62 @@ import java.util.List;
  */
 public class EtablissementDTO implements Serializable {
 
-    int pCodeEtab;
-    String pDenomination;
-    String pAddress;
-    double pLatitude;
-    double pLongitude;
+    int codeEtab;
+    String denomination;
+    String address;
+    double latitude;
+    double longitude;
     List<Challenge> challenges = new ArrayList<Challenge>();
 
     public EtablissementDTO(int pCodeEtab, String pDenomination, String pAddress, double pLatitude, double pLongitude) {
-        this.pCodeEtab = pCodeEtab;
-        this.pDenomination = pDenomination;
-        this.pAddress = pAddress;
-        this.pLatitude = pLatitude;
-        this.pLongitude = pLongitude;
+        this.codeEtab = pCodeEtab;
+        this.denomination = pDenomination;
+        this.address = pAddress;
+        this.latitude = pLatitude;
+        this.longitude = pLongitude;
     }
 
     public EtablissementDTO() {
     }
 
-    public int getpCodeEtab() {
-        return pCodeEtab;
+    public int getCodeEtab() {
+        return codeEtab;
     }
 
-    public void setpCodeEtab(int pCodeEtab) {
-        this.pCodeEtab = pCodeEtab;
+    public void setCodeEtab(int pCodeEtab) {
+        this.codeEtab = pCodeEtab;
     }
 
-    public String getpDenomination() {
-        return pDenomination;
+    public String getDenomination() {
+        return denomination;
     }
 
-    public void setpDenomination(String pDenomination) {
-        this.pDenomination = pDenomination;
+    public void setDenomination(String pDenomination) {
+        this.denomination = pDenomination;
     }
 
-    public String getpAddress() {
-        return pAddress;
+    public String getAddress() {
+        return address;
     }
 
-    public void setpAddress(String pAddress) {
-        this.pAddress = pAddress;
+    public void setAddress(String pAddress) {
+        this.address = pAddress;
     }
 
-    public double getpLatitude() {
-        return pLatitude;
+    public double getLatitude() {
+        return latitude;
     }
 
-    public void setpLatitude(double pLatitude) {
-        this.pLatitude = pLatitude;
+    public void setLatitude(double pLatitude) {
+        this.latitude = pLatitude;
     }
 
-    public double getpLongitude() {
-        return pLongitude;
+    public double getLongitude() {
+        return longitude;
     }
 
-    public void setpLongitude(double pLongitude) {
-        this.pLongitude = pLongitude;
+    public void setLongitude(double pLongitude) {
+        this.longitude = pLongitude;
     }
 
     public List<Challenge> getChallenges() {

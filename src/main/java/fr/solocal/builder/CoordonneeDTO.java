@@ -25,7 +25,7 @@ public class CoordonneeDTO implements Serializable {
         this.lng = pLongitude;
     }
 
-    public static long getpSerialVersionUID() {
+    public static long getSerialVersionUID() {
         return pSerialVersionUID;
     }
 

@@ -11,20 +11,20 @@ public class BuilderDTO {
     public UserDTO generateUserDTO (User user) {
 
         UserDTO userDTO = new UserDTO();
-        userDTO.setpLastname(user.getpLastname());
-        userDTO.setpFirstname(user.getpFirstname());
-        userDTO.setpEmail(user.getpEmail());
-        userDTO.setpPassword(user.getpPassword());
-        userDTO.setpRank(user.getpIdUser());
+        userDTO.setLastname(user.getLastname());
+        userDTO.setFirstname(user.getFirstname());
+        userDTO.setEmail(user.getEmail());
+        userDTO.setPassword(user.getPassword());
+        userDTO.setRank(user.getIdUser());
         return userDTO;
     }
 
     public AchievementDTO generateAchievementDTO (Achievement achievement) {
 
         AchievementDTO achievementDTO = new AchievementDTO();
-        achievementDTO.setpIdResolution(achievement.getpIdResolution());
-        achievementDTO.setpChallenge(achievement.getChallenge());
-        achievementDTO.setpUrlPhoto(achievement.getpUrlPhoto());
+        achievementDTO.setIdResolution(achievement.getIdResolution());
+        achievementDTO.setChallenge(achievement.getChallenge());
+        achievementDTO.setUrlPhoto(achievement.getUrlPhoto());
 
         return achievementDTO;
     }
@@ -32,20 +32,20 @@ public class BuilderDTO {
     public ChallengeDTO generateChallengeDTO (Challenge challenge) {
 
         ChallengeDTO challengeDTO = new ChallengeDTO();
-        challengeDTO.setpIdChallenge(challenge.getpIdChallenge());
-        challengeDTO.setpEtablissement(challenge.getpEtablissement());
-        challengeDTO.setpType(challenge.getpType());
-        challengeDTO.setpPoints(challenge.getpPoints());
+        challengeDTO.setIdChallenge(challenge.getIdChallenge());
+        challengeDTO.setEtablissement(challenge.getEtablissement());
+        challengeDTO.setType(challenge.getType());
+        challengeDTO.setPoints(challenge.getPoints());
         return challengeDTO;
     }
 
     public ChallengeTypeDTO generateChallengeDTO (ChallengeType challengeType) {
 
         ChallengeTypeDTO challengeTypeDTO = new ChallengeTypeDTO();
-        challengeTypeDTO.setPidChallengeType(challengeType.getpIdChallengeType());
-        challengeTypeDTO.setpTitle(challengeType.getpTitle());
-        challengeTypeDTO.setpDefaultNumberPoints(challengeType.getpDefaultNumberPoints());
-        challengeTypeDTO.setpDescription(challengeType.getpDescription());
+        challengeTypeDTO.setIdChallengeType(challengeType.getpIdChallengeType());
+        challengeTypeDTO.setTitle(challengeType.getTitle());
+        challengeTypeDTO.setDefaultNumberPoints(challengeType.getDefaultNumberPoints());
+        challengeTypeDTO.setDescription(challengeType.getDescription());
         return challengeTypeDTO;
     }
 
@@ -53,11 +53,11 @@ public class BuilderDTO {
 
         EtablissementDTO etablissementDTO = new EtablissementDTO();
         etablissementDTO.setChallenges(etablissement.getChallenges());
-        etablissementDTO.setpCodeEtab(etablissement.getpCodeEtab());
-        etablissementDTO.setpDenomination(etablissement.getpDenomination());
-        etablissementDTO.setpAddress(etablissement.getpAddress());
-        etablissementDTO.setpLatitude(etablissement.getpLatitude());
-        etablissementDTO.setpLongitude(etablissement.getpLongitude());
+        etablissementDTO.setCodeEtab(etablissement.getCodeEtab());
+        etablissementDTO.setDenomination(etablissement.getDenomination());
+        etablissementDTO.setAddress(etablissement.getAddress());
+        etablissementDTO.setLatitude(etablissement.getLatitude());
+        etablissementDTO.setLongitude(etablissement.getLongitude());
         return etablissementDTO;
     }
 

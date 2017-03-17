@@ -7,50 +7,50 @@ import java.io.Serializable;
  */
 public class ChallengeTypeDTO implements Serializable {
 
-    int pIdChallengeType;
-    String pTitle;
-    int pDefaultNumberPoints;
-    String pDescription;
+    int idChallengeType;
+    String title;
+    int defaultNumberPoints;
+    String description;
 
     public ChallengeTypeDTO(int pIdChallengeType, String pTitle, int pDefaultNumberPoints, String pDescription) {
-        this.pIdChallengeType = pIdChallengeType;
-        this.pTitle = pTitle;
-        this.pDefaultNumberPoints = pDefaultNumberPoints;
-        this.pDescription = pDescription;
+        this.idChallengeType = pIdChallengeType;
+        this.title = pTitle;
+        this.defaultNumberPoints = pDefaultNumberPoints;
+        this.description = pDescription;
     }
 
     public ChallengeTypeDTO() {
     }
 
-    public int getPidChallengeType() {
-        return pIdChallengeType;
+    public int getIdChallengeType() {
+        return idChallengeType;
     }
 
-    public void setPidChallengeType(int pidChallengeType) {
-        pIdChallengeType = pidChallengeType;
+    public void setIdChallengeType(int pidChallengeType) {
+        idChallengeType = pidChallengeType;
     }
 
-    public String getpTitle() {
-        return pTitle;
+    public String getTitle() {
+        return title;
     }
 
-    public void setpTitle(String pTitle) {
-        this.pTitle = pTitle;
+    public void setTitle(String pTitle) {
+        this.title = pTitle;
     }
 
-    public int getpDefaultNumberPoints() {
-        return pDefaultNumberPoints;
+    public int getDefaultNumberPoints() {
+        return defaultNumberPoints;
     }
 
-    public void setpDefaultNumberPoints(int pDefaultNumberPoints) {
-        this.pDefaultNumberPoints = pDefaultNumberPoints;
+    public void setDefaultNumberPoints(int pDefaultNumberPoints) {
+        this.defaultNumberPoints = pDefaultNumberPoints;
     }
 
-    public String getpDescription() {
-        return pDescription;
+    public String getDescription() {
+        return description;
     }
 
-    public void setpDescription(String pDescription) {
-        this.pDescription = pDescription;
+    public void setDescription(String pDescription) {
+        this.description = pDescription;
     }
 }
