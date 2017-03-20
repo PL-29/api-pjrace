@@ -8,8 +8,6 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
-//import org.elasticsearch.transport.client.PreBuiltTransportClient;/
-import org.elasticsearch.transport.client.PreBuiltTransportClient;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -411,7 +409,7 @@ public class CentralDAOImpl implements CentralDAO{
         }
     }
 
-    public void connexionToEs() throws UnknownHostException {
+    /*public void connexionToEs() throws UnknownHostException {
         String clusterName = "pjrace";
         String serverAddress = "91.134.242.201";
 
@@ -431,7 +429,7 @@ public class CentralDAOImpl implements CentralDAO{
         }catch(Exception e){
             e.printStackTrace();
         }
-    }
+    }*/
 
     /**
      * Renvoie le fichier JSON permettant d'update la liste des challenges et le score d'un utilisateur
