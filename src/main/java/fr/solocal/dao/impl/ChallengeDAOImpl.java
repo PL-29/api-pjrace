@@ -9,21 +9,42 @@ import java.util.List;
 /**
  * Created by stage01 on 06/03/17.
  */
-public class ChallengeDAOImpl implements ChallengeDAO{
+public class ChallengeDAOImpl extends Requester implements ChallengeDAO {
 
+    public ChallengeDAOImpl(){
+        super();
+    }
 
     @Override
-    public List<Challenge> getAllChallenges() {
+    public List<Challenge> getAllChallenges() throws Exception{
+        String serverAddress = "91.134.242.201";
+        String url = "/elastic-pjrace/pjrace_challenge/_search";
+        String jsonResponse;
+
+        jsonResponse = super.sendGetRequest(serverAddress+url);
         return null;
     }
 
     @Override
-    public Challenge getChallengeById(String pIdChallenge) {
+    public Challenge getChallengeById(String pIdChallenge) throws Exception{
+        String serverAddress = "91.134.242.201";
+        String url = "/elastic-pjrace/pjrace_challenge/challenge/"+pIdChallenge;
+        String jsonResponse;
+
+        jsonResponse = super.sendGetRequest(serverAddress+url);
         return null;
     }
 
     @Override
-    public List<Challenge> getChallengesByCodeEtab(int pCodeEtab) {
+    public List<Challenge> getChallengesByCodeEtab(int pCodeEtab) throws Exception{
+
+        String serverAddress = "91.134.242.201";
+        String url = "/elastic-pjrace/pjrace_challenge/_search?q=code_etab:"+pCodeEtab;
+        String jsonResponse;
+
+        jsonResponse = super.sendGetRequest(serverAddress+url);
+
         return null;
     }
+
 }
