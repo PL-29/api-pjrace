@@ -10,12 +10,12 @@ import java.util.List;
  */
 public interface ChallengeService {
     //Permet de récupérer les challenges
-    public Iterator<Challenge> getAllChallenges();
+    public List<Challenge> getAllChallenges() throws Exception;
 
     //Permet de récupérer un challenge grâce à son id
-    public Challenge getChallengeById(String pIdChallenge);
+    public Challenge getChallengeById(String pIdChallenge) throws Exception;
 
 
     //Permet de récupérer un challenge grâce à son codeEtab
-    public Iterator<Challenge> getChallengeByCodeEtab(int pCodeEtab);
+    public List<Challenge> getChallengeByCodeEtab(int pCodeEtab) throws Exception;
 }

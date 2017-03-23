@@ -17,10 +17,10 @@ import java.util.List;
 public class EtablissementServiceImpl implements EtablissementService {
 
     @Inject
-    private CentralDAO dao;
+    private EtablissementDAO etablissementDAO;
 
     @Override
-    public Iterator<Etablissement> getEtablissementsByPosition(double pLatitude, double pLongitude, int pRayon) {
-        return dao.getEtablissementsByPosition(pLatitude, pLongitude);
+    public List<Etablissement> getEtablissementsByPosition(double pLatitude, double pLongitude, int pRayon) throws Exception {
+        return etablissementDAO.getEtablissementsByPosition(pLatitude, pLongitude, pRayon);
     }
 }

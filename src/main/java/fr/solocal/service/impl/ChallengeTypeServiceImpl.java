@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * Created by stage01 on 10/02/17.
@@ -18,7 +19,8 @@ public class ChallengeTypeServiceImpl implements ChallengeTypeService{
     private CentralDAO dao;
 
     @Override
-    public Iterator<ChallengeType> getAllChallengeTypes() {
-        return dao.getAllChallengeTypes();
+    public List<ChallengeType> getAllChallengeTypes() {
+        //return dao.getAllChallengeTypes();
+        return null;
     }
 }

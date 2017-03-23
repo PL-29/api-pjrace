@@ -1,6 +1,7 @@
 package fr.solocal.service.impl;
 
 import fr.solocal.dao.CentralDAO;
+import fr.solocal.dao.ChallengeDAO;
 import fr.solocal.domain.Challenge;
 import fr.solocal.domain.ChallengeType;
 import fr.solocal.service.ChallengeService;
@@ -17,20 +18,20 @@ import java.util.List;
 public class ChallengeServiceImpl implements ChallengeService{
 
     @Inject
-    private CentralDAO dao;
+    private ChallengeDAO challengeDAO;
 
     @Override
-    public Iterator<Challenge> getAllChallenges() {
-        return dao.getAllChallenges();
+    public List<Challenge> getAllChallenges() throws Exception {
+        return challengeDAO.getAllChallenges();
     }
 
     @Override
-    public Challenge getChallengeById(String pIdChallenge) {
-        return dao.getChallengeById(pIdChallenge);
+    public Challenge getChallengeById(String pIdChallenge) throws Exception {
+        return challengeDAO.getChallengeById(pIdChallenge);
     }
 
     @Override
-    public Iterator<Challenge> getChallengeByCodeEtab(int pCodeEtab) {
-        return dao.getChallengesByCodeEtab(pCodeEtab);
+    public List<Challenge> getChallengeByCodeEtab(int pCodeEtab) throws Exception {
+        return challengeDAO.getChallengesByCodeEtab(pCodeEtab);
     }
 }

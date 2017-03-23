@@ -39,8 +39,8 @@ public class Controller {
      * @return Un objet Iterator sur la liste des types de challenge
      */
     @RequestMapping(value = "challengetypes", method = RequestMethod.GET, headers = "Accept=application/json")
-    public Iterator<ChallengeType> getChallengeTypes() {
-        Iterator<ChallengeType> itChallengeTypes = challengeTypeService.getAllChallengeTypes();
+    public List<ChallengeType> getChallengeTypes() {
+        List<ChallengeType> itChallengeTypes = challengeTypeService.getAllChallengeTypes();
 
         return itChallengeTypes;
     }
@@ -54,7 +54,7 @@ public class Controller {
      * @return un objet ChallengeSpring
      */
     @RequestMapping(value = "challenge/{idChallenge}",  method = RequestMethod.GET, headers = "Accept=application/json")
-    public Challenge getChallengeById(@PathVariable String pIdChallenge) {
+    public Challenge getChallengeById(@PathVariable String pIdChallenge) throws Exception {
         Challenge challenge = challengeService.getChallengeById(pIdChallenge);
 
         return challenge;
@@ -70,9 +70,8 @@ public class Controller {
      * @return un objet Iterator sur la liste des challenges de l'établissement
      */
     @RequestMapping(value = "challenge", params = "codeEtab",  method = RequestMethod.GET, headers = "Accept=application/json")
-    public Iterator<Challenge> getChallengesByCodeEtab(@RequestParam(value = "codeEtab") int pCodeEtab) {
-
-        Iterator<Challenge> itChallenges = challengeService.getChallengeByCodeEtab(pCodeEtab);
+    public List<Challenge> getChallengesByCodeEtab(@RequestParam(value = "codeEtab") int pCodeEtab) throws Exception {
+        List<Challenge> itChallenges = challengeService.getChallengeByCodeEtab(pCodeEtab);
 
         return itChallenges;
     }
@@ -83,8 +82,8 @@ public class Controller {
      * @return un objet Iterator sur une liste des établissements
      */
     @RequestMapping(value = "etablissements", method = RequestMethod.GET, headers = "Accept=application/json")
-    public Iterator<Etablissement> getAllEtablissements(@RequestParam(value = "lat") double pLatitude, @RequestParam(value = "lon") double pLongitude, @RequestParam(value = "ray") int pRayon) {
-        Iterator<Etablissement> lstEtablissement = etablissementService.getEtablissementsByPosition(pLatitude, pLongitude, pRayon);
+    public List<Etablissement> getAllEtablissements(@RequestParam(value = "lat") double pLatitude, @RequestParam(value = "lon") double pLongitude, @RequestParam(value = "ray") int pRayon) throws Exception {
+        List<Etablissement> lstEtablissement = etablissementService.getEtablissementsByPosition(pLatitude, pLongitude, pRayon);
 
         return lstEtablissement;
     }
@@ -95,8 +94,8 @@ public class Controller {
      * @return un objet Iterator sur une liste de résolutions de challenges
      */
     @RequestMapping(value = "achievement", method = RequestMethod.GET, headers = "Accept=application/json")
-    public Iterator<Achievement> getAllAchievements(@RequestParam(value = "id") int pIdUser) {
-        Iterator<Achievement> itAchievements = achievementService.getAllResolutions(pIdUser);
+    public List<Achievement> getAllAchievements(@RequestParam(value = "email") String pEmail) throws Exception {
+        List<Achievement> itAchievements = achievementService.getAllResolutions(pEmail);
 
         return itAchievements;
     }
@@ -106,12 +105,8 @@ public class Controller {
      *  TODO: Rajouter idChallenge, idUser, photo en paramètre
      */
     @RequestMapping(value = "achievement", method = RequestMethod.POST, headers = "Accept=application/json")
-    public void achieveChallenge() {
-        int idChallenge = 0;
-        int idUser = 0;
-        String photo = "";
-
-        achievementService.achieveChallenge(idChallenge, idUser, photo);
+    public void achieveChallenge(@RequestParam(value = "idChallenge") String pIdChallenge, @RequestParam(value = "email") String pEmail, @RequestParam(value = "photo") String pPhoto) throws Exception {
+       achievementService.achieveChallenge(pIdChallenge, pEmail, pPhoto);
     }
 
     /**
@@ -121,8 +116,8 @@ public class Controller {
      * @return un objet User
      */
     @RequestMapping(value = "user", method = RequestMethod.GET, headers = "Accept=application/json")
-    public User connexion() {
-        String email = "blabla@gmail.com";
+    public User connexion() throws Exception {
+        String email = "plollivier@test.com";
         String password = "xxxx";
         User user = userService.connexion(email, password);
 
@@ -135,8 +130,8 @@ public class Controller {
      * @return un objet Iterator sur une liste d'utilisateurs
      */
     @RequestMapping(value = "ranking", method = RequestMethod.GET, headers = "Accept=application/json")
-    public Iterator<User> getRanking(@RequestParam(value = "id") int pIdUser) {
-        Iterator<User> lstUser = userService.getRanking(pIdUser);
+    public List<User> getRanking(@RequestParam(value = "email") String pEmail) throws Exception {
+        List<User> lstUser = userService.getRanking(pEmail);
 
         return lstUser;
     }
