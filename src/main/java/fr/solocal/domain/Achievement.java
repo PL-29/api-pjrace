@@ -4,11 +4,11 @@ package fr.solocal.domain;
  * Created by stage01 on 10/02/17.
  */
 public class Achievement {
-    int idResolution;
+    String idResolution;
     Challenge challenge;
     String urlPhoto;
 
-    public Achievement(int pIdResolution, Challenge pChallenge, String pUrlPhoto) {
+    public Achievement(String pIdResolution, Challenge pChallenge, String pUrlPhoto) {
         this.idResolution = pIdResolution;
         this.challenge = pChallenge;
         this.urlPhoto = pUrlPhoto;
@@ -17,11 +17,11 @@ public class Achievement {
     public Achievement() {
     }
 
-    public int getIdResolution() {
+    public String getIdResolution() {
         return idResolution;
     }
 
-    public void setIdResolution(int pIdResolution) {
+    public void setIdResolution(String pIdResolution) {
         this.idResolution = pIdResolution;
     }
 

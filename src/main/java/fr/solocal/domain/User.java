@@ -13,15 +13,17 @@ public class User {
     String email;
     String password;
     int rank;
+    int score;
     List<Achievement> achievements = new ArrayList<>();
 
-    public User(int pIdUser, String pLastname, String pFirstname, String pEmail, String pPassword, int pRank, List<Achievement> pAchievements) {
+    public User(int pIdUser, String pLastname, String pFirstname, String pEmail, String pPassword, int pRank, int pScore, List<Achievement> pAchievements) {
         this.idUser = pIdUser;
         this.lastname = pLastname;
         this.firstname = pFirstname;
         this.email = pEmail;
         this.password = pPassword;
         this.rank = pRank;
+        int score = pScore;
         this.achievements = pAchievements;
     }
 
@@ -76,20 +78,17 @@ public class User {
         this.rank = pRank;
     }
 
+    public int getScore() { return this.score; }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
     public List<Achievement> getAchievements() {
         return achievements;
     }
 
     public void setAchievements(List<Achievement> pAchievements) {
         this.achievements = pAchievements;
-    }
-
-    public int getTotalScore(){
-        int totalScore = 0;
-        for(Achievement achivevement : achievements){
-            totalScore+= achivevement.getChallenge().getPoints();
-        }
-
-        return totalScore;
     }
 }

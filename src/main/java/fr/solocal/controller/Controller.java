@@ -48,14 +48,14 @@ public class Controller {
      /**
      * Renvoie le challenge correspondant à l'id passé en paramètre
      *
-     * @param pIdChallenge
+     * @param idChallenge
      *      L'id du challenge
      *
      * @return un objet ChallengeSpring
      */
     @RequestMapping(value = "challenge/{idChallenge}",  method = RequestMethod.GET, headers = "Accept=application/json")
-    public Challenge getChallengeById(@PathVariable String pIdChallenge) throws Exception {
-        Challenge challenge = challengeService.getChallengeById(pIdChallenge);
+    public Challenge getChallengeById(@PathVariable(value="idChallenge") String idChallenge) throws Exception {
+        Challenge challenge = challengeService.getChallengeById(idChallenge);
 
         return challenge;
     }

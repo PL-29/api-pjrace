@@ -21,11 +21,6 @@ public class ChallengeServiceImpl implements ChallengeService{
     private ChallengeDAO challengeDAO;
 
     @Override
-    public List<Challenge> getAllChallenges() throws Exception {
-        return challengeDAO.getAllChallenges();
-    }
-
-    @Override
     public Challenge getChallengeById(String pIdChallenge) throws Exception {
         return challengeDAO.getChallengeById(pIdChallenge);
     }
