@@ -104,7 +104,6 @@ public class Controller {
 
     /**
      *  Méthode permettant de résoudre un challenge
-     *  TODO: cette méthode
      */
     @RequestMapping(value = "achievement", method = RequestMethod.POST, headers = "Accept=application/json")
     public void achieveChallenge(@RequestParam(value = "idChallenge") String pIdChallenge, @RequestParam(value = "email") String pEmail, @RequestParam(value = "photo") String pPhoto) throws Exception {

@@ -24,14 +24,28 @@ import java.util.Random;
 public class UserDAOImpl extends Requester implements UserDAO {
     private static final String SERVER_ADDRESS  = "http://91.134.242.201";
     private static final String SAVING_PATH = "/home/stage01/Images/";
+
+    public class IndexUser {
+        private int value = 0;
+
+        public IndexUser(){}
+
+        public int getValue(){ return this.value; }
+
+        public void setValue(int newValue){ this.value = newValue;}
+    }
+
+
     @Override
     public List<User> getRanking(String pEmail) throws Exception {
         //L'idUser correspond à l'adresse mail de l'utilisateur /!\
-        String url = SERVER_ADDRESS+"/elastic-pjrace/pjrace_challenge/user/"+pEmail;
+        String url = SERVER_ADDRESS+"/elastic-pjrace/pjrace_challenge/user/_search?sort=score:desc";
         String jsonResponse;
+        IndexUser indexUser = new IndexUser();
 
         jsonResponse = super.sendGetRequest(url);
-        return null;
+        List<User> lstUsers = UsersListFromJson(pEmail, jsonResponse, indexUser);
+        return makeRanking(lstUsers, indexUser);
     }
 
     @Override
@@ -106,7 +120,6 @@ public class UserDAOImpl extends Requester implements UserDAO {
 
         for(int i=0; i<achievementsTab.length(); i++){
             score += achievementsTab.getJSONObject(i).getInt("score");
-            //TODO: revoir l'id d'une resolution et rajouter des informations sur les challenges dans User sur l'ES
             String idAchievement = achievementsTab.getJSONObject(i).getString("idChallenge")+"_res";
 
             String idChallenge = achievementsTab.getJSONObject(i).getString("idChallenge");
@@ -118,6 +131,30 @@ public class UserDAOImpl extends Requester implements UserDAO {
             lstAchievements.add(achievement);
         }
         return lstAchievements;
+    }
+
+    public List<User> UsersListFromJson(String pEmailUser, String pJsonString, IndexUser indexUser) throws JSONException {
+        List<User> lstUsers = new ArrayList<>();
+
+        JSONObject jsonObject = new JSONObject(pJsonString);
+        String hits = jsonObject.getJSONObject("hits").getString("hits");
+        JSONArray jsonArray = new JSONArray(hits);
+
+        for (int i = 0; i < jsonArray.length(); i++) {
+            JSONObject source = jsonArray.getJSONObject(i).getJSONObject("_source");
+            if(source.getString("email").equals(pEmailUser)){
+                indexUser.setValue(i);
+            }
+            User user = new User();
+            //TODO : Set ID USER
+            user.setEmail(source.getString("email"));
+            user.setScore(source.getInt("score"));
+            user.setFirstname(source.getString("firstname"));
+            user.setLastname(source.getString("lastname"));
+            lstUsers.add(user);
+        }
+
+        return lstUsers;
     }
 
     public JSONObject jsonScriptToUpdate(Challenge pChallenge, User pUser, String pPhotoPath) throws Exception {
@@ -141,6 +178,30 @@ public class UserDAOImpl extends Requester implements UserDAO {
         jsonScript.put("script", jsonParameters);
 
         return jsonScript;
+    }
+
+    public List<User> makeRanking(List<User> lstUsers, IndexUser indexUser){
+        List<User> lstRanking = new ArrayList<>();
+
+        if(lstUsers.size() >= 8){
+            if(indexUser.getValue()== 0 || indexUser.getValue()== 1 || indexUser.getValue()== 2){
+                for(int i = 0; i < 6 ; i++){
+                    lstRanking.add(lstUsers.get(i));
+                }
+            } else {
+                lstRanking.add(lstUsers.get(0));
+                lstRanking.add(lstUsers.get(1));
+                lstRanking.add(lstUsers.get(2));
+
+                lstRanking.add(lstUsers.get(indexUser.getValue()-2));
+                lstRanking.add(lstUsers.get(indexUser.getValue()-1));
+                lstRanking.add(lstUsers.get(indexUser.getValue()));
+                lstRanking.add(lstUsers.get(indexUser.getValue()+1));
+                lstRanking.add(lstUsers.get(indexUser.getValue()+2));
+            }
+        }
+
+        return lstRanking;
     }
 
     public String  saveImage(String pImageEncoding, String pIdChallenge) throws IOException {
