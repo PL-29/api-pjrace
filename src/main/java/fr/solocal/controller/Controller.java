@@ -37,6 +37,7 @@ public class Controller {
      * Retourne la liste des types de challenge
      *
      * @return Un objet Iterator sur la liste des types de challenge
+     * TODO: cette méthode
      */
     @RequestMapping(value = "challengetypes", method = RequestMethod.GET, headers = "Accept=application/json")
     public List<ChallengeType> getChallengeTypes() {
@@ -80,6 +81,7 @@ public class Controller {
      * Renvoie une liste d'établissements par rapport à la position de l'utilisateur (latitude, longitude)
      *
      * @return un objet Iterator sur une liste des établissements
+     * TODO: cette méthode
      */
     @RequestMapping(value = "etablissements", method = RequestMethod.GET, headers = "Accept=application/json")
     public List<Etablissement> getAllEtablissements(@RequestParam(value = "lat") double pLatitude, @RequestParam(value = "lon") double pLongitude, @RequestParam(value = "ray") int pRayon) throws Exception {
@@ -102,7 +104,7 @@ public class Controller {
 
     /**
      *  Méthode permettant de résoudre un challenge
-     *  TODO: Rajouter idChallenge, idUser, photo en paramètre
+     *  TODO: cette méthode
      */
     @RequestMapping(value = "achievement", method = RequestMethod.POST, headers = "Accept=application/json")
     public void achieveChallenge(@RequestParam(value = "idChallenge") String pIdChallenge, @RequestParam(value = "email") String pEmail, @RequestParam(value = "photo") String pPhoto) throws Exception {
@@ -111,12 +113,11 @@ public class Controller {
 
     /**
      * Renvoie les informations d'un utilisateur, correspond à la connexion
-     * TODO:Rajouter email et password en paramètre
      *
      * @return un objet User
      */
     @RequestMapping(value = "user", method = RequestMethod.GET, headers = "Accept=application/json")
-    public User connexion() throws Exception {
+    public User connexion(@RequestParam(value = "email") String pEmail, @RequestParam(value = "pwd") String pPwd) throws Exception {
         String email = "plollivier@test.com";
         String password = "xxxx";
         User user = userService.connexion(email, password);
@@ -128,6 +129,7 @@ public class Controller {
      * Renvoie une liste d'utilisateurs correspondant au classement (les 10 premiers ainsi que l'utilisateur)
      *
      * @return un objet Iterator sur une liste d'utilisateurs
+     * TODO: cette méthode
      */
     @RequestMapping(value = "ranking", method = RequestMethod.GET, headers = "Accept=application/json")
     public List<User> getRanking(@RequestParam(value = "email") String pEmail) throws Exception {
