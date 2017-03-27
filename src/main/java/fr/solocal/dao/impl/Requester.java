@@ -1,7 +1,9 @@
 package fr.solocal.dao.impl;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import org.apache.commons.codec.binary.Base64;
+import org.json.JSONObject;
+
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -33,4 +35,36 @@ public class Requester {
 
         return response.toString();
     }
+
+    public void sendPostRequest(String pUrl, JSONObject pJsonObject) throws Exception {
+        URL object=new URL(pUrl);
+
+        HttpURLConnection con = (HttpURLConnection) object.openConnection();
+        con.setDoOutput(true);
+        con.setDoInput(true);
+        con.setRequestProperty("Content-Type", "application/json");
+        con.setRequestProperty("Accept", "application/json");
+        con.setRequestMethod("POST");
+
+        OutputStreamWriter wr = new OutputStreamWriter(con.getOutputStream());
+        wr.write(pJsonObject.toString());
+        wr.flush();
+
+        StringBuilder sb = new StringBuilder();
+        int HttpResult = con.getResponseCode();
+        if (HttpResult == HttpURLConnection.HTTP_OK) {
+            BufferedReader br = new BufferedReader(
+                    new InputStreamReader(con.getInputStream(), "utf-8"));
+            String line = null;
+            while ((line = br.readLine()) != null) {
+                sb.append(line + "\n");
+            }
+            br.close();
+            System.out.println("" + sb.toString());
+        } else {
+            System.out.println(con.getResponseMessage());
+        }
+    }
+
+
 }

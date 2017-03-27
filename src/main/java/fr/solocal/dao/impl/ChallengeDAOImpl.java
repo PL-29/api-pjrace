@@ -31,7 +31,6 @@ public class ChallengeDAOImpl extends Requester implements ChallengeDAO {
         String jsonResponse;
 
         jsonResponse = super.sendGetRequest(serverAddress+url);
-        System.out.println(jsonResponse);
         return challengeByIdFromJson(jsonResponse);
     }
 
