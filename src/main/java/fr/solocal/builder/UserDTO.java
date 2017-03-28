@@ -14,16 +14,14 @@ public class UserDTO implements Serializable {
     String lastname;
     String firstname;
     String email;
-    String password;
     int rank;
     int score;
 
-    public UserDTO(String pIdUser, String pLastname, String pFirstname, String pEmail, String pPassword, int pRank, int score) {
+    public UserDTO(String pIdUser, String pLastname, String pFirstname, String pEmail, int pRank, int score) {
         this.idUser = pIdUser;
         this.lastname = pLastname;
         this.firstname = pFirstname;
         this.email = pEmail;
-        this.password = pPassword;
         this.rank = pRank;
         this.score = score;
 
@@ -62,14 +60,6 @@ public class UserDTO implements Serializable {
 
     public void setEmail(String pEmail) {
         this.email = pEmail;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String pPassword) {
-        this.password = pPassword;
     }
 
     public int getRank() {

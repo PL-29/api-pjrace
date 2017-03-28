@@ -48,6 +48,7 @@ public class UserDAOImpl extends Requester implements UserDAO {
         return makeRanking(lstUsers, indexUser);
     }
 
+
     @Override
     public List<Achievement> getAllAchievements(String pEmail) throws Exception{
         //L'idUser correspond à l'adresse mail de l'utilisateur /!\
@@ -58,9 +59,35 @@ public class UserDAOImpl extends Requester implements UserDAO {
         return achievementsFromJson(jsonResponse);
     }
 
+
     @Override
     public User connexion(String pEmail, String pPassword) throws Exception {
         //L'idUser correspond à l'adresse mail de l'utilisateur /!\
+        String url = SERVER_ADDRESS+"/elastic-pjrace/pjrace_challenge/user/_search?q=email:"+pEmail+" AND password:"+pPassword;
+        String jsonResponse;
+
+        //TODO: RENVOYER MESSAGE D ERREUR SI MOT DE PASSE OU ID INCORRECTS
+        jsonResponse = super.sendGetRequest(url);
+
+        return userFromJson(jsonResponse);
+    }
+
+
+    @Override
+    public void achieveChallenge(String pIdChallenge, String pEmail, String pPhotoEncoding) throws Exception {
+        String url = SERVER_ADDRESS+"/elastic-pjrace/pjrace_challenge/user/"+pEmail+"/_update";
+
+        Challenge challenge = new ChallengeDAOImpl().getChallengeById(pIdChallenge);
+        User user = getUserInfosByEmail(pEmail);
+
+        JSONObject jsonScript = jsonScriptToUpdate(challenge, user, SAVING_PATH);
+        saveImage(pPhotoEncoding, pIdChallenge);
+
+        super.sendPostRequest(url, jsonScript);
+    }
+
+
+    private User getUserInfosByEmail(String pEmail) throws Exception {
         String url = SERVER_ADDRESS+"/elastic-pjrace/pjrace_challenge/user/"+pEmail;
         String jsonResponse;
 
@@ -69,21 +96,6 @@ public class UserDAOImpl extends Requester implements UserDAO {
         return userFromJson(jsonResponse);
     }
 
-    @Override
-    public void achieveChallenge(String pIdChallenge, String pEmail, String pPhoto) throws Exception {
-        String url = SERVER_ADDRESS+"/elastic-pjrace/pjrace_challenge/user/"+pEmail+"/_update";
-
-        Challenge challenge = new ChallengeDAOImpl().getChallengeById(pIdChallenge);
-        User user = this.connexion(pEmail, "xxx");
-
-        String photoPath = "xxx.png";
-        //String photoPath = this.saveImage(pPhoto, pIdChallenge);
-
-        JSONObject jsonScript = jsonScriptToUpdate(challenge, user, photoPath);
-
-
-        super.sendPostRequest(url, jsonScript);
-    }
 
     public User userFromJson(String pJsonString) throws JSONException {
         JSONObject jsonObject = new JSONObject(pJsonString);
@@ -106,6 +118,31 @@ public class UserDAOImpl extends Requester implements UserDAO {
 
         return user;
     }
+
+    public User userFromJson(String pJsonString, String pPassword) throws JSONException {
+        JSONObject jsonObject = new JSONObject(pJsonString);
+        JSONObject userInfos = new JSONObject(jsonObject.getString("_source"));
+        User user = new User();
+
+        if(userInfos.equals(pPassword)){
+            int score = 0;
+
+            JSONArray achievementsTab = new JSONArray(userInfos.getString("achievements"));
+
+            for(int i=0; i<achievementsTab.length(); i++){
+                score += achievementsTab.getJSONObject(i).getInt("score");
+            }
+
+            user.setIdUser(userInfos.getString("email"));
+            user.setFirstname(userInfos.getString("firstname"));
+            user.setLastname(userInfos.getString("lastname"));
+            user.setEmail(userInfos.getString("email"));
+            user.setScore(score);
+        }
+
+        return user;
+    }
+
 
     public List<Achievement> achievementsFromJson(String pJsonString) throws JSONException {
         List<Achievement> lstAchievements = new ArrayList<>();
@@ -133,6 +170,7 @@ public class UserDAOImpl extends Requester implements UserDAO {
         return lstAchievements;
     }
 
+
     public List<User> UsersListFromJson(String pEmailUser, String pJsonString, IndexUser pIndexUser) throws JSONException {
         List<User> lstUsers = new ArrayList<>();
 
@@ -158,6 +196,7 @@ public class UserDAOImpl extends Requester implements UserDAO {
         return lstUsers;
     }
 
+
     public JSONObject jsonScriptToUpdate(Challenge pChallenge, User pUser, String pPhotoPath) throws Exception {
         int finalScore = pChallenge.getPoints()+pUser.getScore();
 
@@ -180,6 +219,7 @@ public class UserDAOImpl extends Requester implements UserDAO {
 
         return jsonScript;
     }
+
 
     public List<User> makeRanking(List<User> lstUsers, IndexUser indexUser){
         List<User> lstRanking = new ArrayList<>();
@@ -205,6 +245,7 @@ public class UserDAOImpl extends Requester implements UserDAO {
         return lstRanking;
     }
 
+
     public String  saveImage(String pImageEncoding, String pIdChallenge) throws IOException {
         Random randomGenerator = new Random();
         String photoName = pIdChallenge+randomGenerator.nextInt(1000)+".png";
@@ -217,6 +258,7 @@ public class UserDAOImpl extends Requester implements UserDAO {
 
         return SAVING_PATH+photoName;
     }
+
 
     public String dateOfToday() {
         Long millis = System.currentTimeMillis();
