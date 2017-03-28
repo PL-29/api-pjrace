@@ -37,10 +37,9 @@ public class Controller {
      * Retourne la liste des types de challenge
      *
      * @return Un objet Iterator sur la liste des types de challenge
-     * TODO: cette méthode
      */
     @RequestMapping(value = "challengetypes", method = RequestMethod.GET, headers = "Accept=application/json")
-    public List<ChallengeType> getChallengeTypes() {
+    public List<ChallengeType> getChallengeTypes() throws Exception {
         List<ChallengeType> itChallengeTypes = challengeTypeService.getAllChallengeTypes();
 
         return itChallengeTypes;
@@ -128,7 +127,6 @@ public class Controller {
      * Renvoie une liste d'utilisateurs correspondant au classement (les 10 premiers ainsi que l'utilisateur)
      *
      * @return un objet Iterator sur une liste d'utilisateurs
-     * TODO: cette méthode
      */
     @RequestMapping(value = "ranking", method = RequestMethod.GET, headers = "Accept=application/json")
     public List<User> getRanking(@RequestParam(value = "email") String pEmail) throws Exception {

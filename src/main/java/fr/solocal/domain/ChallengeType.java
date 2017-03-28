@@ -3,12 +3,7 @@ package fr.solocal.domain;
 /**
  * Created by stage01 on 10/02/17.
  */
-public enum ChallengeType {
-    photo("photo", "Challenge photo", "Prenez une photo de la devanture de l'établissement", 100),
-    horaires("horaires", "Challenge horaires", "Prenez une photo de la plage horaires de l'établissement", 100),
-    menu("menu", "Challenge menu", "Prenez une photo du menu de l'établissement", 100),
-    paiement("paiement", "Challenge paiement", "Prenez une photo des moyens de paiement autorisés par l'établissement", 100);
-
+public class ChallengeType {
     private String idChallengeType = "";
     private String title = "";
     private String description ="";

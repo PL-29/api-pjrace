@@ -10,5 +10,5 @@ import java.util.List;
  */
 public interface ChallengeTypeService  {
     //Permet de récupérer les types de challenge
-    public List<ChallengeType> getAllChallengeTypes();
+    public List<ChallengeType> getAllChallengeTypes() throws Exception;
 }

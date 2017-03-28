@@ -1,10 +1,7 @@
 package fr.solocal.dao.impl;
 
 import fr.solocal.dao.ChallengeDAO;
-import fr.solocal.domain.Challenge;
-import fr.solocal.domain.ChallengeType;
-import fr.solocal.domain.Etablissement;
-import fr.solocal.domain.User;
+import fr.solocal.domain.*;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -45,6 +42,10 @@ public class ChallengeDAOImpl extends Requester implements ChallengeDAO {
         return challengesByCodeEtabFromJson(jsonResponse);
     }
 
+    @Override
+    public List<ChallengeType> getAllChallengeTypes() throws Exception {
+        return ChallengeTypeFactory.makeChallengeTypeList();
+    }
 
     public Challenge challengeByIdFromJson(String pJsonString) throws JSONException {
         Challenge challenge = new Challenge();
@@ -70,7 +71,7 @@ public class ChallengeDAOImpl extends Requester implements ChallengeDAO {
 
         challenge.setIdChallenge(challengeId);
         challenge.setEtablissement(etablissement);
-        challenge.setType(ChallengeType.valueOf(codeType));
+        challenge.setType(ChallengeTypeFactory.makeChallengeType(codeType));
         challenge.setPoints(points);
 
         return challenge;
@@ -108,7 +109,7 @@ public class ChallengeDAOImpl extends Requester implements ChallengeDAO {
             Challenge challenge = new Challenge();
             challenge.setIdChallenge(challengeId);
             challenge.setEtablissement(etablissement);
-            challenge.setType(ChallengeType.valueOf(codeType));
+            challenge.setType(ChallengeTypeFactory.makeChallengeType(codeType));
             challenge.setPoints(points);
             lstChallenges.add(challenge);
         }
