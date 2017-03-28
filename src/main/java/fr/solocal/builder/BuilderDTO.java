@@ -42,9 +42,9 @@ public class BuilderDTO {
     public ChallengeTypeDTO generateChallengeDTO (ChallengeType challengeType) {
 
         ChallengeTypeDTO challengeTypeDTO = new ChallengeTypeDTO();
-        challengeTypeDTO.setIdChallengeType(challengeType.getpIdChallengeType());
+        challengeTypeDTO.setIdChallengeType(challengeType.getIdChallengeType());
         challengeTypeDTO.setTitle(challengeType.getTitle());
-        challengeTypeDTO.setDefaultNumberPoints(challengeType.getDefaultNumberPoints());
+        challengeTypeDTO.setDefaultNumberPoints(challengeType.getDefaultNumberOfPoints());
         challengeTypeDTO.setDescription(challengeType.getDescription());
         return challengeTypeDTO;
     }

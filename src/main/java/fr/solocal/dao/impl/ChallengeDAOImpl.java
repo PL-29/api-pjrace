@@ -68,10 +68,9 @@ public class ChallengeDAOImpl extends Requester implements ChallengeDAO {
 
         Etablissement etablissement = new Etablissement(codeEtab, denom, etabAdresse, latitude, longitude);
 
-        //TODO : Rajouter le type de challenge
         challenge.setIdChallenge(challengeId);
         challenge.setEtablissement(etablissement);
-        challenge.setType(new ChallengeType());
+        challenge.setType(ChallengeType.valueOf(codeType));
         challenge.setPoints(points);
 
         return challenge;
@@ -109,8 +108,7 @@ public class ChallengeDAOImpl extends Requester implements ChallengeDAO {
             Challenge challenge = new Challenge();
             challenge.setIdChallenge(challengeId);
             challenge.setEtablissement(etablissement);
-            //TODO : Rajouter le type de challenge
-            challenge.setType(new ChallengeType());
+            challenge.setType(ChallengeType.valueOf(codeType));
             challenge.setPoints(points);
             lstChallenges.add(challenge);
         }

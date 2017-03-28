@@ -7,12 +7,12 @@ import java.io.Serializable;
  */
 public class ChallengeTypeDTO implements Serializable {
 
-    int idChallengeType;
+    String idChallengeType;
     String title;
     int defaultNumberPoints;
     String description;
 
-    public ChallengeTypeDTO(int pIdChallengeType, String pTitle, int pDefaultNumberPoints, String pDescription) {
+    public ChallengeTypeDTO(String pIdChallengeType, String pTitle, int pDefaultNumberPoints, String pDescription) {
         this.idChallengeType = pIdChallengeType;
         this.title = pTitle;
         this.defaultNumberPoints = pDefaultNumberPoints;
@@ -22,11 +22,11 @@ public class ChallengeTypeDTO implements Serializable {
     public ChallengeTypeDTO() {
     }
 
-    public int getIdChallengeType() {
+    public String getIdChallengeType() {
         return idChallengeType;
     }
 
-    public void setIdChallengeType(int pidChallengeType) {
+    public void setIdChallengeType(String pidChallengeType) {
         idChallengeType = pidChallengeType;
     }
 
