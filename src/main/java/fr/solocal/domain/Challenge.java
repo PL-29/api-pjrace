@@ -8,6 +8,7 @@ public class Challenge {
     Etablissement etablissement;
     ChallengeType type;
     int points;
+    String dateCreated = "";
 
     public Challenge(String pIdChallenge, Etablissement pEtablissement, ChallengeType pType, int pPoints) {
         this.idChallenge = pIdChallenge;
@@ -50,4 +51,8 @@ public class Challenge {
     public void setPoints(int pPoints) {
         this.points = pPoints;
     }
+
+    public String getDateCreated() { return dateCreated;}
+
+    public void setDateCreated(String dateCreated) { this.dateCreated = dateCreated;}
 }

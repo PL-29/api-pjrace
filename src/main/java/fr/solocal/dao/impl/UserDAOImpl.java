@@ -89,9 +89,6 @@ public class UserDAOImpl extends Requester implements UserDAO {
         JSONObject jsonObject = new JSONObject(pJsonString);
         JSONObject userInfos = new JSONObject(jsonObject.getString("_source"));
 
-        String firstname = userInfos.getString("firstname");
-        String lastname = userInfos.getString("lastname");
-        String email = userInfos.getString("email");
         int score = 0;
 
         JSONArray achievementsTab = new JSONArray(userInfos.getString("achievements"));
@@ -101,10 +98,10 @@ public class UserDAOImpl extends Requester implements UserDAO {
         }
 
         User user = new User();
-        //TODO:SET L'ID USER
-        user.setFirstname(firstname);
-        user.setLastname(lastname);
-        user.setEmail(email);
+        user.setIdUser(userInfos.getString("email"));
+        user.setFirstname(userInfos.getString("firstname"));
+        user.setLastname(userInfos.getString("lastname"));
+        user.setEmail(userInfos.getString("email"));
         user.setScore(score);
 
         return user;
@@ -123,17 +120,20 @@ public class UserDAOImpl extends Requester implements UserDAO {
             String idAchievement = achievementsTab.getJSONObject(i).getString("idChallenge")+"_res";
 
             String idChallenge = achievementsTab.getJSONObject(i).getString("idChallenge");
+            String dateCreated = achievementsTab.getJSONObject(i).getString("dateCreated");
             Challenge challenge = new Challenge();
             challenge.setIdChallenge(idChallenge);
+            challenge.setDateCreated(dateCreated);
 
             String photoUrl = achievementsTab.getJSONObject(i).getString("photoUrl");
+
             Achievement achievement = new Achievement(idAchievement, challenge, photoUrl);
             lstAchievements.add(achievement);
         }
         return lstAchievements;
     }
 
-    public List<User> UsersListFromJson(String pEmailUser, String pJsonString, IndexUser indexUser) throws JSONException {
+    public List<User> UsersListFromJson(String pEmailUser, String pJsonString, IndexUser pIndexUser) throws JSONException {
         List<User> lstUsers = new ArrayList<>();
 
         JSONObject jsonObject = new JSONObject(pJsonString);
@@ -143,14 +143,15 @@ public class UserDAOImpl extends Requester implements UserDAO {
         for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject source = jsonArray.getJSONObject(i).getJSONObject("_source");
             if(source.getString("email").equals(pEmailUser)){
-                indexUser.setValue(i);
+                pIndexUser.setValue(i);
             }
             User user = new User();
-            //TODO : Set ID USER
+            user.setIdUser(source.getString("email"));
             user.setEmail(source.getString("email"));
             user.setScore(source.getInt("score"));
             user.setFirstname(source.getString("firstname"));
             user.setLastname(source.getString("lastname"));
+            user.setRank(i+1);
             lstUsers.add(user);
         }
 

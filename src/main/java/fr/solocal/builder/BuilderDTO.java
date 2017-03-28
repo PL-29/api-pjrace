@@ -8,39 +8,39 @@ import fr.solocal.domain.*;
  */
 public class BuilderDTO {
 
-    public UserDTO generateUserDTO (User user) {
-
+    public static UserDTO generateUserDTO (User user) {
         UserDTO userDTO = new UserDTO();
+        userDTO.setIdUser(user.getIdUser());
         userDTO.setLastname(user.getLastname());
         userDTO.setFirstname(user.getFirstname());
         userDTO.setEmail(user.getEmail());
         userDTO.setPassword(user.getPassword());
-        userDTO.setRank(user.getIdUser());
+        userDTO.setRank(user.getRank());
+        userDTO.setScore(user.getScore());
         return userDTO;
     }
 
-    public AchievementDTO generateAchievementDTO (Achievement achievement) {
-
+    public static AchievementDTO generateAchievementDTO (String userEmail, Achievement achievement) {
         AchievementDTO achievementDTO = new AchievementDTO();
         achievementDTO.setIdResolution(achievement.getIdResolution());
-        achievementDTO.setChallenge(achievement.getChallenge());
+        achievementDTO.setIdChallenge(achievement.getChallenge().getIdChallenge());
         achievementDTO.setUrlPhoto(achievement.getUrlPhoto());
+        achievementDTO.setDateCreated(achievement.getChallenge().getDateCreated());
+        achievementDTO.setIdUser(userEmail);
 
         return achievementDTO;
     }
 
-    public ChallengeDTO generateChallengeDTO (Challenge challenge) {
-
+    public static ChallengeDTO generateChallengeDTO (Challenge challenge) {
         ChallengeDTO challengeDTO = new ChallengeDTO();
         challengeDTO.setIdChallenge(challenge.getIdChallenge());
-        challengeDTO.setEtablissement(challenge.getEtablissement());
-        challengeDTO.setType(challenge.getType());
+        challengeDTO.setIdChallengeType(challenge.getType().getIdChallengeType());
         challengeDTO.setPoints(challenge.getPoints());
+        challengeDTO.setDateCreated(challenge.getDateCreated());
         return challengeDTO;
     }
 
-    public ChallengeTypeDTO generateChallengeDTO (ChallengeType challengeType) {
-
+    public static ChallengeTypeDTO generateChallengeTypeDTO (ChallengeType challengeType) {
         ChallengeTypeDTO challengeTypeDTO = new ChallengeTypeDTO();
         challengeTypeDTO.setIdChallengeType(challengeType.getIdChallengeType());
         challengeTypeDTO.setTitle(challengeType.getTitle());
@@ -49,8 +49,7 @@ public class BuilderDTO {
         return challengeTypeDTO;
     }
 
-    public EtablissementDTO generateEtablissementDTO (Etablissement etablissement) {
-
+    public static EtablissementDTO generateEtablissementDTO (Etablissement etablissement) {
         EtablissementDTO etablissementDTO = new EtablissementDTO();
         etablissementDTO.setChallenges(etablissement.getChallenges());
         etablissementDTO.setCodeEtab(etablissement.getCodeEtab());
@@ -60,14 +59,4 @@ public class BuilderDTO {
         etablissementDTO.setLongitude(etablissement.getLongitude());
         return etablissementDTO;
     }
-
-    public CoordonneeDTO generateCoordonneeDTO ( Coordonnee coordonnee) {
-
-        CoordonneeDTO coordonneeDTO = new CoordonneeDTO();
-        coordonneeDTO.setLat(coordonnee.getLat());
-        coordonneeDTO.setLng(coordonnee.getLng());
-        return coordonneeDTO;
-
-    }
-
 }

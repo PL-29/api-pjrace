@@ -7,7 +7,7 @@ import java.util.List;
  * Created by stage01 on 10/02/17.
  */
 public class User {
-    int idUser;
+    String idUser;
     String lastname;
     String firstname;
     String email;
@@ -16,7 +16,7 @@ public class User {
     int score;
     List<Achievement> achievements = new ArrayList<>();
 
-    public User(int pIdUser, String pLastname, String pFirstname, String pEmail, String pPassword, int pRank, int pScore, List<Achievement> pAchievements) {
+    public User(String pIdUser, String pLastname, String pFirstname, String pEmail, String pPassword, int pRank, int pScore, List<Achievement> pAchievements) {
         this.idUser = pIdUser;
         this.lastname = pLastname;
         this.firstname = pFirstname;
@@ -30,11 +30,11 @@ public class User {
     public User() {
     }
 
-    public int getIdUser() {
+    public String getIdUser() {
         return idUser;
     }
 
-    public void setIdUser(int pIdUser) {
+    public void setIdUser(String pIdUser) {
         this.idUser = pIdUser;
     }
 

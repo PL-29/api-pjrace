@@ -10,14 +10,13 @@ import java.io.Serializable;
  */
 public class ChallengeDTO implements Serializable {
     String idChallenge;
-    Etablissement etablissement;
-    ChallengeType type;
+    String idChallengeType;
     int points;
+    String dateCreated;
 
-    public ChallengeDTO(String pIdChallenge, Etablissement pEtablissement, ChallengeType pType, int pPoints) {
+    public ChallengeDTO(String pIdChallenge, String pIdChallengeType, int pPoints) {
         this.idChallenge = pIdChallenge;
-        this.etablissement = pEtablissement;
-        this.type = pType;
+        this.idChallengeType = pIdChallengeType;
         this.points = pPoints;
     }
 
@@ -32,20 +31,12 @@ public class ChallengeDTO implements Serializable {
         this.idChallenge = pIdChallenge;
     }
 
-    public Etablissement getEtablissement() {
-        return etablissement;
+    public String getIdChallengeType() {
+        return idChallengeType;
     }
 
-    public void setEtablissement(Etablissement pEtablissement) {
-        this.etablissement = pEtablissement;
-    }
-
-    public ChallengeType getType() {
-        return type;
-    }
-
-    public void setType(ChallengeType pType) {
-        this.type = pType;
+    public void setIdChallengeType(String idChallengeType) {
+        this.idChallengeType = idChallengeType;
     }
 
     public int getPoints() {
@@ -54,5 +45,13 @@ public class ChallengeDTO implements Serializable {
 
     public void setPoints(int pPoints) {
         this.points = pPoints;
+    }
+
+    public String getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(String dateCreated) {
+        this.dateCreated = dateCreated;
     }
 }

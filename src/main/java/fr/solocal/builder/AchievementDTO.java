@@ -9,36 +9,51 @@ import java.io.Serializable;
  */
 public class AchievementDTO implements Serializable {
     String idResolution;
-    Challenge challenge;
+    String idChallenge;
     String urlPhoto;
+    String idUser;
+    String dateCreated;
 
     public AchievementDTO() {
     }
-
 
     public String getIdResolution() {
         return idResolution;
     }
 
-    public void setIdResolution(String pIdResolution) {
-        this.idResolution = pIdResolution;
+    public void setIdResolution(String idResolution) {
+        this.idResolution = idResolution;
     }
 
-    public Challenge getChallenge() {
-        return challenge;
+    public String getIdChallenge() {
+        return idChallenge;
     }
 
-    public void setChallenge(Challenge pChallenge) {
-        this.challenge = pChallenge;
+    public void setIdChallenge(String idChallenge) {
+        this.idChallenge = idChallenge;
     }
 
     public String getUrlPhoto() {
         return urlPhoto;
     }
 
-    public void setUrlPhoto(String pUrlPhoto) {
-        this.urlPhoto = pUrlPhoto;
+    public void setUrlPhoto(String urlPhoto) {
+        this.urlPhoto = urlPhoto;
     }
 
+    public String getIdUser() {
+        return idUser;
+    }
 
+    public void setIdUser(String idUser) {
+        this.idUser = idUser;
+    }
+
+    public String getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(String dateCreated) {
+        this.dateCreated = dateCreated;
+    }
 }

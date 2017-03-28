@@ -56,6 +56,7 @@ public class ChallengeDAOImpl extends Requester implements ChallengeDAO {
         //Attributs Challenge
         String challengeId = jsonObject.getString("_id");
         int points = source.getInt("points");
+        String dateCreated = source.getString("update").substring(0,10);
 
         //Attributs ChallengeType
         String codeType = source.getString("code");
@@ -73,6 +74,7 @@ public class ChallengeDAOImpl extends Requester implements ChallengeDAO {
         challenge.setEtablissement(etablissement);
         challenge.setType(ChallengeTypeFactory.makeChallengeType(codeType));
         challenge.setPoints(points);
+        challenge.setDateCreated(dateCreated);
 
         return challenge;
     }
@@ -92,6 +94,7 @@ public class ChallengeDAOImpl extends Requester implements ChallengeDAO {
             //Attributs Challenge
             String challengeId = hit.getString("_id");
             int points = source.getInt("points");
+            String dateCreated = source.getString("update").substring(0,10);
 
             //Attributs ChallengeType
             String codeType = source.getString("code");
@@ -111,6 +114,7 @@ public class ChallengeDAOImpl extends Requester implements ChallengeDAO {
             challenge.setEtablissement(etablissement);
             challenge.setType(ChallengeTypeFactory.makeChallengeType(codeType));
             challenge.setPoints(points);
+            challenge.setDateCreated(dateCreated);
             lstChallenges.add(challenge);
         }
 

@@ -10,32 +10,33 @@ import java.util.List;
  * Created by stage04 on 10/03/17.
  */
 public class UserDTO implements Serializable {
-    int idUser;
+    String idUser;
     String lastname;
     String firstname;
     String email;
     String password;
     int rank;
-    List<Achievement> achievements = new ArrayList<>();
+    int score;
 
-    public UserDTO(int pIdUser, String pLastname, String pFirstname, String pEmail, String pPassword, int pRank, List<Achievement> achievements) {
+    public UserDTO(String pIdUser, String pLastname, String pFirstname, String pEmail, String pPassword, int pRank, int score) {
         this.idUser = pIdUser;
         this.lastname = pLastname;
         this.firstname = pFirstname;
         this.email = pEmail;
         this.password = pPassword;
         this.rank = pRank;
-        this.achievements = achievements;
+        this.score = score;
+
     }
 
     public UserDTO() {
     }
 
-    public int getIdUser() {
+    public String getIdUser() {
         return idUser;
     }
 
-    public void setIdUser(int pIdUser) {
+    public void setIdUser(String pIdUser) {
         this.idUser = pIdUser;
     }
 
@@ -79,12 +80,12 @@ public class UserDTO implements Serializable {
         this.rank = pRank;
     }
 
-    public List<Achievement> getAchievements() {
-        return achievements;
+    public int getScore() {
+        return score;
     }
 
-    public void setAchievements(List<Achievement> achievements) {
-        this.achievements = achievements;
+    public void setScore(int score) {
+        this.score = score;
     }
 }
 
