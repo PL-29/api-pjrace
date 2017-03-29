@@ -2,6 +2,9 @@ package fr.solocal.builder;
 
 import fr.solocal.domain.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * Created by stage04 on 10/03/17.
@@ -14,7 +17,6 @@ public class BuilderDTO {
         userDTO.setLastname(user.getLastname());
         userDTO.setFirstname(user.getFirstname());
         userDTO.setEmail(user.getEmail());
-        userDTO.setPassword(user.getPassword());
         userDTO.setRank(user.getRank());
         userDTO.setScore(user.getScore());
         return userDTO;

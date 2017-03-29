@@ -1,9 +1,6 @@
 package fr.solocal.controller;
 
-import fr.solocal.builder.AchievementDTO;
-import fr.solocal.builder.BuilderDTO;
-import fr.solocal.builder.ChallengeDTO;
-import fr.solocal.builder.UserDTO;
+import fr.solocal.builder.*;
 import fr.solocal.domain.*;
 import fr.solocal.service.*;
 import org.json.JSONException;
@@ -93,10 +90,15 @@ public class Controller {
      * TODO: cette méthode
      */
     @RequestMapping(value = "etablissements", method = RequestMethod.GET, headers = "Accept=application/json")
-    public List<Etablissement> getAllEtablissements(@RequestParam(value = "lat") double pLatitude, @RequestParam(value = "lon") double pLongitude, @RequestParam(value = "ray") int pRayon) throws Exception {
+    public List<EtablissementDTO> getAllEtablissements(@RequestParam(value = "lat") double pLatitude, @RequestParam(value = "lon") double pLongitude, @RequestParam(value = "ray") int pRayon) throws Exception {
         List<Etablissement> lstEtablissement = etablissementService.getEtablissementsByPosition(pLatitude, pLongitude, pRayon);
+        List<EtablissementDTO> lstEtablissementDTO = new ArrayList<>();
 
-        return lstEtablissement;
+        for (Etablissement etab : lstEtablissement){
+            lstEtablissementDTO.add(BuilderDTO.generateEtablissementDTO(etab));
+        }
+
+        return lstEtablissementDTO;
     }
 
     /**

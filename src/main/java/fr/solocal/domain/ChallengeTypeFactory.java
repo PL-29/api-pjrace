@@ -25,6 +25,9 @@ public class ChallengeTypeFactory {
             case "paiement" :
                 challengeType = new ChallengeType(codeChallengeType, "Challenge paiement", "Prenez une photo des moyens de paiement autorisés par l'établissement", 100);
                 break;
+            case "rubriques" :
+                challengeType = new ChallengeType(codeChallengeType, "Challenge rubriques", "DESCRIPTION A MODIFIER", 100);
+                break;
         }
         return challengeType;
     }

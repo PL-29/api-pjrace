@@ -4,10 +4,10 @@ package fr.solocal.domain;
  * Created by stage01 on 10/02/17.
  */
 public class Challenge {
-    String idChallenge;
-    Etablissement etablissement;
-    ChallengeType type;
-    int points;
+    String idChallenge = "";
+    Etablissement etablissement = null;
+    ChallengeType type = null;
+    int points = 0;
     String dateCreated = "";
 
     public Challenge(String pIdChallenge, Etablissement pEtablissement, ChallengeType pType, int pPoints) {

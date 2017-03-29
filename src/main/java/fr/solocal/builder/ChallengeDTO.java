@@ -9,10 +9,10 @@ import java.io.Serializable;
  * Created by stage04 on 10/03/17.
  */
 public class ChallengeDTO implements Serializable {
-    String idChallenge;
-    String idChallengeType;
-    int points;
-    String dateCreated;
+    String idChallenge = "";
+    String idChallengeType = "";
+    int points = 0;
+    String dateCreated = "";
 
     public ChallengeDTO(String pIdChallenge, String pIdChallengeType, int pPoints) {
         this.idChallenge = pIdChallenge;

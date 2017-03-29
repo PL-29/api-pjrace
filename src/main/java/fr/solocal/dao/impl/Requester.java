@@ -6,6 +6,7 @@ import org.json.JSONObject;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.ProtocolException;
 import java.net.URL;
 
 /**
@@ -36,7 +37,8 @@ public class Requester {
         return response.toString();
     }
 
-    public void sendPostRequest(String pUrl, JSONObject pJsonObject) throws Exception {
+    public String sendPostRequest(String pUrl, JSONObject pJsonObject) throws Exception {
+        String response = "";
         URL object=new URL(pUrl);
 
         HttpURLConnection con = (HttpURLConnection) object.openConnection();
@@ -61,10 +63,11 @@ public class Requester {
             }
             br.close();
             System.out.println("" + sb.toString());
+            response = sb.toString();
+
         } else {
             System.out.println(con.getResponseMessage());
         }
+        return response;
     }
-
-
 }
