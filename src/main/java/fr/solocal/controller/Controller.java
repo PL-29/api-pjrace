@@ -123,8 +123,8 @@ public class Controller {
      *  TODO: rajouter un retour comme dans le contrat d'interface
      */
     @RequestMapping(value = "achievement", method = RequestMethod.POST, headers = "Accept=application/json")
-    public void achieveChallenge(@RequestParam(value = "idChallenge") String pIdChallenge, @RequestParam(value = "email") String pEmail, @RequestParam(value = "photo") String pPhoto) throws Exception {
-       achievementService.achieveChallenge(pIdChallenge, pEmail, pPhoto);
+    public void achieveChallenge(@RequestParam(value = "idChallenge") String pIdChallenge, @RequestParam(value = "email") String pEmail) throws Exception {
+       achievementService.achieveChallenge(pIdChallenge, pEmail);
     }
 
     /**

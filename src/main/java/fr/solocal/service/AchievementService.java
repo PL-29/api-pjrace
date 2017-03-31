@@ -12,5 +12,5 @@ public interface AchievementService {
 
     public List<Achievement> getAllResolutions(String pEmail) throws Exception;
 
-    public void achieveChallenge(String pIdChallenge, String pIdUser, String pPhoto) throws Exception;
+    public void achieveChallenge(String pIdChallenge, String pIdUser) throws Exception;
 }

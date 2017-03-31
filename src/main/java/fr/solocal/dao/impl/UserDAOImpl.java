@@ -69,13 +69,14 @@ public class UserDAOImpl extends Requester implements UserDAO {
         //TODO: RENVOYER MESSAGE D ERREUR SI MOT DE PASSE OU ID INCORRECTS
         jsonResponse = super.sendGetRequest(url);
 
-        return userFromJson(jsonResponse);
+        return userFromJson(jsonResponse, pPassword);
     }
 
 
     @Override
-    public void achieveChallenge(String pIdChallenge, String pEmail, String pPhotoEncoding) throws Exception {
+    public void achieveChallenge(String pIdChallenge, String pEmail) throws Exception {
         String url = SERVER_ADDRESS+"/elastic-pjrace/pjrace_challenge/user/"+pEmail+"/_update";
+        String pPhotoEncoding = "";
 
         Challenge challenge = new ChallengeDAOImpl().getChallengeById(pIdChallenge);
         User user = getUserInfosByEmail(pEmail);
@@ -121,10 +122,14 @@ public class UserDAOImpl extends Requester implements UserDAO {
 
     public User userFromJson(String pJsonString, String pPassword) throws JSONException {
         JSONObject jsonObject = new JSONObject(pJsonString);
-        JSONObject userInfos = new JSONObject(jsonObject.getString("_source"));
+        String hits = jsonObject.getJSONObject("hits").getString("hits");
+        JSONArray jsonHits = new JSONArray(hits);
+        JSONObject userInfos = new JSONObject(jsonHits.getJSONObject(0).getString("_source"));
         User user = new User();
 
-        if(userInfos.equals(pPassword)){
+        String password = "\""+userInfos.getString("password")+"\"";
+
+        if(password.equals(pPassword)){
             int score = 0;
 
             JSONArray achievementsTab = new JSONArray(userInfos.getString("achievements"));

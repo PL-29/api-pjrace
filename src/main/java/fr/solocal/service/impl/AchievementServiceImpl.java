@@ -25,7 +25,7 @@ public class AchievementServiceImpl implements AchievementService{
     }
 
     @Override
-    public void achieveChallenge(String pIdChallenge, String pIdUser, String pPhoto) throws Exception {
-        userDAO.achieveChallenge(pIdChallenge, pIdUser, pPhoto);
+    public void achieveChallenge(String pIdChallenge, String pIdUser) throws Exception {
+        userDAO.achieveChallenge(pIdChallenge, pIdUser);
     }
 }

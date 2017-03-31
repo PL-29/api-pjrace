@@ -20,7 +20,7 @@ import java.util.List;
  */
 @Repository("etablissementDAO")
 public class EtablissementDAOImpl extends Requester implements EtablissementDAO{
-    private static final String SERVER_ADDRESS  = "http://exalead1t.bbo1t.local:10400";
+    private static final String SERVER_ADDRESS  = "http://91.134.242.201/elastic-pjrace";
     private static final int RAYON = 1;
 
     @Override
@@ -28,6 +28,7 @@ public class EtablissementDAOImpl extends Requester implements EtablissementDAO{
         String url = SERVER_ADDRESS+"/pjrace_challenge/etab/_search";
 
         String jsonResponse = super.sendPostRequest(url, scriptQueryDistanceFilter(pLatitude, pLongitude, RAYON));
+        System.out.println(jsonResponse);
 
         return etablissementsListFromJson(jsonResponse);
     }
@@ -38,6 +39,7 @@ public class EtablissementDAOImpl extends Requester implements EtablissementDAO{
 
         JSONObject jsonObject = new JSONObject(pJsonString);
         String hits = jsonObject.getJSONObject("hits").getString("hits");
+        System.out.println(hits);
         JSONArray jsonArrayEtab = new JSONArray(hits);
 
         for (int i = 0; i < jsonArrayEtab.length(); i++) {
@@ -82,9 +84,20 @@ public class EtablissementDAOImpl extends Requester implements EtablissementDAO{
         JSONObject jsonFilter = new JSONObject();
         jsonFilter.put("geo_distance",jsonGeoDistance);
 
-        JSONObject jsonScript = new JSONObject();
-        jsonScript.put("filter", jsonFilter);
 
-        return jsonScript;
+        JSONObject jsonMust = new JSONObject();
+        jsonMust.put("match_all", new JSONObject());
+
+        JSONObject jsonBool = new JSONObject();
+        jsonBool.put("must", jsonMust);
+        jsonBool.put("filter", jsonFilter);
+
+        JSONObject jsonQuery = new JSONObject();
+        jsonQuery.put("bool", jsonBool);
+
+        JSONObject jsonReturn = new JSONObject();
+        jsonReturn.put("query", jsonQuery);
+
+        return jsonReturn;
     }
 }
