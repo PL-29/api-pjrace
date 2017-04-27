@@ -21,13 +21,12 @@ import java.util.List;
 @Repository("etablissementDAO")
 public class EtablissementDAOImpl extends Requester implements EtablissementDAO{
     private static final String SERVER_ADDRESS  = "http://91.134.242.201/elastic-pjrace";
-    private static final int RAYON = 1;
 
     @Override
     public List<Etablissement> getEtablissementsByPosition(double pLatitude, double pLongitude, int pRayon) throws Exception {
         String url = SERVER_ADDRESS+"/pjrace_challenge/etab/_search";
 
-        String jsonResponse = super.sendPostRequest(url, scriptQueryDistanceFilter(pLatitude, pLongitude, RAYON));
+        String jsonResponse = super.sendPostRequest(url, scriptQueryDistanceFilter(pLatitude, pLongitude, pRayon));
         System.out.println(jsonResponse);
 
         return etablissementsListFromJson(jsonResponse);
