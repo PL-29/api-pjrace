@@ -82,40 +82,43 @@ public class ChallengeDAOImpl extends Requester implements ChallengeDAO {
     public List<Challenge> challengesByCodeEtabFromJson(String pJsonString) throws JSONException {
         List<Challenge> lstChallenges = new ArrayList<>();
 
-
         JSONObject jsonObject = new JSONObject(pJsonString);
         String hits = jsonObject.getJSONObject("hits").getString("hits");
-        JSONArray jsonArray = new JSONArray(hits);
+        JSONArray jsonArrayHits = new JSONArray(hits);
 
-        for (int i = 0; i < jsonArray.length(); i++) {
-            JSONObject hit = jsonArray.getJSONObject(i);
-            JSONObject source = jsonArray.getJSONObject(i).getJSONObject("_source");
-
-            //Attributs Challenge
-            String challengeId = hit.getString("_id");
-            int points = source.getInt("points");
-            String dateCreated = source.getString("update").substring(0,10);
-
-            //Attributs ChallengeType
-            String codeType = source.getString("code");
+        for (int i = 0; i < jsonArrayHits.length(); i++) {
+            JSONObject hit = jsonArrayHits.getJSONObject(i);
+            JSONObject source = jsonArrayHits.getJSONObject(i).getJSONObject("_source");
 
             //Attributs Etablissement
             String etabAdresse = source.getString("adresse");
             int codeEtab = source.getInt("code_etab");
             String denom = source.getString("denom");
-            double latitude = source.getJSONObject("_geo").getDouble("lat");
-            double longitude = source.getJSONObject("_geo").getDouble("lon");
+            double latitude = source.getJSONObject("location").getDouble("lat");
+            double longitude = source.getJSONObject("location").getDouble("lon");
 
             Etablissement etablissement = new Etablissement(codeEtab, denom, etabAdresse, latitude, longitude);
 
+            JSONArray jsonArrayChallenge = source.getJSONArray("challenges");
+            for (int y = 0; y < jsonArrayChallenge.length(); y++) {
+                JSONObject jsonChallenge = jsonArrayChallenge.getJSONObject(y);
 
-            Challenge challenge = new Challenge();
-            challenge.setIdChallenge(challengeId);
-            challenge.setEtablissement(etablissement);
-            challenge.setType(ChallengeTypeFactory.makeChallengeType(codeType));
-            challenge.setPoints(points);
-            challenge.setDateCreated(dateCreated);
-            lstChallenges.add(challenge);
+                //Attributs Challenge
+                String challengeId = jsonChallenge.getString("id");
+                int points = jsonChallenge.getInt("points");
+                String dateCreated = source.getString("creation_date").substring(0, 10);
+
+                //Attributs ChallengeType
+                String codeType = jsonChallenge.getString("code");
+
+                Challenge challenge = new Challenge();
+                challenge.setIdChallenge(challengeId);
+                challenge.setEtablissement(etablissement);
+                challenge.setType(ChallengeTypeFactory.makeChallengeType(codeType));
+                challenge.setPoints(points);
+                challenge.setDateCreated(dateCreated);
+                lstChallenges.add(challenge);
+            }
         }
 
         return lstChallenges;
