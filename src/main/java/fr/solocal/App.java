@@ -1,8 +1,5 @@
 package fr.solocal;
 
-import fr.solocal.dao.CentralDAO;
-import fr.solocal.dao.impl.CentralDAOImpl;
-import fr.solocal.utils.ImageConverter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.actuate.autoconfigure.MetricFilterAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.MetricRepositoryAutoConfiguration;
