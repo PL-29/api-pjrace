@@ -1,13 +1,17 @@
 package fr.solocal.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * Created by stage01 on 10/02/17.
  */
 public class Challenge {
     String idChallenge = "";
+    @JsonIgnore
     Etablissement etablissement = null;
     ChallengeType type = null;
     int points = 0;
+    @JsonIgnore
     String dateCreated = "";
 
     public Challenge(String pIdChallenge, Etablissement pEtablissement, ChallengeType pType, int pPoints) {
