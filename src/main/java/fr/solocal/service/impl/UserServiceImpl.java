@@ -1,13 +1,11 @@
 package fr.solocal.service.impl;
 
-import fr.solocal.dao.CentralDAO;
 import fr.solocal.dao.UserDAO;
 import fr.solocal.domain.User;
 import fr.solocal.service.UserService;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
-import java.util.Iterator;
 import java.util.List;
 
 /**

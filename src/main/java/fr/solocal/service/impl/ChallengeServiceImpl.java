@@ -1,14 +1,11 @@
 package fr.solocal.service.impl;
 
-import fr.solocal.dao.CentralDAO;
 import fr.solocal.dao.ChallengeDAO;
 import fr.solocal.domain.Challenge;
-import fr.solocal.domain.ChallengeType;
 import fr.solocal.service.ChallengeService;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
-import java.util.Iterator;
 import java.util.List;
 
 /**
