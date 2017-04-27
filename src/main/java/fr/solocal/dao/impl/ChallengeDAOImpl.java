@@ -23,8 +23,8 @@ public class ChallengeDAOImpl extends Requester implements ChallengeDAO {
 
     @Override
     public Challenge getChallengeById(String pIdChallenge) throws Exception{
-        String serverAddress = "http://91.134.242.201";
-        String url = "/elastic-pjrace/pjrace_challenge/challenge/"+pIdChallenge;
+        String serverAddress = "http://91.134.242.201/elastic-pjrace";
+        String url = "/pjrace_challenge/challenge/"+pIdChallenge;
         String jsonResponse;
 
         jsonResponse = super.sendGetRequest(serverAddress+url);
@@ -34,8 +34,8 @@ public class ChallengeDAOImpl extends Requester implements ChallengeDAO {
     @Override
     public List<Challenge> getChallengesByCodeEtab(int pCodeEtab) throws Exception{
 
-        String serverAddress = "http://91.134.242.201";
-        String url = "/elastic-pjrace/pjrace_challenge/_search?q=code_etab:"+pCodeEtab;
+        String serverAddress = "http://91.134.242.201/elastic-pjrace";
+        String url = "/pjrace_challenge/_search?q=code_etab:"+pCodeEtab;
         String jsonResponse;
 
         jsonResponse = super.sendGetRequest(serverAddress+url);

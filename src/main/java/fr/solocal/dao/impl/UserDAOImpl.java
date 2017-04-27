@@ -22,7 +22,7 @@ import java.util.Random;
  */
 @Repository("userDAO")
 public class UserDAOImpl extends Requester implements UserDAO {
-    private static final String SERVER_ADDRESS  = "http://91.134.242.201";
+    private static final String SERVER_ADDRESS  = "http://91.134.242.201/elastic-pjrace";
     private static final String SAVING_PATH = "/home/stage01/Images/";
 
     public class IndexUser {
@@ -39,7 +39,7 @@ public class UserDAOImpl extends Requester implements UserDAO {
     @Override
     public List<User> getRanking(String pEmail) throws Exception {
         //L'idUser correspond à l'adresse mail de l'utilisateur /!\
-        String url = SERVER_ADDRESS+"/elastic-pjrace/pjrace_challenge/user/_search?sort=score:desc";
+        String url = SERVER_ADDRESS+"/pjrace_challenge/user/_search?sort=score:desc";
         String jsonResponse;
         IndexUser indexUser = new IndexUser();
 
@@ -52,7 +52,7 @@ public class UserDAOImpl extends Requester implements UserDAO {
     @Override
     public List<Achievement> getAllAchievements(String pEmail) throws Exception{
         //L'idUser correspond à l'adresse mail de l'utilisateur /!\
-        String url = SERVER_ADDRESS+"/elastic-pjrace/pjrace_challenge/user/"+pEmail;
+        String url = SERVER_ADDRESS+"/pjrace_challenge/user/"+pEmail;
         String jsonResponse;
 
         jsonResponse = super.sendGetRequest(url);
@@ -63,7 +63,7 @@ public class UserDAOImpl extends Requester implements UserDAO {
     @Override
     public User connexion(String pEmail, String pPassword) throws Exception {
         //L'idUser correspond à l'adresse mail de l'utilisateur /!\
-        String url = SERVER_ADDRESS+"/elastic-pjrace/pjrace_challenge/user/_search?q=email:"+pEmail+" AND password:"+pPassword;
+        String url = SERVER_ADDRESS+"/pjrace_challenge/user/_search?q=email:"+pEmail+" AND password:"+pPassword;
         String jsonResponse;
 
         //TODO: RENVOYER MESSAGE D ERREUR SI MOT DE PASSE OU ID INCORRECTS
@@ -75,7 +75,7 @@ public class UserDAOImpl extends Requester implements UserDAO {
 
     @Override
     public void achieveChallenge(String pIdChallenge, String pEmail) throws Exception {
-        String url = SERVER_ADDRESS+"/elastic-pjrace/pjrace_challenge/user/"+pEmail+"/_update";
+        String url = SERVER_ADDRESS+"/pjrace_challenge/user/"+pEmail+"/_update";
         String pPhotoEncoding = "";
 
         Challenge challenge = new ChallengeDAOImpl().getChallengeById(pIdChallenge);
@@ -89,7 +89,7 @@ public class UserDAOImpl extends Requester implements UserDAO {
 
 
     private User getUserInfosByEmail(String pEmail) throws Exception {
-        String url = SERVER_ADDRESS+"/elastic-pjrace/pjrace_challenge/user/"+pEmail;
+        String url = SERVER_ADDRESS+"/pjrace_challenge/user/"+pEmail;
         String jsonResponse;
 
         jsonResponse = super.sendGetRequest(url);
