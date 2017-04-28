@@ -23,11 +23,10 @@ public class EtablissementDAOImpl extends Requester implements EtablissementDAO{
     private static final String SERVER_ADDRESS  = "http://91.134.242.201/elastic-pjrace";
 
     @Override
-    public List<Etablissement> getEtablissementsByPosition(double pLatitude, double pLongitude, int pRayon) throws Exception {
+    public List<Etablissement> getEtablissementsByPosition(String pLatitude, String pLongitude, String pRayon) throws Exception {
         String url = SERVER_ADDRESS+"/pjrace_challenge/etab/_search";
 
         String jsonResponse = super.sendPostRequest(url, scriptQueryDistanceFilter(pLatitude, pLongitude, pRayon));
-        System.out.println(jsonResponse);
 
         return etablissementsListFromJson(jsonResponse);
     }
@@ -71,7 +70,7 @@ public class EtablissementDAOImpl extends Requester implements EtablissementDAO{
         return lstEtablissements;
     }
 
-    public JSONObject scriptQueryDistanceFilter(double pLatitude, double pLongitude, int pRayon) throws JSONException {
+    public JSONObject scriptQueryDistanceFilter(String pLatitude, String pLongitude, String pRayon) throws JSONException {
         JSONObject jsonLatLon = new JSONObject();
         jsonLatLon.put("lat", pLatitude);
         jsonLatLon.put("lon", pLongitude);

@@ -18,7 +18,7 @@ public class EtablissementServiceImpl implements EtablissementService {
     private EtablissementDAO etablissementDAO;
 
     @Override
-    public List<Etablissement> getEtablissementsByPosition(double pLatitude, double pLongitude, int pRayon) throws Exception {
+    public List<Etablissement> getEtablissementsByPosition(String pLatitude, String pLongitude, String pRayon) throws Exception {
         return etablissementDAO.getEtablissementsByPosition(pLatitude, pLongitude, pRayon);
     }
 }

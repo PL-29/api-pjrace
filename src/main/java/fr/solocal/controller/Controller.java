@@ -90,7 +90,8 @@ public class Controller {
      * TODO: cette méthode
      */
     @RequestMapping(value = "etablissements", method = RequestMethod.GET, headers = "Accept=application/json")
-    public List<EtablissementDTO> getAllEtablissements(@RequestParam(value = "lat") double pLatitude, @RequestParam(value = "lon") double pLongitude, @RequestParam(value = "ray") int pRayon) throws Exception {
+    public List<EtablissementDTO> getAllEtablissements(@RequestParam(value = "lat") String pLatitude, @RequestParam(value = "lon") String pLongitude, @RequestParam(value = "ray") String pRayon) throws Exception {
+
         List<Etablissement> lstEtablissement = etablissementService.getEtablissementsByPosition(pLatitude, pLongitude, pRayon);
         List<EtablissementDTO> lstEtablissementDTO = new ArrayList<>();
 

@@ -10,5 +10,5 @@ import java.util.List;
  */
 public interface EtablissementService {
     //Permet de récupérer les etablissements
-    public List<Etablissement> getEtablissementsByPosition(double pLatitude, double pLongitude, int pRayon) throws Exception;
+    public List<Etablissement> getEtablissementsByPosition(String pLatitude, String pLongitude, String pRayon) throws Exception;
 }
