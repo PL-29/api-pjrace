@@ -9,6 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.stereotype.Repository;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -23,7 +24,7 @@ import java.util.Random;
 @Repository("userDAO")
 public class UserDAOImpl extends Requester implements UserDAO {
     private static final String SERVER_ADDRESS  = "http://91.134.242.201";
-    private static final String SAVING_PATH = "/home/stage01/Images/";
+    private static final String SAVING_PATH = "/home/pjrace";
 
     public class IndexUser {
         private int value = 0;
@@ -74,9 +75,8 @@ public class UserDAOImpl extends Requester implements UserDAO {
 
 
     @Override
-    public void achieveChallenge(String pIdChallenge, String pEmail) throws Exception {
+    public void achieveChallenge(String pPhotoEncoding, String pIdChallenge, String pEmail) throws Exception {
         String url = SERVER_ADDRESS+"/pjrace_challenge/user/"+pEmail+"/_update";
-        String pPhotoEncoding = "";
 
         Challenge challenge = new ChallengeDAOImpl().getChallengeById(pIdChallenge);
         User user = getUserInfosByEmail(pEmail);
@@ -251,7 +251,7 @@ public class UserDAOImpl extends Requester implements UserDAO {
     }
 
 
-    public String  saveImage(String pImageEncoding, String pIdChallenge) throws IOException {
+    public String saveImage(String pImageEncoding, String pIdChallenge) throws IOException {
         Random randomGenerator = new Random();
         String photoName = pIdChallenge+randomGenerator.nextInt(1000)+".png";
 
