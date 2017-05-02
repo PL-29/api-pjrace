@@ -125,7 +125,6 @@ public class Controller {
 
     /**
      *  Méthode permettant de résoudre un challenge
-     *  TODO: rajouter un retour comme dans le contrat d'interface
      */
     @RequestMapping(value = "achievement", method = RequestMethod.POST, headers = "Accept=application/json")
     @ResponseBody
