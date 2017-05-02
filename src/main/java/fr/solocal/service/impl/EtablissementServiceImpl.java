@@ -23,8 +23,8 @@ public class EtablissementServiceImpl implements EtablissementService {
     }
 
     @Override
-    public int getDistanceToClosestChallenge(String pLatitude, String pLongitude) throws Exception {
-        return etablissementDAO.getDistanceToClosestChallenge(pLatitude, pLongitude);
+    public int getDistanceToClosestChallenge(String pLatitude, String pLongitude, String pRayon) throws Exception {
+        return etablissementDAO.getDistanceToClosestChallenge(pLatitude, pLongitude, pRayon);
     }
 
 

@@ -11,5 +11,5 @@ import java.util.List;
 public interface EtablissementDAO {
     public List<Etablissement> getEtablissementsByPosition(String pLatitude, String pLongitude, String pRayon) throws Exception;
 
-    public int getDistanceToClosestChallenge(String pLatitude, String pLongitude) throws Exception;
+    public int getDistanceToClosestChallenge(String pLatitude, String pLongitude, String pRayon) throws Exception;
 }

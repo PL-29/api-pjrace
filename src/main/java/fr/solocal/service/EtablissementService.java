@@ -12,5 +12,5 @@ public interface EtablissementService {
     //Permet de récupérer les etablissements
     public List<Etablissement> getEtablissementsByPosition(String pLatitude, String pLongitude, String pRayon) throws Exception;
 
-    public int getDistanceToClosestChallenge(String pLatitude, String pLongitude) throws  Exception;
+    public int getDistanceToClosestChallenge(String pLatitude, String pLongitude, String pRayon) throws  Exception;
 }

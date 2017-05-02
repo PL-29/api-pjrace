@@ -32,7 +32,9 @@ public class EtablissementDAOImpl extends Requester implements EtablissementDAO{
     }
 
     @Override
-    public int getDistanceToClosestChallenge(String pLatitude, String pLongitude) throws Exception {
+    public int getDistanceToClosestChallenge(String pLatitude, String pLongitude, String pRayon) throws Exception {
+        String url = SERVER_ADDRESS+"/pjrace_challenge/etab/_search";
+        String jsonResponse = super.sendPostRequest(url, scriptQueryDistanceSort(pLatitude, pLongitude, pRayon));
         return 0;
     }
 
@@ -71,6 +73,7 @@ public class EtablissementDAOImpl extends Requester implements EtablissementDAO{
 
         }
 
+
         return lstEtablissements;
     }
 
@@ -96,6 +99,42 @@ public class EtablissementDAOImpl extends Requester implements EtablissementDAO{
 
         JSONObject jsonQuery = new JSONObject();
         jsonQuery.put("bool", jsonBool);
+
+        JSONObject jsonReturn = new JSONObject();
+        jsonReturn.put("query", jsonQuery);
+
+        return jsonReturn;
+    }
+
+    public JSONObject scriptQueryDistanceSort(String pLatitude, String pLongitude, String pRayon) throws JSONException {
+        JSONObject jsonLatLon = new JSONObject();
+        jsonLatLon.put("lat", pLatitude);
+        jsonLatLon.put("lon", pLongitude);
+
+        JSONObject jsonGeoDistance = new JSONObject();
+        jsonGeoDistance.put("distance", pRayon+"km");
+        jsonGeoDistance.put("location", jsonLatLon);
+
+        JSONObject jsonFilter = new JSONObject();
+        jsonFilter.put("geo_distance",jsonGeoDistance);
+
+
+        JSONObject jsonMust = new JSONObject();
+        jsonMust.put("match_all", new JSONObject());
+
+        JSONObject jsonBool = new JSONObject();
+        jsonBool.put("must", jsonMust);
+        jsonBool.put("filter", jsonFilter);
+
+        JSONObject jsonQuery = new JSONObject();
+        jsonQuery.put("bool", jsonBool);
+
+        JSONObject jsonSort = new JSONObject();
+        JSONObject json_GeoDistance = new JSONObject();
+        json_GeoDistance.put("location", jsonLatLon);
+        jsonBool.put("order", new JSONObject());
+        jsonBool.put("unit", new JSONObject());
+        jsonBool.put("distance_type", new JSONObject());
 
         JSONObject jsonReturn = new JSONObject();
         jsonReturn.put("query", jsonQuery);
