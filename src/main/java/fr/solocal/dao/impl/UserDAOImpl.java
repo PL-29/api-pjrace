@@ -64,7 +64,7 @@ public class UserDAOImpl extends Requester implements UserDAO {
     @Override
     public User connexion(String pEmail, String pPassword) throws Exception {
         //L'idUser correspond à l'adresse mail de l'utilisateur /!\
-        String url = SERVER_ADDRESS+"/pjrace_challenge/user/_search?q=email:"+pEmail+" AND password:"+pPassword;
+        String url = SERVER_ADDRESS+"/pjrace_challenge/user/_search?q=email:\""+pEmail+"\" AND password:\""+pPassword+"\"";
         String jsonResponse;
 
         //TODO: RENVOYER MESSAGE D ERREUR SI MOT DE PASSE OU ID INCORRECTS
@@ -75,16 +75,24 @@ public class UserDAOImpl extends Requester implements UserDAO {
 
 
     @Override
-    public void achieveChallenge(String pPhotoEncoding, String pIdChallenge, String pEmail) throws Exception {
+    public Achievement achieveChallenge(String pPhotoEncoding, String pIdChallenge, String pEmail) throws Exception {
         String url = SERVER_ADDRESS+"/pjrace_challenge/user/"+pEmail+"/_update";
 
         Challenge challenge = new ChallengeDAOImpl().getChallengeById(pIdChallenge);
         User user = getUserInfosByEmail(pEmail);
 
         JSONObject jsonScript = jsonScriptToUpdate(challenge, user, SAVING_PATH);
-        saveImage(pPhotoEncoding, pIdChallenge);
+        String urlPhoto = saveImage(pPhotoEncoding, pIdChallenge);
 
         super.sendPostRequest(url, jsonScript);
+
+        Achievement achievement = new Achievement();
+        achievement.setIdAchievement(challenge.getIdChallenge()+"_"+user.getIdUser());
+        achievement.setChallenge(challenge);
+        achievement.setUrlPhoto(urlPhoto);
+        achievement.setUser(user);
+
+        return achievement;
     }
 
 
@@ -125,25 +133,13 @@ public class UserDAOImpl extends Requester implements UserDAO {
         String hits = jsonObject.getJSONObject("hits").getString("hits");
         JSONArray jsonHits = new JSONArray(hits);
         JSONObject userInfos = new JSONObject(jsonHits.getJSONObject(0).getString("_source"));
+
         User user = new User();
-
-        String password = "\""+userInfos.getString("password")+"\"";
-
-        if(password.equals(pPassword)){
-            int score = 0;
-
-            JSONArray achievementsTab = new JSONArray(userInfos.getString("achievements"));
-
-            for(int i=0; i<achievementsTab.length(); i++){
-                score += achievementsTab.getJSONObject(i).getInt("score");
-            }
-
-            user.setIdUser(userInfos.getString("email"));
-            user.setFirstname(userInfos.getString("firstname"));
-            user.setLastname(userInfos.getString("lastname"));
-            user.setEmail(userInfos.getString("email"));
-            user.setScore(score);
-        }
+        user.setIdUser(userInfos.getString("email"));
+        user.setFirstname(userInfos.getString("firstname"));
+        user.setLastname(userInfos.getString("lastname"));
+        user.setEmail(userInfos.getString("email"));
+        user.setScore(userInfos.getInt("score"));
 
         return user;
     }
@@ -151,25 +147,30 @@ public class UserDAOImpl extends Requester implements UserDAO {
 
     public List<Achievement> achievementsFromJson(String pJsonString) throws JSONException {
         List<Achievement> lstAchievements = new ArrayList<>();
-        int score = 0;
 
         JSONObject jsonObject = new JSONObject(pJsonString);
         JSONObject userInfos = new JSONObject(jsonObject.getString("_source"));
         JSONArray achievementsTab = new JSONArray(userInfos.getString("achievements"));
 
         for(int i=0; i<achievementsTab.length(); i++){
-            score += achievementsTab.getJSONObject(i).getInt("score");
-            String idAchievement = achievementsTab.getJSONObject(i).getString("idChallenge")+"_res";
+            JSONObject currentAchievement = achievementsTab.getJSONObject(i);
+            String idAchievement = currentAchievement.getString("idChallenge")+"_res";
 
-            String idChallenge = achievementsTab.getJSONObject(i).getString("idChallenge");
-            String dateCreated = achievementsTab.getJSONObject(i).getString("dateCreated");
+            String idChallenge = currentAchievement.getString("idChallenge");
+            String dateCreated = currentAchievement.getString("dateCreated");
             Challenge challenge = new Challenge();
             challenge.setIdChallenge(idChallenge);
             challenge.setDateCreated(dateCreated);
+            User user = new User();
+            user.setLastname(userInfos.getString("lastname"));
+            user.setFirstname(userInfos.getString("firstname"));
+            user.setEmail(userInfos.getString("email"));
+            user.setIdUser(userInfos.getString("email"));
 
-            String photoUrl = achievementsTab.getJSONObject(i).getString("photoUrl");
 
-            Achievement achievement = new Achievement(idAchievement, challenge, photoUrl);
+            String photoUrl = currentAchievement.getString("photoUrl");
+
+            Achievement achievement = new Achievement(idAchievement, challenge, photoUrl, user);
             lstAchievements.add(achievement);
         }
         return lstAchievements;

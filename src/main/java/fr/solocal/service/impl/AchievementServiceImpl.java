@@ -23,7 +23,7 @@ public class AchievementServiceImpl implements AchievementService{
     }
 
     @Override
-    public void achieveChallenge(String pPhotoEncoding, String pIdChallenge, String pIdUser) throws Exception {
-        userDAO.achieveChallenge(pPhotoEncoding, pIdChallenge, pIdUser);
+    public Achievement achieveChallenge(String pPhotoEncoding, String pIdChallenge, String pIdUser) throws Exception {
+        return userDAO.achieveChallenge(pPhotoEncoding, pIdChallenge, pIdUser);
     }
 }

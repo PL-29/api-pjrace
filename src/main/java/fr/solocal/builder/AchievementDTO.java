@@ -8,7 +8,7 @@ import java.io.Serializable;
  * Created by stage04 on 10/03/17.
  */
 public class AchievementDTO implements Serializable {
-    String idResolution;
+    String idAchievement;
     String idChallenge;
     String urlPhoto;
     String idUser;
@@ -18,11 +18,15 @@ public class AchievementDTO implements Serializable {
     }
 
     public String getIdResolution() {
-        return idResolution;
+        return idAchievement;
     }
 
-    public void setIdResolution(String idResolution) {
-        this.idResolution = idResolution;
+    public String getIdAchievement() {
+        return idAchievement;
+    }
+
+    public void setIdAchievement(String idAchievement) {
+        this.idAchievement = idAchievement;
     }
 
     public String getIdChallenge() {

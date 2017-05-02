@@ -4,25 +4,27 @@ package fr.solocal.domain;
  * Created by stage01 on 10/02/17.
  */
 public class Achievement {
-    String idResolution;
+    String idAchievement;
     Challenge challenge;
     String urlPhoto;
+    User user;
 
-    public Achievement(String pIdResolution, Challenge pChallenge, String pUrlPhoto) {
-        this.idResolution = pIdResolution;
+    public Achievement(String pIdAchievement, Challenge pChallenge, String pUrlPhoto, User pUser) {
+        this.idAchievement = pIdAchievement;
         this.challenge = pChallenge;
         this.urlPhoto = pUrlPhoto;
+        this.user = pUser;
     }
 
     public Achievement() {
     }
 
-    public String getIdResolution() {
-        return idResolution;
+    public String getIdAchievement() {
+        return idAchievement;
     }
 
-    public void setIdResolution(String pIdResolution) {
-        this.idResolution = pIdResolution;
+    public void setIdAchievement(String pIdAchievement) {
+        this.idAchievement = pIdAchievement;
     }
 
     public Challenge getChallenge() {
@@ -39,5 +41,13 @@ public class Achievement {
 
     public void setUrlPhoto(String pUrlPhoto) {
         this.urlPhoto = pUrlPhoto;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

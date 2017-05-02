@@ -22,13 +22,13 @@ public class BuilderDTO {
         return userDTO;
     }
 
-    public static AchievementDTO generateAchievementDTO (String userEmail, Achievement achievement) {
+    public static AchievementDTO generateAchievementDTO (Achievement achievement) {
         AchievementDTO achievementDTO = new AchievementDTO();
-        achievementDTO.setIdResolution(achievement.getIdResolution());
+        achievementDTO.setIdAchievement(achievement.getIdAchievement());
         achievementDTO.setIdChallenge(achievement.getChallenge().getIdChallenge());
         achievementDTO.setUrlPhoto(achievement.getUrlPhoto());
         achievementDTO.setDateCreated(achievement.getChallenge().getDateCreated());
-        achievementDTO.setIdUser(userEmail);
+        achievementDTO.setIdUser(achievement.getUser().getIdUser());
 
         return achievementDTO;
     }

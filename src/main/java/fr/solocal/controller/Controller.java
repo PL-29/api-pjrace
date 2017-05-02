@@ -117,7 +117,7 @@ public class Controller {
         List<Achievement> lstAchievements = achievementService.getAllResolutions(pEmail);
 
         for(Achievement achievement : lstAchievements){
-            lstAchievementsDTO.add(BuilderDTO.generateAchievementDTO(pEmail, achievement));
+            lstAchievementsDTO.add(BuilderDTO.generateAchievementDTO(achievement));
         }
 
         return lstAchievementsDTO;
@@ -129,24 +129,23 @@ public class Controller {
      */
     @RequestMapping(value = "achievement", method = RequestMethod.POST, headers = "Accept=application/json")
     @ResponseBody
-    public void achieveChallenge(@RequestParam(value = "idChallenge") String pIdChallenge, @RequestParam(value = "email") String pEmail, @RequestBody String requestBodyString) throws Exception {
-       //achievementService.achieveChallenge(pIdChallenge, pEmail);*/
+    public AchievementDTO achieveChallenge(@RequestParam(value = "idChallenge") String pIdChallenge, @RequestParam(value = "email") String pEmail, @RequestBody String requestBodyString) throws Exception {
         JSONObject jsonImage = new JSONObject(requestBodyString);
-        achievementService.achieveChallenge(jsonImage.getString("photo"), pIdChallenge, pEmail);
+        Achievement achievement = achievementService.achieveChallenge(jsonImage.getString("photo"), pIdChallenge, pEmail);
+
+        return BuilderDTO.generateAchievementDTO(achievement);
     }
 
     /**
      * Renvoie les informations d'un utilisateur, correspond à la connexion
      *
      * @return un objet UserDTO
-     * //TODO : A FAIRE
      */
     @RequestMapping(value = "user", method = RequestMethod.GET, headers = "Accept=application/json")
     public UserDTO connexion(@RequestParam(value = "email") String pEmail, @RequestParam(value = "pwd") String pPwd) throws Exception {
         User user = userService.connexion(pEmail, pPwd);
-        UserDTO userDTO = BuilderDTO.generateUserDTO(user);
 
-        return userDTO;
+        return BuilderDTO.generateUserDTO(user);
     }
 
 
