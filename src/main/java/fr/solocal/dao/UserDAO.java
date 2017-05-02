@@ -16,5 +16,5 @@ public interface UserDAO {
 
     public User connexion(String email, String password) throws Exception ;
 
-    public void achieveChallenge(String idChallenge, String idUser) throws Exception ;
+    public void achieveChallenge(String pPhotoEncoding, String idChallenge, String idUser) throws Exception ;
 }

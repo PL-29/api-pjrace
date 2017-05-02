@@ -1,16 +1,21 @@
 package fr.solocal.controller;
 
 import fr.solocal.builder.*;
+import fr.solocal.dao.UserDAO;
+import fr.solocal.dao.impl.UserDAOImpl;
 import fr.solocal.domain.*;
 import fr.solocal.service.*;
+import fr.solocal.utils.ImageConverter;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by stage01 on 10/02/17.
@@ -87,7 +92,6 @@ public class Controller {
      * Renvoie une liste d'établissements par rapport à la position de l'utilisateur (latitude, longitude)
      *
      * @return une liste des établissements
-     * TODO: cette méthode
      */
     @RequestMapping(value = "etablissements", method = RequestMethod.GET, headers = "Accept=application/json")
     public List<EtablissementDTO> getAllEtablissements(@RequestParam(value = "lat") String pLatitude, @RequestParam(value = "lon") String pLongitude, @RequestParam(value = "ray") String pRayon) throws Exception {
@@ -124,14 +128,18 @@ public class Controller {
      *  TODO: rajouter un retour comme dans le contrat d'interface
      */
     @RequestMapping(value = "achievement", method = RequestMethod.POST, headers = "Accept=application/json")
-    public void achieveChallenge(@RequestParam(value = "idChallenge") String pIdChallenge, @RequestParam(value = "email") String pEmail) throws Exception {
-       achievementService.achieveChallenge(pIdChallenge, pEmail);
+    @ResponseBody
+    public void achieveChallenge(@RequestParam(value = "idChallenge") String pIdChallenge, @RequestParam(value = "email") String pEmail, @RequestBody String requestBodyString) throws Exception {
+       //achievementService.achieveChallenge(pIdChallenge, pEmail);*/
+        JSONObject jsonImage = new JSONObject(requestBodyString);
+        achievementService.achieveChallenge(jsonImage.getString("photo"), pIdChallenge, pEmail);
     }
 
     /**
      * Renvoie les informations d'un utilisateur, correspond à la connexion
      *
      * @return un objet UserDTO
+     * //TODO : A FAIRE
      */
     @RequestMapping(value = "user", method = RequestMethod.GET, headers = "Accept=application/json")
     public UserDTO connexion(@RequestParam(value = "email") String pEmail, @RequestParam(value = "pwd") String pPwd) throws Exception {
@@ -139,6 +147,14 @@ public class Controller {
         UserDTO userDTO = BuilderDTO.generateUserDTO(user);
 
         return userDTO;
+    }
+
+
+    //TODO : FAIRE LA REQUETE PERMETTANT D'OBTENIR LA DISTANCE ENTRE L'UTILISATEUR ET LE CHALLENGE LE PLUS PROCHE
+    @RequestMapping(value = "rayon", method = RequestMethod.GET, headers = "Accept=application/json")
+    public Integer getDistanceToClosestChallenge(@RequestParam(value = "lat") String pLatitude, @RequestParam(value = "lon") String pLongitude) throws Exception {
+
+        return 0;
     }
 
     /**
