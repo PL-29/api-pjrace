@@ -36,7 +36,7 @@ public class EtablissementDAOImpl extends Requester implements EtablissementDAO{
     public int getDistanceToClosestChallenge(String pLatitude, String pLongitude, String pRayon) throws Exception {
         String url = SERVER_ADDRESS+"/pjrace_challenge/etab/_search";
         String jsonResponse = super.sendPostRequest(url, scriptQueryDistanceSort(pLatitude, pLongitude, pRayon));
-        return 0;
+        return getDistanceToClosestChallenge(pLatitude, pLongitude, pRayon);
     }
 
     public List<Etablissement> etablissementsListFromJson(String pJsonString) throws JSONException {
@@ -133,11 +133,13 @@ public class EtablissementDAOImpl extends Requester implements EtablissementDAO{
         jsonQuery.put("bool", jsonBool);
 
         JSONObject jsonSort = new JSONObject();
+
         JSONObject json_GeoDistance = new JSONObject();
         json_GeoDistance.put("location", jsonLatLon);
-        jsonBool.put("order", new JSONObject());
-        jsonBool.put("unit", new JSONObject());
-        jsonBool.put("distance_type", new JSONObject());
+
+        jsonSort.put("order", "asc");
+        jsonSort.put("unit", "m");
+        jsonSort.put("distance_type", "plane" );
 
         JSONObject jsonReturn = new JSONObject();
         jsonReturn.put("query", jsonQuery);
