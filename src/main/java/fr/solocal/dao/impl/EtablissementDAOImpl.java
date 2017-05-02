@@ -21,6 +21,7 @@ import java.util.List;
 @Repository("etablissementDAO")
 public class EtablissementDAOImpl extends Requester implements EtablissementDAO{
     private static final String SERVER_ADDRESS  = "http://91.134.242.201";
+    private static final int NB_ETAB  = 100;
 
     @Override
     public List<Etablissement> getEtablissementsByPosition(String pLatitude, String pLongitude, String pRayon) throws Exception {
@@ -102,6 +103,8 @@ public class EtablissementDAOImpl extends Requester implements EtablissementDAO{
 
         JSONObject jsonReturn = new JSONObject();
         jsonReturn.put("query", jsonQuery);
+        jsonReturn.put("from", 0);
+        jsonReturn.put("size", NB_ETAB);
 
         return jsonReturn;
     }
