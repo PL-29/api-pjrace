@@ -21,4 +21,11 @@ public class EtablissementServiceImpl implements EtablissementService {
     public List<Etablissement> getEtablissementsByPosition(String pLatitude, String pLongitude, String pRayon) throws Exception {
         return etablissementDAO.getEtablissementsByPosition(pLatitude, pLongitude, pRayon);
     }
+
+    @Override
+    public int getDistanceToClosestChallenge(String pLatitude, String pLongitude) throws Exception {
+        return etablissementDAO.getDistanceToClosestChallenge(pLatitude, pLongitude);
+    }
+
+
 }

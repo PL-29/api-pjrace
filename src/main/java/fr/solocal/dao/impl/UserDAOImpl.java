@@ -22,7 +22,7 @@ import java.util.Random;
  */
 @Repository("userDAO")
 public class UserDAOImpl extends Requester implements UserDAO {
-    private static final String SERVER_ADDRESS  = "http://91.134.242.201/elastic-pjrace";
+    private static final String SERVER_ADDRESS  = "http://91.134.242.201";
     private static final String SAVING_PATH = "/home/stage01/Images/";
 
     public class IndexUser {

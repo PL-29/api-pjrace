@@ -16,7 +16,7 @@ import java.util.List;
  */
 @Repository("challengeDAO")
 public class ChallengeDAOImpl extends Requester implements ChallengeDAO {
-    private static final String SERVER_ADDRESS  = "http://91.134.242.201/elastic-pjrace";
+    private static final String SERVER_ADDRESS  = "http://91.134.242.201";
 
     public ChallengeDAOImpl(){
         super();

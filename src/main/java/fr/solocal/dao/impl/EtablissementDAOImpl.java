@@ -20,7 +20,7 @@ import java.util.List;
  */
 @Repository("etablissementDAO")
 public class EtablissementDAOImpl extends Requester implements EtablissementDAO{
-    private static final String SERVER_ADDRESS  = "http://91.134.242.201/elastic-pjrace";
+    private static final String SERVER_ADDRESS  = "http://91.134.242.201";
 
     @Override
     public List<Etablissement> getEtablissementsByPosition(String pLatitude, String pLongitude, String pRayon) throws Exception {
@@ -31,13 +31,17 @@ public class EtablissementDAOImpl extends Requester implements EtablissementDAO{
         return etablissementsListFromJson(jsonResponse);
     }
 
+    @Override
+    public int getDistanceToClosestChallenge(String pLatitude, String pLongitude) throws Exception {
+        return 0;
+    }
+
     public List<Etablissement> etablissementsListFromJson(String pJsonString) throws JSONException {
         List<Etablissement> lstEtablissements = new ArrayList<>();
 
 
         JSONObject jsonObject = new JSONObject(pJsonString);
         String hits = jsonObject.getJSONObject("hits").getString("hits");
-        System.out.println(hits);
         JSONArray jsonArrayEtab = new JSONArray(hits);
 
         for (int i = 0; i < jsonArrayEtab.length(); i++) {
