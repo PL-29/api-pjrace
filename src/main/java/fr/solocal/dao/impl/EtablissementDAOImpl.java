@@ -11,8 +11,6 @@ import org.json.JSONObject;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -33,10 +31,28 @@ public class EtablissementDAOImpl extends Requester implements EtablissementDAO{
     }
 
     @Override
-    public int getDistanceToClosestChallenge(String pLatitude, String pLongitude, String pRayon) throws Exception {
+    public JSONObject getDistanceToClosestChallenge(String pLatitude, String pLongitude) throws Exception {
         String url = SERVER_ADDRESS+"/pjrace_challenge/etab/_search";
-        String jsonResponse = super.sendPostRequest(url, scriptQueryDistanceSort(pLatitude, pLongitude, pRayon));
-        return getDistanceToClosestChallenge(pLatitude, pLongitude, pRayon);
+        String jsonResponse = super.sendPostRequest(url, scriptQueryDistanceSort(pLatitude, pLongitude));
+        System.out.println(jsonResponse);
+        return distanceToClosestChallengeFromJson(jsonResponse);
+    }
+
+    public JSONObject distanceToClosestChallengeFromJson(String pJsonString) throws JSONException {
+        Etablissement etablissement = new Etablissement();
+
+
+        JSONObject jsonObject = new JSONObject(pJsonString);
+        String hits = jsonObject.getJSONObject("hits").getString("hits");
+        JSONArray jsonArray = new JSONArray(hits);
+
+        double sort = 0;
+        for (int i = 0; i < jsonArray.length(); i++) {
+            sort = jsonArray.getJSONObject(i).getDouble("sort");
+        }
+
+        System.out.println("---------------->"+sort);
+        return null;
     }
 
     public List<Etablissement> etablissementsListFromJson(String pJsonString) throws JSONException {
@@ -74,7 +90,6 @@ public class EtablissementDAOImpl extends Requester implements EtablissementDAO{
 
         }
 
-
         return lstEtablissements;
     }
 
@@ -89,7 +104,6 @@ public class EtablissementDAOImpl extends Requester implements EtablissementDAO{
 
         JSONObject jsonFilter = new JSONObject();
         jsonFilter.put("geo_distance",jsonGeoDistance);
-
 
         JSONObject jsonMust = new JSONObject();
         jsonMust.put("match_all", new JSONObject());
@@ -109,40 +123,22 @@ public class EtablissementDAOImpl extends Requester implements EtablissementDAO{
         return jsonReturn;
     }
 
-    public JSONObject scriptQueryDistanceSort(String pLatitude, String pLongitude, String pRayon) throws JSONException {
+    public JSONObject scriptQueryDistanceSort(String pLatitude, String pLongitude) throws JSONException {
         JSONObject jsonLatLon = new JSONObject();
         jsonLatLon.put("lat", pLatitude);
         jsonLatLon.put("lon", pLongitude);
 
+        JSONObject jsonLocation = new JSONObject();
+        jsonLocation.put("location", jsonLatLon);
+        jsonLocation.put("order", "asc");
+        jsonLocation.put("unit", "m");
+        jsonLocation.put("distance_type", "plane" );
+
         JSONObject jsonGeoDistance = new JSONObject();
-        jsonGeoDistance.put("distance", pRayon+"km");
-        jsonGeoDistance.put("location", jsonLatLon);
-
-        JSONObject jsonFilter = new JSONObject();
-        jsonFilter.put("geo_distance",jsonGeoDistance);
-
-
-        JSONObject jsonMust = new JSONObject();
-        jsonMust.put("match_all", new JSONObject());
-
-        JSONObject jsonBool = new JSONObject();
-        jsonBool.put("must", jsonMust);
-        jsonBool.put("filter", jsonFilter);
-
-        JSONObject jsonQuery = new JSONObject();
-        jsonQuery.put("bool", jsonBool);
-
-        JSONObject jsonSort = new JSONObject();
-
-        JSONObject json_GeoDistance = new JSONObject();
-        json_GeoDistance.put("location", jsonLatLon);
-
-        jsonSort.put("order", "asc");
-        jsonSort.put("unit", "m");
-        jsonSort.put("distance_type", "plane" );
+        jsonGeoDistance.put("_geo_distance", jsonLocation);
 
         JSONObject jsonReturn = new JSONObject();
-        jsonReturn.put("query", jsonQuery);
+        jsonReturn.put("sort", jsonGeoDistance);
 
         return jsonReturn;
     }

@@ -150,9 +150,9 @@ public class Controller {
 
     //TODO : FAIRE LA REQUETE PERMETTANT D'OBTENIR LA DISTANCE ENTRE L'UTILISATEUR ET LE CHALLENGE LE PLUS PROCHE
     @RequestMapping(value = "rayon", method = RequestMethod.GET, headers = "Accept=application/json")
-    public Integer getDistanceToClosestChallenge(@RequestParam(value = "lat") String pLatitude, @RequestParam(value = "lon") String pLongitude) throws Exception {
-
-        return 0;
+    public JSONObject getDistanceToClosestChallenge(@RequestParam(value = "lat") String pLatitude, @RequestParam(value = "lon") String pLongitude) throws Exception {
+        JSONObject jsonDistance = etablissementService.getDistanceToClosestChallenge(pLatitude, pLongitude);
+        return jsonDistance;
     }
 
     /**

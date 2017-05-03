@@ -3,6 +3,7 @@ package fr.solocal.service.impl;
 import fr.solocal.dao.EtablissementDAO;
 import fr.solocal.domain.Etablissement;
 import fr.solocal.service.EtablissementService;
+import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
@@ -23,8 +24,8 @@ public class EtablissementServiceImpl implements EtablissementService {
     }
 
     @Override
-    public int getDistanceToClosestChallenge(String pLatitude, String pLongitude, String pRayon) throws Exception {
-        return etablissementDAO.getDistanceToClosestChallenge(pLatitude, pLongitude, pRayon);
+    public JSONObject getDistanceToClosestChallenge(String pLatitude, String pLongitude) throws Exception {
+        return etablissementDAO.getDistanceToClosestChallenge(pLatitude, pLongitude);
     }
 
 

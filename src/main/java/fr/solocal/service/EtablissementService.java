@@ -1,8 +1,8 @@
 package fr.solocal.service;
 
 import fr.solocal.domain.Etablissement;
+import org.json.JSONObject;
 
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -12,5 +12,5 @@ public interface EtablissementService {
     //Permet de récupérer les etablissements
     public List<Etablissement> getEtablissementsByPosition(String pLatitude, String pLongitude, String pRayon) throws Exception;
 
-    public int getDistanceToClosestChallenge(String pLatitude, String pLongitude, String pRayon) throws  Exception;
+    public JSONObject getDistanceToClosestChallenge(String pLatitude, String pLongitude) throws  Exception;
 }
