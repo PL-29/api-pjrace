@@ -24,11 +24,12 @@ public class ChallengeDAOImpl extends Requester implements ChallengeDAO {
 
     @Override
     public Challenge getChallengeById(String pIdChallenge) throws Exception{
-        String url = SERVER_ADDRESS+"/pjrace_challenge/challenge/"+pIdChallenge;
+        String url = SERVER_ADDRESS+"/pjrace_challenge/etab/_search?q=challenges.id:\""+pIdChallenge+"\"";
         String jsonResponse;
 
         jsonResponse = super.sendGetRequest(url);
-        return challengeByIdFromJson(jsonResponse);
+
+        return challengeByIdFromJson(jsonResponse, pIdChallenge);
     }
 
     @Override
@@ -45,34 +46,48 @@ public class ChallengeDAOImpl extends Requester implements ChallengeDAO {
         return ChallengeTypeFactory.makeChallengeTypeList();
     }
 
-    public Challenge challengeByIdFromJson(String pJsonString) throws JSONException {
+    public Challenge challengeByIdFromJson(String pJsonString, String pIdChallenge) throws JSONException {
         Challenge challenge = new Challenge();
 
         JSONObject jsonObject = new JSONObject(pJsonString);
-        JSONObject source = jsonObject.getJSONObject("_source");
+        String hits = jsonObject.getJSONObject("hits").getString("hits");
+        JSONArray jsonArrayHits = new JSONArray(hits);
 
-        //Attributs Challenge
-        String challengeId = jsonObject.getString("_id");
-        int points = source.getInt("points");
-        String dateCreated = source.getString("update").substring(0,10);
+        for (int i = 0; i < jsonArrayHits.length(); i++) {
+            JSONObject source = jsonArrayHits.getJSONObject(i).getJSONObject("_source");
 
-        //Attributs ChallengeType
-        String codeType = source.getString("code");
+            JSONArray jsonArrayChallenges = source.getJSONArray("challenges");
+            int y = 0;
+            while (y < jsonArrayChallenges.length() && !jsonArrayChallenges.getJSONObject(y).getString("id").equals(pIdChallenge)) {
+                y++;
+            }
 
-        //Attributs Etablissement
-        String etabAdresse = source.getString("adresse");
-        int codeEtab = source.getInt("code_etab");
-        String denom = source.getString("denom");
-        double latitude = source.getJSONObject("_geo").getDouble("lat");
-        double longitude = source.getJSONObject("_geo").getDouble("lon");
+            if (jsonArrayChallenges.getJSONObject(y).getString("id").equals(pIdChallenge)) {
+                //Attributs Challenge
+                String challengeId = jsonArrayChallenges.getJSONObject(y).getString("id");
+                int points = jsonArrayChallenges.getJSONObject(y).getInt("points");
+                String dateCreated = source.getString("update").substring(0, 10);
 
-        Etablissement etablissement = new Etablissement(codeEtab, denom, etabAdresse, latitude, longitude);
 
-        challenge.setIdChallenge(challengeId);
-        challenge.setEtablissement(etablissement);
-        challenge.setType(ChallengeTypeFactory.makeChallengeType(codeType));
-        challenge.setPoints(points);
-        challenge.setDateCreated(dateCreated);
+                //Attributs ChallengeType
+                String codeType = jsonArrayChallenges.getJSONObject(i).getString("code");
+
+                //Attributs Etablissement
+                String etabAdresse = source.getString("adresse");
+                int codeEtab = source.getInt("code_etab");
+                String denom = source.getString("denom");
+                double latitude = source.getJSONObject("location").getDouble("lat");
+                double longitude = source.getJSONObject("location").getDouble("lon");
+
+                Etablissement etablissement = new Etablissement(codeEtab, denom, etabAdresse, latitude, longitude);
+
+                challenge.setIdChallenge(challengeId);
+                challenge.setEtablissement(etablissement);
+                challenge.setType(ChallengeTypeFactory.makeChallengeType(codeType));
+                challenge.setPoints(points);
+                challenge.setDateCreated(dateCreated);
+            }
+        }
 
         return challenge;
     }
@@ -85,7 +100,6 @@ public class ChallengeDAOImpl extends Requester implements ChallengeDAO {
         JSONArray jsonArrayHits = new JSONArray(hits);
 
         for (int i = 0; i < jsonArrayHits.length(); i++) {
-            JSONObject hit = jsonArrayHits.getJSONObject(i);
             JSONObject source = jsonArrayHits.getJSONObject(i).getJSONObject("_source");
 
             //Attributs Etablissement
