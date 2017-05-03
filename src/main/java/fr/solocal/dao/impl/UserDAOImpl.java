@@ -204,7 +204,13 @@ public class UserDAOImpl extends Requester implements UserDAO {
 
 
     public JSONObject jsonScriptToUpdate(Challenge pChallenge, User pUser, String pPhotoPath) throws Exception {
-        int finalScore = pChallenge.getPoints()+pUser.getScore();
+        int finalScore = 0;
+
+        if(pChallenge.getPoints() == 0){
+            finalScore = pChallenge.getType().getDefaultNumberOfPoints() + pUser.getScore();
+        } else {
+            finalScore = pChallenge.getPoints() + pUser.getScore();
+        }
 
         //Construction du json permettant l'update de l'utilisateur
         JSONObject jsonAchievementData = new JSONObject();

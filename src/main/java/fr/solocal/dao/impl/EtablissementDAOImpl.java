@@ -10,6 +10,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,28 +32,30 @@ public class EtablissementDAOImpl extends Requester implements EtablissementDAO{
     }
 
     @Override
-    public JSONObject getDistanceToClosestChallenge(String pLatitude, String pLongitude) throws Exception {
+    public double getDistanceToClosestChallenge(String pLatitude, String pLongitude) throws Exception {
         String url = SERVER_ADDRESS+"/pjrace_challenge/etab/_search";
         String jsonResponse = super.sendPostRequest(url, scriptQueryDistanceSort(pLatitude, pLongitude));
-        System.out.println(jsonResponse);
         return distanceToClosestChallengeFromJson(jsonResponse);
     }
 
-    public JSONObject distanceToClosestChallengeFromJson(String pJsonString) throws JSONException {
+    public double distanceToClosestChallengeFromJson(String pJsonString) throws JSONException {
         Etablissement etablissement = new Etablissement();
-
 
         JSONObject jsonObject = new JSONObject(pJsonString);
         String hits = jsonObject.getJSONObject("hits").getString("hits");
         JSONArray jsonArray = new JSONArray(hits);
 
-        double sort = 0;
+        JSONArray jsonSort = null;
         for (int i = 0; i < jsonArray.length(); i++) {
-            sort = jsonArray.getJSONObject(i).getDouble("sort");
+            jsonSort = jsonArray.getJSONObject(i).getJSONArray("sort");
         }
 
-        System.out.println("---------------->"+sort);
-        return null;
+        double distance = (double) jsonSort.get(0);
+        BigDecimal bd = new BigDecimal(distance);
+        bd= bd.setScale(0,BigDecimal.ROUND_DOWN);
+        distance = bd.doubleValue();
+
+        return distance;
     }
 
     public List<Etablissement> etablissementsListFromJson(String pJsonString) throws JSONException {
@@ -139,6 +142,7 @@ public class EtablissementDAOImpl extends Requester implements EtablissementDAO{
 
         JSONObject jsonReturn = new JSONObject();
         jsonReturn.put("sort", jsonGeoDistance);
+        jsonReturn.put("size",1);
 
         return jsonReturn;
     }

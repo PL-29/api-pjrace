@@ -24,9 +24,7 @@ public class EtablissementServiceImpl implements EtablissementService {
     }
 
     @Override
-    public JSONObject getDistanceToClosestChallenge(String pLatitude, String pLongitude) throws Exception {
+    public double getDistanceToClosestChallenge(String pLatitude, String pLongitude) throws Exception {
         return etablissementDAO.getDistanceToClosestChallenge(pLatitude, pLongitude);
     }
-
-
 }
