@@ -1,6 +1,8 @@
 package fr.solocal.service;
 
 import fr.solocal.domain.Challenge;
+import fr.solocal.exceptions.PJRaceException;
+import fr.solocal.exceptions.PJRaceRuntimeException;
 
 import java.util.Iterator;
 import java.util.List;
@@ -10,9 +12,9 @@ import java.util.List;
  */
 public interface ChallengeService {
     //Permet de récupérer un challenge grâce à son id
-    public Challenge getChallengeById(String pIdChallenge) throws Exception;
+    public Challenge getChallengeById(String pIdChallenge) throws PJRaceException, PJRaceRuntimeException;
 
 
     //Permet de récupérer un challenge grâce à son codeEtab
-    public List<Challenge> getChallengeByCodeEtab(int pCodeEtab) throws Exception;
+    public List<Challenge> getChallengeByCodeEtab(int pCodeEtab) throws PJRaceException, PJRaceRuntimeException;
 }
