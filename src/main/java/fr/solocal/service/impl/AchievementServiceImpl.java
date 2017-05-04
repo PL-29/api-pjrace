@@ -2,6 +2,8 @@ package fr.solocal.service.impl;
 
 import fr.solocal.dao.UserDAO;
 import fr.solocal.domain.Achievement;
+import fr.solocal.exceptions.PJRaceException;
+import fr.solocal.exceptions.PJRaceRuntimeException;
 import fr.solocal.service.AchievementService;
 import org.springframework.stereotype.Service;
 
@@ -18,12 +20,12 @@ public class AchievementServiceImpl implements AchievementService{
     UserDAO userDAO;
 
     @Override
-    public List<Achievement> getAllResolutions(String pEmail) throws Exception {
+    public List<Achievement> getAllResolutions(String pEmail) throws PJRaceException, PJRaceRuntimeException {
         return userDAO.getAllAchievements(pEmail);
     }
 
     @Override
-    public Achievement achieveChallenge(String pPhotoEncoding, String pIdChallenge, String pIdUser) throws Exception {
+    public Achievement achieveChallenge(String pPhotoEncoding, String pIdChallenge, String pIdUser) throws PJRaceException, PJRaceRuntimeException {
         return userDAO.achieveChallenge(pPhotoEncoding, pIdChallenge, pIdUser);
     }
 }

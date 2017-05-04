@@ -2,6 +2,8 @@ package fr.solocal.service.impl;
 
 import fr.solocal.dao.UserDAO;
 import fr.solocal.domain.User;
+import fr.solocal.exceptions.PJRaceException;
+import fr.solocal.exceptions.PJRaceRuntimeException;
 import fr.solocal.service.UserService;
 import org.springframework.stereotype.Service;
 
@@ -18,12 +20,12 @@ public class UserServiceImpl implements UserService{
     private UserDAO userDAO;
 
     @Override
-    public List<User> getRanking(String pEmail) throws Exception {
+    public List<User> getRanking(String pEmail) throws PJRaceException, PJRaceRuntimeException {
         return userDAO.getRanking(pEmail);
     }
 
     @Override
-    public User connexion(String pEmail, String pPassword) throws Exception {
+    public User connexion(String pEmail, String pPassword) throws PJRaceException, PJRaceRuntimeException {
         return userDAO.connexion(pEmail, pPassword);
     }
 }
