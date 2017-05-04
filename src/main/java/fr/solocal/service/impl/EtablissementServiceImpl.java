@@ -2,6 +2,8 @@ package fr.solocal.service.impl;
 
 import fr.solocal.dao.EtablissementDAO;
 import fr.solocal.domain.Etablissement;
+import fr.solocal.exceptions.PJRaceException;
+import fr.solocal.exceptions.PJRaceRuntimeException;
 import fr.solocal.service.EtablissementService;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
@@ -19,7 +21,7 @@ public class EtablissementServiceImpl implements EtablissementService {
     private EtablissementDAO etablissementDAO;
 
     @Override
-    public List<Etablissement> getEtablissementsByPosition(String pLatitude, String pLongitude, String pRayon) throws Exception {
+    public List<Etablissement> getEtablissementsByPosition(String pLatitude, String pLongitude, String pRayon) throws PJRaceException, PJRaceRuntimeException {
         return etablissementDAO.getEtablissementsByPosition(pLatitude, pLongitude, pRayon);
     }
 

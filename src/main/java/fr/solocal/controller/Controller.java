@@ -4,6 +4,8 @@ import fr.solocal.builder.*;
 import fr.solocal.dao.UserDAO;
 import fr.solocal.dao.impl.UserDAOImpl;
 import fr.solocal.domain.*;
+import fr.solocal.exceptions.PJRaceException;
+import fr.solocal.exceptions.PJRaceRuntimeException;
 import fr.solocal.service.*;
 import fr.solocal.utils.ImageConverter;
 import org.json.JSONException;
@@ -22,7 +24,7 @@ import java.util.stream.Collectors;
  */
 @RestController("CentralController")
 @RequestMapping(value = "/pjrace_v1")
-public class Controller {
+public class Controller extends ExceptionController{
 
     @Inject
     private ChallengeTypeService challengeTypeService;
@@ -94,7 +96,7 @@ public class Controller {
      * @return une liste des établissements
      */
     @RequestMapping(value = "etablissements", method = RequestMethod.GET, headers = "Accept=application/json")
-    public List<EtablissementDTO> getAllEtablissements(@RequestParam(value = "lat") String pLatitude, @RequestParam(value = "lon") String pLongitude, @RequestParam(value = "ray") String pRayon) throws Exception {
+    public List<EtablissementDTO> getAllEtablissements(@RequestParam(value = "lat") String pLatitude, @RequestParam(value = "lon") String pLongitude, @RequestParam(value = "ray") String pRayon) throws PJRaceException, PJRaceRuntimeException {
 
         List<Etablissement> lstEtablissement = etablissementService.getEtablissementsByPosition(pLatitude, pLongitude, pRayon);
         List<EtablissementDTO> lstEtablissementDTO = new ArrayList<>();
@@ -148,7 +150,6 @@ public class Controller {
     }
 
 
-    //TODO : FAIRE LA REQUETE PERMETTANT D'OBTENIR LA DISTANCE ENTRE L'UTILISATEUR ET LE CHALLENGE LE PLUS PROCHE
     @RequestMapping(value = "rayon", method = RequestMethod.GET, headers = "Accept=application/json")
     public MessageDTO getDistanceToClosestChallenge(@RequestParam(value = "lat") String pLatitude, @RequestParam(value = "lon") String pLongitude) throws Exception {
         MessageDTO message = new MessageDTO("distance(m)", etablissementService.getDistanceToClosestChallenge(pLatitude, pLongitude));

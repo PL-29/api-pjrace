@@ -5,6 +5,8 @@ import fr.solocal.domain.Challenge;
 import fr.solocal.domain.ChallengeType;
 import fr.solocal.domain.ChallengeTypeFactory;
 import fr.solocal.domain.Etablissement;
+import fr.solocal.exceptions.PJRaceException;
+import fr.solocal.exceptions.PJRaceRuntimeException;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,12 +25,17 @@ public class EtablissementDAOImpl extends Requester implements EtablissementDAO{
     private static final int NB_ETAB  = 100;
 
     @Override
-    public List<Etablissement> getEtablissementsByPosition(String pLatitude, String pLongitude, String pRayon) throws Exception {
+    public List<Etablissement> getEtablissementsByPosition(String pLatitude, String pLongitude, String pRayon) throws PJRaceException, PJRaceRuntimeException {
         String url = SERVER_ADDRESS+"/pjrace_challenge/etab/_search";
 
-        String jsonResponse = super.sendPostRequest(url, scriptQueryDistanceFilter(pLatitude, pLongitude, pRayon));
+        try {
+            String jsonResponse = super.sendPostRequest(url, scriptQueryDistanceFilter(pLatitude, pLongitude, pRayon));
+            return etablissementsListFromJson(jsonResponse);
+        } catch (Exception e){
+            // log.warn ...
+            throw new PJRaceRuntimeException("Erreur dans l'appel au moteur Elasticsearch : " + e.getMessage());
+        }
 
-        return etablissementsListFromJson(jsonResponse);
     }
 
     @Override
@@ -58,39 +65,46 @@ public class EtablissementDAOImpl extends Requester implements EtablissementDAO{
         return distance;
     }
 
-    public List<Etablissement> etablissementsListFromJson(String pJsonString) throws JSONException {
+    public List<Etablissement> etablissementsListFromJson(String pJsonString) throws PJRaceException, PJRaceRuntimeException {
         List<Etablissement> lstEtablissements = new ArrayList<>();
 
+        try {
+            JSONObject jsonObject = new JSONObject(pJsonString);
+            String hits = jsonObject.getJSONObject("hits").getString("hits");
+            JSONArray jsonArrayEtab = new JSONArray(hits);
 
-        JSONObject jsonObject = new JSONObject(pJsonString);
-        String hits = jsonObject.getJSONObject("hits").getString("hits");
-        JSONArray jsonArrayEtab = new JSONArray(hits);
+            for (int i = 0; i < jsonArrayEtab.length(); i++) {
+                JSONObject source = jsonArrayEtab.getJSONObject(i).getJSONObject("_source");
+                JSONArray jsonArrayChallenge = new JSONArray(source.getString("challenges"));
+                List<Challenge> lstChallenges = new ArrayList<>();
 
-        for (int i = 0; i < jsonArrayEtab.length(); i++) {
-            JSONObject source = jsonArrayEtab.getJSONObject(i).getJSONObject("_source");
-            JSONArray jsonArrayChallenge = new JSONArray(source.getString("challenges"));
-            List<Challenge> lstChallenges = new ArrayList<>();
+                for (int y = 0; y < jsonArrayChallenge.length(); y++) {
+                    String idChallenge = jsonArrayChallenge.getJSONObject(y).getString("id");
+                    ChallengeType challengeType = ChallengeTypeFactory.makeChallengeType(jsonArrayChallenge.getJSONObject(y).getString("code"));
 
-            for (int y = 0; y < jsonArrayChallenge.length(); y++){
-                String idChallenge = jsonArrayChallenge.getJSONObject(y).getString("id");
-                ChallengeType challengeType = ChallengeTypeFactory.makeChallengeType(jsonArrayChallenge.getJSONObject(y).getString("code"));
+                    Challenge challenge = new Challenge();
+                    challenge.setIdChallenge(idChallenge);
+                    challenge.setType(challengeType);
+                    lstChallenges.add(challenge);
+                }
 
-                Challenge challenge = new Challenge();
-                challenge.setIdChallenge(idChallenge);
-                challenge.setType(challengeType);
-                lstChallenges.add(challenge);
+                int codeEtab = source.getInt("code_etab");
+                String address = source.getString("adresse");
+                String denom = source.getString("denom");
+                double lat = source.getJSONObject("location").getDouble("lat");
+                double lon = source.getJSONObject("location").getDouble("lon");
+
+                Etablissement etablissement = new Etablissement(codeEtab, denom, address, lat, lon);
+                etablissement.setChallenges(lstChallenges);
+                lstEtablissements.add(etablissement);
             }
+        } catch (Exception e){
+            // log.warn
+            throw new PJRaceRuntimeException("Problème sur la sérialisation du JSON réponse Elasticsearch.");
+        }
 
-            int codeEtab = source.getInt("code_etab");
-            String address = source.getString("adresse");
-            String denom = source.getString("denom");
-            double lat = source.getJSONObject("location").getDouble("lat");
-            double lon = source.getJSONObject("location").getDouble("lon");
-
-            Etablissement etablissement = new Etablissement(codeEtab, denom, address, lat, lon);
-            etablissement.setChallenges(lstChallenges);
-            lstEtablissements.add(etablissement);
-
+        if(lstEtablissements.size() == 0){
+            throw new PJRaceException("Pas d'etblissement pour ces coordonnées et ce rayon.");
         }
 
         return lstEtablissements;
