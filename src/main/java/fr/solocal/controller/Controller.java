@@ -48,7 +48,7 @@ public class Controller extends ExceptionController{
      * @return une liste des types de challenge
      */
     @RequestMapping(value = "challengetypes", method = RequestMethod.GET, headers = "Accept=application/json")
-    public List<ChallengeType> getChallengeTypes() throws Exception {
+    public List<ChallengeType> getChallengeTypes() throws PJRaceException, PJRaceRuntimeException {
         List<ChallengeType> lstChallengeTypes = challengeTypeService.getAllChallengeTypes();
 
         return lstChallengeTypes;
@@ -63,7 +63,7 @@ public class Controller extends ExceptionController{
      * @return un objet ChallengeDTO
      */
     @RequestMapping(value = "challenge/{idChallenge}",  method = RequestMethod.GET, headers = "Accept=application/json")
-    public ChallengeDTO getChallengeById(@PathVariable(value="idChallenge") String idChallenge) throws Exception {
+    public ChallengeDTO getChallengeById(@PathVariable(value="idChallenge") String idChallenge) throws PJRaceException, PJRaceRuntimeException {
         Challenge challenge = challengeService.getChallengeById(idChallenge);
 
         return BuilderDTO.generateChallengeDTO(challenge);
@@ -79,7 +79,7 @@ public class Controller extends ExceptionController{
      * @return une liste des challenges de l'établissement
      */
     @RequestMapping(value = "challenge", params = "codeEtab",  method = RequestMethod.GET, headers = "Accept=application/json")
-    public List<ChallengeDTO> getChallengesByCodeEtab(@RequestParam(value = "codeEtab") int pCodeEtab) throws Exception {
+    public List<ChallengeDTO> getChallengesByCodeEtab(@RequestParam(value = "codeEtab") int pCodeEtab) throws PJRaceException, PJRaceRuntimeException {
         List<ChallengeDTO> lstChallengesDTO = new ArrayList<>();
         List<Challenge> lstChallenges = challengeService.getChallengeByCodeEtab(pCodeEtab);
 
@@ -130,7 +130,7 @@ public class Controller extends ExceptionController{
      */
     @RequestMapping(value = "achievement", method = RequestMethod.POST, headers = "Accept=application/json")
     @ResponseBody
-    public AchievementDTO achieveChallenge(@RequestParam(value = "idChallenge") String pIdChallenge, @RequestParam(value = "email") String pEmail, @RequestBody String requestBodyString) throws Exception {
+    public AchievementDTO achieveChallenge(@RequestParam(value = "idChallenge") String pIdChallenge, @RequestParam(value = "email") String pEmail, @RequestBody String requestBodyString) throws PJRaceException, PJRaceRuntimeException, JSONException {
         JSONObject jsonImage = new JSONObject(requestBodyString);
         Achievement achievement = achievementService.achieveChallenge(jsonImage.getString("photo"), pIdChallenge, pEmail);
 
@@ -151,7 +151,7 @@ public class Controller extends ExceptionController{
 
 
     @RequestMapping(value = "rayon", method = RequestMethod.GET, headers = "Accept=application/json")
-    public MessageDTO getDistanceToClosestChallenge(@RequestParam(value = "lat") String pLatitude, @RequestParam(value = "lon") String pLongitude) throws Exception {
+    public MessageDTO getDistanceToClosestChallenge(@RequestParam(value = "lat") String pLatitude, @RequestParam(value = "lon") String pLongitude) throws PJRaceException, PJRaceRuntimeException {
         MessageDTO message = new MessageDTO("distance(m)", etablissementService.getDistanceToClosestChallenge(pLatitude, pLongitude));
         return message;
     }
