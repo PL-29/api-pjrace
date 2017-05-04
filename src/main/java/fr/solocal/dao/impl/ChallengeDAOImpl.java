@@ -113,7 +113,7 @@ public class ChallengeDAOImpl extends Requester implements ChallengeDAO {
         }
 
         if(challenge == null){
-            throw new PJRaceException("Pas de challenges pour cet id challenge.");
+            throw new PJRaceException("Pas de challenge pour cet id challenge.");
         }
 
         return challenge;
