@@ -44,13 +44,10 @@ public class UserDAOImpl extends Requester implements UserDAO {
         //L'idUser correspond à l'adresse mail de l'utilisateur /!\
         String url = SERVER_ADDRESS+"/pjrace_challenge/user/_search?sort=score:desc";
         try {
-
-        String jsonResponse;
-        IndexUser indexUser = new IndexUser();
-
-        jsonResponse = super.sendGetRequest(url);
-        List<User> lstUsers = UsersListFromJson(pEmail, jsonResponse, indexUser);
-        return makeRanking(lstUsers, indexUser);
+            IndexUser indexUser = new IndexUser();
+            String jsonResponse = super.sendGetRequest(url);
+            List<User> lstUsers = UsersListFromJson(pEmail, jsonResponse, indexUser);
+            return makeRanking(lstUsers, indexUser);
         } catch (Exception e){
             // log.warn ...
             throw new PJRaceRuntimeException("Erreur dans l'appel au moteur Elasticsearch : " + e.getMessage());
@@ -64,9 +61,8 @@ public class UserDAOImpl extends Requester implements UserDAO {
         //L'idUser correspond à l'adresse mail de l'utilisateur /!\
         String url = SERVER_ADDRESS+"/pjrace_challenge/user/"+pEmail;
         try {
-        String jsonResponse;
-        jsonResponse = super.sendGetRequest(url);
-        return achievementsFromJson(jsonResponse);
+            String jsonResponse = super.sendGetRequest(url);
+            return achievementsFromJson(jsonResponse);
         } catch (Exception e){
             // log.warn ...
             throw new PJRaceRuntimeException("Erreur dans l'appel au moteur Elasticsearch : " + e.getMessage());
@@ -79,12 +75,8 @@ public class UserDAOImpl extends Requester implements UserDAO {
         //L'idUser correspond à l'adresse mail de l'utilisateur /!\
         String url = SERVER_ADDRESS+"/pjrace_challenge/user/_search?q=email:\""+pEmail+"\" AND password:\""+pPassword+"\"";
         try {
-        String jsonResponse;
-
-        //TODO: RENVOYER MESSAGE D ERREUR SI MOT DE PASSE OU ID INCORRECTS
-        jsonResponse = super.sendGetRequest(url);
-
-        return userFromJson(jsonResponse, pPassword);
+            String jsonResponse = super.sendGetRequest(url);
+            return userFromJson(jsonResponse, pPassword);
         } catch (Exception e){
             // log.warn ...
             throw new PJRaceRuntimeException("Erreur dans l'appel au moteur Elasticsearch : " + e.getMessage());
@@ -96,24 +88,24 @@ public class UserDAOImpl extends Requester implements UserDAO {
     public Achievement achieveChallenge(String pPhotoEncoding, String pIdChallenge, String pEmail) throws PJRaceException, PJRaceRuntimeException {
         String url = SERVER_ADDRESS+"/pjrace_challenge/user/"+pEmail+"/_update";
         try {
-        Challenge challenge = new ChallengeDAOImpl().getChallengeById(pIdChallenge);
-        User user = getUserInfosByEmail(pEmail);
+            Challenge challenge = new ChallengeDAOImpl().getChallengeById(pIdChallenge);
+            User user = getUserInfosByEmail(pEmail);
 
-        JSONObject jsonScript = jsonScriptToUpdate(challenge, user, SAVING_PATH);
-        String urlPhoto = saveImage(pPhotoEncoding, pIdChallenge);
+            JSONObject jsonScript = jsonScriptToUpdate(challenge, user, SAVING_PATH);
+            String urlPhoto = saveImage(pPhotoEncoding, pIdChallenge);
 
-        super.sendPostRequest(url, jsonScript);
+            super.sendPostRequest(url, jsonScript);
 
-        Achievement achievement = new Achievement();
-        achievement.setIdAchievement(challenge.getIdChallenge()+"_"+user.getIdUser());
-        achievement.setChallenge(challenge);
-        achievement.setUrlPhoto(urlPhoto);
-        achievement.setUser(user);
+            Achievement achievement = new Achievement();
+            achievement.setIdAchievement(challenge.getIdChallenge()+"_"+user.getIdUser());
+            achievement.setChallenge(challenge);
+            achievement.setUrlPhoto(urlPhoto);
+            achievement.setUser(user);
 
-        return achievement;
+            return achievement;
         } catch (Exception e){
             // log.warn ...
-            throw new PJRaceRuntimeException("Photo invalide.");
+            throw new PJRaceRuntimeException("Impossible de résoudre le challenge.");
         }
     }
 
@@ -121,11 +113,8 @@ public class UserDAOImpl extends Requester implements UserDAO {
     private User getUserInfosByEmail(String pEmail) throws PJRaceException, PJRaceRuntimeException {
         String url = SERVER_ADDRESS+"/pjrace_challenge/user/"+pEmail;
         try {
-        String jsonResponse;
-
-        jsonResponse = super.sendGetRequest(url);
-
-        return userFromJson(jsonResponse);
+            String jsonResponse = super.sendGetRequest(url);
+            return userFromJson(jsonResponse);
         } catch (Exception e){
             // log.warn ...
             throw new PJRaceRuntimeException("Erreur dans l'appel au moteur Elasticsearch : " + e.getMessage());
@@ -134,52 +123,62 @@ public class UserDAOImpl extends Requester implements UserDAO {
 
 
     public User userFromJson(String pJsonString) throws PJRaceException, PJRaceRuntimeException {
+        User user = null;
         try {
-        JSONObject jsonObject = new JSONObject(pJsonString);
-        JSONObject userInfos = new JSONObject(jsonObject.getString("_source"));
+            JSONObject jsonObject = new JSONObject(pJsonString);
+            JSONObject userInfos = new JSONObject(jsonObject.getString("_source"));
 
-        int score = 0;
+            int score = 0;
 
-        JSONArray achievementsTab = new JSONArray(userInfos.getString("achievements"));
+            JSONArray achievementsTab = new JSONArray(userInfos.getString("achievements"));
 
-        for(int i=0; i<achievementsTab.length(); i++){
-            score += achievementsTab.getJSONObject(i).getInt("score");
-        }
+            for(int i=0; i<achievementsTab.length(); i++){
+                score += achievementsTab.getJSONObject(i).getInt("score");
+            }
 
-        User user = new User();
-        user.setIdUser(userInfos.getString("email"));
-        user.setFirstname(userInfos.getString("firstname"));
-        user.setLastname(userInfos.getString("lastname"));
-        user.setEmail(userInfos.getString("email"));
-        user.setScore(score);
-
-        return user;
+            user = new User();
+            user.setIdUser(userInfos.getString("email"));
+            user.setFirstname(userInfos.getString("firstname"));
+            user.setLastname(userInfos.getString("lastname"));
+            user.setEmail(userInfos.getString("email"));
+            user.setScore(score);
         } catch (Exception e){
             // log.warn
             throw new PJRaceRuntimeException("Problème sur la sérialisation du JSON réponse Elasticsearch.");
         }
 
+        if(user == null){
+            throw new PJRaceException("Utilisateur incorrect.");
+        }
+
+        return user;
+
     }
 
     public User userFromJson(String pJsonString, String pPassword) throws PJRaceException, PJRaceRuntimeException {
+        User user = null;
         try {
-        JSONObject jsonObject = new JSONObject(pJsonString);
-        String hits = jsonObject.getJSONObject("hits").getString("hits");
-        JSONArray jsonHits = new JSONArray(hits);
-        JSONObject userInfos = new JSONObject(jsonHits.getJSONObject(0).getString("_source"));
+            JSONObject jsonObject = new JSONObject(pJsonString);
+            String hits = jsonObject.getJSONObject("hits").getString("hits");
+            JSONArray jsonHits = new JSONArray(hits);
+            JSONObject userInfos = new JSONObject(jsonHits.getJSONObject(0).getString("_source"));
 
-        User user = new User();
-        user.setIdUser(userInfos.getString("email"));
-        user.setFirstname(userInfos.getString("firstname"));
-        user.setLastname(userInfos.getString("lastname"));
-        user.setEmail(userInfos.getString("email"));
-        user.setScore(userInfos.getInt("score"));
-
-        return user;} catch (Exception e){
+            user = new User();
+            user.setIdUser(userInfos.getString("email"));
+            user.setFirstname(userInfos.getString("firstname"));
+            user.setLastname(userInfos.getString("lastname"));
+            user.setEmail(userInfos.getString("email"));
+            user.setScore(userInfos.getInt("score"));
+        } catch (Exception e){
             // log.warn
             throw new PJRaceRuntimeException("Problème sur la sérialisation du JSON réponse Elasticsearch.");
         }
 
+        if(user == null){
+            throw new PJRaceException("Login ou mot de passe incorrect.");
+        }
+
+        return user;
     }
 
 
@@ -187,30 +186,30 @@ public class UserDAOImpl extends Requester implements UserDAO {
         List<Achievement> lstAchievements = new ArrayList<>();
 
         try {
-        JSONObject jsonObject = new JSONObject(pJsonString);
-        JSONObject userInfos = new JSONObject(jsonObject.getString("_source"));
-        JSONArray achievementsTab = new JSONArray(userInfos.getString("achievements"));
+            JSONObject jsonObject = new JSONObject(pJsonString);
+            JSONObject userInfos = new JSONObject(jsonObject.getString("_source"));
+            JSONArray achievementsTab = new JSONArray(userInfos.getString("achievements"));
 
-        for(int i=0; i<achievementsTab.length(); i++){
-            JSONObject currentAchievement = achievementsTab.getJSONObject(i);
-            String idAchievement = currentAchievement.getString("idChallenge")+"_res";
+            for(int i=0; i<achievementsTab.length(); i++){
+                JSONObject currentAchievement = achievementsTab.getJSONObject(i);
+                String idAchievement = currentAchievement.getString("idChallenge")+"_res";
 
-            String idChallenge = currentAchievement.getString("idChallenge");
-            String dateCreated = currentAchievement.getString("dateCreated");
-            Challenge challenge = new Challenge();
-            challenge.setIdChallenge(idChallenge);
-            challenge.setDateCreated(dateCreated);
-            User user = new User();
-            user.setLastname(userInfos.getString("lastname"));
-            user.setFirstname(userInfos.getString("firstname"));
-            user.setEmail(userInfos.getString("email"));
-            user.setIdUser(userInfos.getString("email"));
+                String idChallenge = currentAchievement.getString("idChallenge");
+                String dateCreated = currentAchievement.getString("dateCreated");
+                Challenge challenge = new Challenge();
+                challenge.setIdChallenge(idChallenge);
+                challenge.setDateCreated(dateCreated);
+                User user = new User();
+                user.setLastname(userInfos.getString("lastname"));
+                user.setFirstname(userInfos.getString("firstname"));
+                user.setEmail(userInfos.getString("email"));
+                user.setIdUser(userInfos.getString("email"));
 
 
-            String photoUrl = currentAchievement.getString("photoUrl");
+                String photoUrl = currentAchievement.getString("photoUrl");
 
-            Achievement achievement = new Achievement(idAchievement, challenge, photoUrl, user);
-            lstAchievements.add(achievement);
+                Achievement achievement = new Achievement(idAchievement, challenge, photoUrl, user);
+                lstAchievements.add(achievement);
             }
         } catch (Exception e){
             // log.warn
@@ -228,31 +227,31 @@ public class UserDAOImpl extends Requester implements UserDAO {
     public List<User> UsersListFromJson(String pEmailUser, String pJsonString, IndexUser pIndexUser) throws PJRaceException, PJRaceRuntimeException {
         List<User> lstUsers = new ArrayList<>();
         try {
-        JSONObject jsonObject = new JSONObject(pJsonString);
-        String hits = jsonObject.getJSONObject("hits").getString("hits");
-        JSONArray jsonArray = new JSONArray(hits);
+            JSONObject jsonObject = new JSONObject(pJsonString);
+            String hits = jsonObject.getJSONObject("hits").getString("hits");
+            JSONArray jsonArray = new JSONArray(hits);
 
-        for (int i = 0; i < jsonArray.length(); i++) {
-            JSONObject source = jsonArray.getJSONObject(i).getJSONObject("_source");
-            if(source.getString("email").equals(pEmailUser)){
-                pIndexUser.setValue(i);
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject source = jsonArray.getJSONObject(i).getJSONObject("_source");
+                if(source.getString("email").equals(pEmailUser)){
+                    pIndexUser.setValue(i);
+                }
+                User user = new User();
+                user.setIdUser(source.getString("email"));
+                user.setEmail(source.getString("email"));
+                user.setScore(source.getInt("score"));
+                user.setFirstname(source.getString("firstname"));
+                user.setLastname(source.getString("lastname"));
+                user.setRank(i+1);
+                lstUsers.add(user);
             }
-            User user = new User();
-            user.setIdUser(source.getString("email"));
-            user.setEmail(source.getString("email"));
-            user.setScore(source.getInt("score"));
-            user.setFirstname(source.getString("firstname"));
-            user.setLastname(source.getString("lastname"));
-            user.setRank(i+1);
-            lstUsers.add(user);
-        }
         } catch (Exception e){
             // log.warn
             throw new PJRaceRuntimeException("Problème sur la sérialisation du JSON réponse Elasticsearch.");
         }
 
         if(lstUsers.size() == 0){
-            throw new PJRaceException("Login ou mot de passe incorrect.");
+            throw new PJRaceException("Email utilisateur incorrecte.");
         }
 
         return lstUsers;
@@ -268,24 +267,24 @@ public class UserDAOImpl extends Requester implements UserDAO {
             finalScore = pChallenge.getPoints() + pUser.getScore();
         }
         try {
-        //Construction du json permettant l'update de l'utilisateur
-        JSONObject jsonAchievementData = new JSONObject();
-        jsonAchievementData.put("idChallenge", pChallenge.getIdChallenge());
-        jsonAchievementData.put("score",pChallenge.getPoints());
-        jsonAchievementData.put("photoUrl",pPhotoPath);
-        jsonAchievementData.put("dateCreated", dateOfToday());
+            //Construction du json permettant l'update de l'utilisateur
+            JSONObject jsonAchievementData = new JSONObject();
+            jsonAchievementData.put("idChallenge", pChallenge.getIdChallenge());
+            jsonAchievementData.put("score",pChallenge.getPoints());
+            jsonAchievementData.put("photoUrl",pPhotoPath);
+            jsonAchievementData.put("dateCreated", dateOfToday());
 
-        JSONObject jsonNewAchievement = new JSONObject();
-        jsonNewAchievement.put("new_achv", jsonAchievementData);
+            JSONObject jsonNewAchievement = new JSONObject();
+            jsonNewAchievement.put("new_achv", jsonAchievementData);
 
-        JSONObject jsonParameters = new JSONObject();
-        jsonParameters.put("inline", "ctx._source.achievements.add(params.new_achv);ctx._source.score="+finalScore);
-        jsonParameters.put("params", jsonNewAchievement);
+            JSONObject jsonParameters = new JSONObject();
+            jsonParameters.put("inline", "ctx._source.achievements.add(params.new_achv);ctx._source.score="+finalScore);
+            jsonParameters.put("params", jsonNewAchievement);
 
-        JSONObject jsonScript = new JSONObject();
-        jsonScript.put("script", jsonParameters);
+            JSONObject jsonScript = new JSONObject();
+            jsonScript.put("script", jsonParameters);
 
-        return jsonScript;
+            return jsonScript;
         } catch (Exception e){
             // log.warn
             throw new PJRaceRuntimeException("Problème sur la sérialisation du JSON réponse Elasticsearch.");
@@ -322,17 +321,16 @@ public class UserDAOImpl extends Requester implements UserDAO {
         Random randomGenerator = new Random();
         String photoName = pIdChallenge+randomGenerator.nextInt(1000)+".png";
         try {
-        byte[] imageByteArray = Base64.decodeBase64(pImageEncoding);
-        FileOutputStream imageOutFile = new FileOutputStream(SAVING_PATH+photoName);
+            byte[] imageByteArray = Base64.decodeBase64(pImageEncoding);
+            FileOutputStream imageOutFile = new FileOutputStream(SAVING_PATH+photoName);
 
-        imageOutFile.write(imageByteArray);
-        imageOutFile.close();
+            imageOutFile.write(imageByteArray);
+            imageOutFile.close();
 
-        return SAVING_PATH+photoName;
-
+            return SAVING_PATH+photoName;
         } catch (Exception e){
             // log.warn ...
-            throw new PJRaceRuntimeException("Erreur");
+            throw new PJRaceRuntimeException("Erreur lors de la sauvegarde de la photo");
         }
     }
 
