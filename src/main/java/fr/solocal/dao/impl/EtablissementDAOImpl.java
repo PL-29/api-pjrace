@@ -39,28 +39,41 @@ public class EtablissementDAOImpl extends Requester implements EtablissementDAO{
     }
 
     @Override
-    public double getDistanceToClosestChallenge(String pLatitude, String pLongitude) throws Exception {
+    public double getDistanceToClosestChallenge(String pLatitude, String pLongitude) throws PJRaceException, PJRaceRuntimeException {
         String url = SERVER_ADDRESS+"/pjrace_challenge/etab/_search";
-        String jsonResponse = super.sendPostRequest(url, scriptQueryDistanceSort(pLatitude, pLongitude));
-        return distanceToClosestChallengeFromJson(jsonResponse);
+        try {
+            String jsonResponse = super.sendPostRequest(url, scriptQueryDistanceSort(pLatitude, pLongitude));
+            return distanceToClosestChallengeFromJson(jsonResponse);
+        } catch (Exception e){
+            // log.warn ...
+            throw new PJRaceRuntimeException("Erreur dans l'appel au moteur Elasticsearch : " + e.getMessage());
+        }
     }
 
-    public double distanceToClosestChallengeFromJson(String pJsonString) throws JSONException {
-        Etablissement etablissement = new Etablissement();
+    public double distanceToClosestChallengeFromJson(String pJsonString) throws PJRaceException, PJRaceRuntimeException {
+        double distance = 0;
+        try {
+            JSONObject jsonObject = new JSONObject(pJsonString);
+            String hits = jsonObject.getJSONObject("hits").getString("hits");
+            JSONArray jsonArray = new JSONArray(hits);
 
-        JSONObject jsonObject = new JSONObject(pJsonString);
-        String hits = jsonObject.getJSONObject("hits").getString("hits");
-        JSONArray jsonArray = new JSONArray(hits);
+            JSONArray jsonSort = null;
+            for (int i = 0; i < jsonArray.length(); i++) {
+                jsonSort = jsonArray.getJSONObject(i).getJSONArray("sort");
+            }
 
-        JSONArray jsonSort = null;
-        for (int i = 0; i < jsonArray.length(); i++) {
-            jsonSort = jsonArray.getJSONObject(i).getJSONArray("sort");
+            distance = (double) jsonSort.get(0);
+            BigDecimal bd = new BigDecimal(distance);
+            bd= bd.setScale(0,BigDecimal.ROUND_DOWN);
+            distance = bd.doubleValue();
+        } catch (Exception e){
+            // log.warn
+            throw new PJRaceRuntimeException("Problème sur la sérialisation du JSON réponse Elasticsearch.");
         }
 
-        double distance = (double) jsonSort.get(0);
-        BigDecimal bd = new BigDecimal(distance);
-        bd= bd.setScale(0,BigDecimal.ROUND_DOWN);
-        distance = bd.doubleValue();
+        if(distance == 0){
+            throw new PJRaceException("Impossible de calculer la distance avec l'établissement le plus proche");
+        }
 
         return distance;
     }
@@ -104,7 +117,7 @@ public class EtablissementDAOImpl extends Requester implements EtablissementDAO{
         }
 
         if(lstEtablissements.size() == 0){
-            throw new PJRaceException("Pas d'etblissement pour ces coordonnées et ce rayon.");
+            throw new PJRaceException("Pas d'etablissement pour ces coordonnées et ce rayon.");
         }
 
         return lstEtablissements;
