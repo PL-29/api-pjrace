@@ -3,6 +3,8 @@ package fr.solocal.dao.impl;
 import fr.solocal.dao.ChallengeDAO;
 import fr.solocal.dao.UserDAO;
 import fr.solocal.domain.*;
+import fr.solocal.exceptions.PJRaceException;
+import fr.solocal.exceptions.PJRaceRuntimeException;
 import org.apache.commons.codec.binary.Base64;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -38,46 +40,62 @@ public class UserDAOImpl extends Requester implements UserDAO {
 
 
     @Override
-    public List<User> getRanking(String pEmail) throws Exception {
+    public List<User> getRanking(String pEmail) throws PJRaceException, PJRaceRuntimeException {
         //L'idUser correspond à l'adresse mail de l'utilisateur /!\
         String url = SERVER_ADDRESS+"/pjrace_challenge/user/_search?sort=score:desc";
+        try {
+
         String jsonResponse;
         IndexUser indexUser = new IndexUser();
 
         jsonResponse = super.sendGetRequest(url);
         List<User> lstUsers = UsersListFromJson(pEmail, jsonResponse, indexUser);
         return makeRanking(lstUsers, indexUser);
+        } catch (Exception e){
+            // log.warn ...
+            throw new PJRaceRuntimeException("Erreur dans l'appel au moteur Elasticsearch : " + e.getMessage());
+        }
+
     }
 
 
     @Override
-    public List<Achievement> getAllAchievements(String pEmail) throws Exception{
+    public List<Achievement> getAllAchievements(String pEmail) throws PJRaceException, PJRaceRuntimeException{
         //L'idUser correspond à l'adresse mail de l'utilisateur /!\
         String url = SERVER_ADDRESS+"/pjrace_challenge/user/"+pEmail;
+        try {
         String jsonResponse;
-
         jsonResponse = super.sendGetRequest(url);
         return achievementsFromJson(jsonResponse);
+        } catch (Exception e){
+            // log.warn ...
+            throw new PJRaceRuntimeException("Erreur dans l'appel au moteur Elasticsearch : " + e.getMessage());
+        }
     }
 
 
     @Override
-    public User connexion(String pEmail, String pPassword) throws Exception {
+    public User connexion(String pEmail, String pPassword) throws PJRaceException, PJRaceRuntimeException {
         //L'idUser correspond à l'adresse mail de l'utilisateur /!\
         String url = SERVER_ADDRESS+"/pjrace_challenge/user/_search?q=email:\""+pEmail+"\" AND password:\""+pPassword+"\"";
+        try {
         String jsonResponse;
 
         //TODO: RENVOYER MESSAGE D ERREUR SI MOT DE PASSE OU ID INCORRECTS
         jsonResponse = super.sendGetRequest(url);
 
         return userFromJson(jsonResponse, pPassword);
+        } catch (Exception e){
+            // log.warn ...
+            throw new PJRaceRuntimeException("Erreur dans l'appel au moteur Elasticsearch : " + e.getMessage());
+        }
     }
 
 
     @Override
-    public Achievement achieveChallenge(String pPhotoEncoding, String pIdChallenge, String pEmail) throws Exception {
+    public Achievement achieveChallenge(String pPhotoEncoding, String pIdChallenge, String pEmail) throws PJRaceException, PJRaceRuntimeException {
         String url = SERVER_ADDRESS+"/pjrace_challenge/user/"+pEmail+"/_update";
-
+        try {
         Challenge challenge = new ChallengeDAOImpl().getChallengeById(pIdChallenge);
         User user = getUserInfosByEmail(pEmail);
 
@@ -93,20 +111,30 @@ public class UserDAOImpl extends Requester implements UserDAO {
         achievement.setUser(user);
 
         return achievement;
+        } catch (Exception e){
+            // log.warn ...
+            throw new PJRaceRuntimeException("Photo invalide.");
+        }
     }
 
 
-    private User getUserInfosByEmail(String pEmail) throws Exception {
+    private User getUserInfosByEmail(String pEmail) throws PJRaceException, PJRaceRuntimeException {
         String url = SERVER_ADDRESS+"/pjrace_challenge/user/"+pEmail;
+        try {
         String jsonResponse;
 
         jsonResponse = super.sendGetRequest(url);
 
         return userFromJson(jsonResponse);
+        } catch (Exception e){
+            // log.warn ...
+            throw new PJRaceRuntimeException("Erreur dans l'appel au moteur Elasticsearch : " + e.getMessage());
+        }
     }
 
 
-    public User userFromJson(String pJsonString) throws JSONException {
+    public User userFromJson(String pJsonString) throws PJRaceException, PJRaceRuntimeException {
+        try {
         JSONObject jsonObject = new JSONObject(pJsonString);
         JSONObject userInfos = new JSONObject(jsonObject.getString("_source"));
 
@@ -126,9 +154,15 @@ public class UserDAOImpl extends Requester implements UserDAO {
         user.setScore(score);
 
         return user;
+        } catch (Exception e){
+            // log.warn
+            throw new PJRaceRuntimeException("Problème sur la sérialisation du JSON réponse Elasticsearch.");
+        }
+
     }
 
-    public User userFromJson(String pJsonString, String pPassword) throws JSONException {
+    public User userFromJson(String pJsonString, String pPassword) throws PJRaceException, PJRaceRuntimeException {
+        try {
         JSONObject jsonObject = new JSONObject(pJsonString);
         String hits = jsonObject.getJSONObject("hits").getString("hits");
         JSONArray jsonHits = new JSONArray(hits);
@@ -141,13 +175,18 @@ public class UserDAOImpl extends Requester implements UserDAO {
         user.setEmail(userInfos.getString("email"));
         user.setScore(userInfos.getInt("score"));
 
-        return user;
+        return user;} catch (Exception e){
+            // log.warn
+            throw new PJRaceRuntimeException("Problème sur la sérialisation du JSON réponse Elasticsearch.");
+        }
+
     }
 
 
-    public List<Achievement> achievementsFromJson(String pJsonString) throws JSONException {
+    public List<Achievement> achievementsFromJson(String pJsonString) throws PJRaceException, PJRaceRuntimeException {
         List<Achievement> lstAchievements = new ArrayList<>();
 
+        try {
         JSONObject jsonObject = new JSONObject(pJsonString);
         JSONObject userInfos = new JSONObject(jsonObject.getString("_source"));
         JSONArray achievementsTab = new JSONArray(userInfos.getString("achievements"));
@@ -172,14 +211,23 @@ public class UserDAOImpl extends Requester implements UserDAO {
 
             Achievement achievement = new Achievement(idAchievement, challenge, photoUrl, user);
             lstAchievements.add(achievement);
+            }
+        } catch (Exception e){
+            // log.warn
+            throw new PJRaceRuntimeException("Problème sur la sérialisation du JSON réponse Elasticsearch.");
         }
+
+        if(lstAchievements.size() == 0){
+            throw new PJRaceException("Utilisateur incorrect.");
+        }
+
         return lstAchievements;
     }
 
 
-    public List<User> UsersListFromJson(String pEmailUser, String pJsonString, IndexUser pIndexUser) throws JSONException {
+    public List<User> UsersListFromJson(String pEmailUser, String pJsonString, IndexUser pIndexUser) throws PJRaceException, PJRaceRuntimeException {
         List<User> lstUsers = new ArrayList<>();
-
+        try {
         JSONObject jsonObject = new JSONObject(pJsonString);
         String hits = jsonObject.getJSONObject("hits").getString("hits");
         JSONArray jsonArray = new JSONArray(hits);
@@ -198,12 +246,20 @@ public class UserDAOImpl extends Requester implements UserDAO {
             user.setRank(i+1);
             lstUsers.add(user);
         }
+        } catch (Exception e){
+            // log.warn
+            throw new PJRaceRuntimeException("Problème sur la sérialisation du JSON réponse Elasticsearch.");
+        }
+
+        if(lstUsers.size() == 0){
+            throw new PJRaceException("Login ou mot de passe incorrect.");
+        }
 
         return lstUsers;
     }
 
 
-    public JSONObject jsonScriptToUpdate(Challenge pChallenge, User pUser, String pPhotoPath) throws Exception {
+    public JSONObject jsonScriptToUpdate(Challenge pChallenge, User pUser, String pPhotoPath) throws PJRaceException, PJRaceRuntimeException {
         int finalScore = 0;
 
         if(pChallenge.getPoints() == 0){
@@ -211,7 +267,7 @@ public class UserDAOImpl extends Requester implements UserDAO {
         } else {
             finalScore = pChallenge.getPoints() + pUser.getScore();
         }
-
+        try {
         //Construction du json permettant l'update de l'utilisateur
         JSONObject jsonAchievementData = new JSONObject();
         jsonAchievementData.put("idChallenge", pChallenge.getIdChallenge());
@@ -230,6 +286,10 @@ public class UserDAOImpl extends Requester implements UserDAO {
         jsonScript.put("script", jsonParameters);
 
         return jsonScript;
+        } catch (Exception e){
+            // log.warn
+            throw new PJRaceRuntimeException("Problème sur la sérialisation du JSON réponse Elasticsearch.");
+        }
     }
 
 
@@ -258,10 +318,10 @@ public class UserDAOImpl extends Requester implements UserDAO {
     }
 
 
-    public String saveImage(String pImageEncoding, String pIdChallenge) throws IOException {
+    public String saveImage(String pImageEncoding, String pIdChallenge) throws PJRaceException, PJRaceRuntimeException {
         Random randomGenerator = new Random();
         String photoName = pIdChallenge+randomGenerator.nextInt(1000)+".png";
-
+        try {
         byte[] imageByteArray = Base64.decodeBase64(pImageEncoding);
         FileOutputStream imageOutFile = new FileOutputStream(SAVING_PATH+photoName);
 
@@ -269,6 +329,11 @@ public class UserDAOImpl extends Requester implements UserDAO {
         imageOutFile.close();
 
         return SAVING_PATH+photoName;
+
+        } catch (Exception e){
+            // log.warn ...
+            throw new PJRaceRuntimeException("Erreur");
+        }
     }
 
 

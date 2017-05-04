@@ -114,7 +114,7 @@ public class Controller extends ExceptionController{
      * @return une liste de résolutions de challenges
      */
     @RequestMapping(value = "achievement", method = RequestMethod.GET, headers = "Accept=application/json")
-    public List<AchievementDTO> getAllAchievements(@RequestParam(value = "email") String pEmail) throws Exception {
+    public List<AchievementDTO> getAllAchievements(@RequestParam(value = "email") String pEmail) throws PJRaceException, PJRaceRuntimeException {
         List<AchievementDTO> lstAchievementsDTO = new ArrayList<>();
         List<Achievement> lstAchievements = achievementService.getAllResolutions(pEmail);
 
@@ -143,7 +143,7 @@ public class Controller extends ExceptionController{
      * @return un objet UserDTO
      */
     @RequestMapping(value = "user", method = RequestMethod.GET, headers = "Accept=application/json")
-    public UserDTO connexion(@RequestParam(value = "email") String pEmail, @RequestParam(value = "pwd") String pPwd) throws Exception {
+    public UserDTO connexion(@RequestParam(value = "email") String pEmail, @RequestParam(value = "pwd") String pPwd) throws PJRaceException, PJRaceRuntimeException {
         User user = userService.connexion(pEmail, pPwd);
 
         return BuilderDTO.generateUserDTO(user);
@@ -162,7 +162,7 @@ public class Controller extends ExceptionController{
      * @return une liste d'utilisateurs
      */
     @RequestMapping(value = "ranking", method = RequestMethod.GET, headers = "Accept=application/json")
-    public List<UserDTO> getRanking(@RequestParam(value = "email") String pEmail) throws Exception {
+    public List<UserDTO> getRanking(@RequestParam(value = "email") String pEmail) throws PJRaceException, PJRaceRuntimeException {
         List<UserDTO> lstUsersDTO = new ArrayList<>();
         List<User> lstUser = userService.getRanking(pEmail);
 

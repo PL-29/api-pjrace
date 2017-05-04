@@ -1,6 +1,8 @@
 package fr.solocal.service;
 
 import fr.solocal.domain.Achievement;
+import fr.solocal.exceptions.PJRaceException;
+import fr.solocal.exceptions.PJRaceRuntimeException;
 
 import java.util.Iterator;
 import java.util.List;
@@ -10,7 +12,7 @@ import java.util.List;
  */
 public interface AchievementService {
 
-    public List<Achievement> getAllResolutions(String pEmail) throws Exception;
+    public List<Achievement> getAllResolutions(String pEmail) throws PJRaceException, PJRaceRuntimeException;
 
-    public Achievement achieveChallenge(String pPhotoEncoding, String pIdChallenge, String pIdUser) throws Exception;
+    public Achievement achieveChallenge(String pPhotoEncoding, String pIdChallenge, String pIdUser) throws PJRaceException, PJRaceRuntimeException;
 }
