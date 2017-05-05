@@ -96,7 +96,7 @@ public class Controller extends ExceptionController{
      * @return une liste des établissements
      */
     @RequestMapping(value = "etablissements", method = RequestMethod.GET, headers = "Accept=application/json")
-    public List<EtablissementDTO> getAllEtablissements(@RequestParam(value = "lat") String pLatitude, @RequestParam(value = "lon") String pLongitude, @RequestParam(value = "ray") String pRayon) throws PJRaceException, PJRaceRuntimeException {
+    public List<EtablissementDTO> getEtablissementsByPosition(@RequestParam(value = "lat") String pLatitude, @RequestParam(value = "lon") String pLongitude, @RequestParam(value = "ray") String pRayon) throws PJRaceException, PJRaceRuntimeException {
 
         List<Etablissement> lstEtablissement = etablissementService.getEtablissementsByPosition(pLatitude, pLongitude, pRayon);
         List<EtablissementDTO> lstEtablissementDTO = new ArrayList<>();
