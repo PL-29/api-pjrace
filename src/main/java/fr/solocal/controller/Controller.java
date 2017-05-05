@@ -1,23 +1,17 @@
 package fr.solocal.controller;
 
 import fr.solocal.builder.*;
-import fr.solocal.dao.UserDAO;
-import fr.solocal.dao.impl.UserDAOImpl;
 import fr.solocal.domain.*;
 import fr.solocal.exceptions.PJRaceException;
 import fr.solocal.exceptions.PJRaceRuntimeException;
 import fr.solocal.service.*;
-import fr.solocal.utils.ImageConverter;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created by stage01 on 10/02/17.
@@ -152,8 +146,7 @@ public class Controller extends ExceptionController{
 
     @RequestMapping(value = "rayon", method = RequestMethod.GET, headers = "Accept=application/json")
     public MessageDTO getDistanceToClosestEtablissement(@RequestParam(value = "lat") String pLatitude, @RequestParam(value = "lon") String pLongitude) throws PJRaceException, PJRaceRuntimeException {
-        MessageDTO message = new MessageDTO("distance(m)", etablissementService.getDistanceToClosestEtablissement(pLatitude, pLongitude));
-        return message;
+        return BuilderDTO.generateMessageDTO("distance(m)", etablissementService.getDistanceToClosestEtablissement(pLatitude, pLongitude));
     }
 
     /**

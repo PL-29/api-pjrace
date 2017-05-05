@@ -42,15 +42,6 @@ public class BuilderDTO {
         return challengeDTO;
     }
 
-    public static ChallengeTypeDTO generateChallengeTypeDTO (ChallengeType challengeType) {
-        ChallengeTypeDTO challengeTypeDTO = new ChallengeTypeDTO();
-        challengeTypeDTO.setIdChallengeType(challengeType.getIdChallengeType());
-        challengeTypeDTO.setTitle(challengeType.getTitle());
-        challengeTypeDTO.setDefaultNumberPoints(challengeType.getDefaultNumberOfPoints());
-        challengeTypeDTO.setDescription(challengeType.getDescription());
-        return challengeTypeDTO;
-    }
-
     public static EtablissementDTO generateEtablissementDTO (Etablissement etablissement) {
         EtablissementDTO etablissementDTO = new EtablissementDTO();
         etablissementDTO.setChallenges(etablissement.getChallenges());
@@ -60,5 +51,10 @@ public class BuilderDTO {
         etablissementDTO.setLatitude(etablissement.getLatitude());
         etablissementDTO.setLongitude(etablissement.getLongitude());
         return etablissementDTO;
+    }
+
+    public static MessageDTO generateMessageDTO (String denomination, Object content) {
+        MessageDTO messageDTO = new MessageDTO("distance(m)", content);
+        return messageDTO;
     }
 }
