@@ -39,18 +39,18 @@ public class EtablissementDAOImpl extends Requester implements EtablissementDAO{
     }
 
     @Override
-    public double getDistanceToClosestChallenge(String pLatitude, String pLongitude) throws PJRaceException, PJRaceRuntimeException {
+    public double getDistanceToClosestEtablissement(String pLatitude, String pLongitude) throws PJRaceException, PJRaceRuntimeException {
         String url = SERVER_ADDRESS+"/pjrace_challenge/etab/_search";
         try {
             String jsonResponse = super.sendPostRequest(url, scriptQueryDistanceSort(pLatitude, pLongitude));
-            return distanceToClosestChallengeFromJson(jsonResponse);
+            return distanceToClosestEtablissementFromJson(jsonResponse);
         } catch (Exception e){
             // log.warn ...
             throw new PJRaceRuntimeException("Erreur dans l'appel au moteur Elasticsearch : " + e.getMessage());
         }
     }
 
-    public double distanceToClosestChallengeFromJson(String pJsonString) throws PJRaceException, PJRaceRuntimeException {
+    public double distanceToClosestEtablissementFromJson(String pJsonString) throws PJRaceException, PJRaceRuntimeException {
         double distance = 0;
         try {
             JSONObject jsonObject = new JSONObject(pJsonString);

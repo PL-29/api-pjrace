@@ -20,7 +20,7 @@ public class AchievementServiceImpl implements AchievementService{
     UserDAO userDAO;
 
     @Override
-    public List<Achievement> getAllResolutions(String pEmail) throws PJRaceException, PJRaceRuntimeException {
+    public List<Achievement> getAllAchievements(String pEmail) throws PJRaceException, PJRaceRuntimeException {
         return userDAO.getAllAchievements(pEmail);
     }
 

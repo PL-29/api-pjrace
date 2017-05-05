@@ -26,7 +26,7 @@ public class EtablissementServiceImpl implements EtablissementService {
     }
 
     @Override
-    public double getDistanceToClosestChallenge(String pLatitude, String pLongitude) throws PJRaceException, PJRaceRuntimeException {
-        return etablissementDAO.getDistanceToClosestChallenge(pLatitude, pLongitude);
+    public double getDistanceToClosestEtablissement(String pLatitude, String pLongitude) throws PJRaceException, PJRaceRuntimeException {
+        return etablissementDAO.getDistanceToClosestEtablissement(pLatitude, pLongitude);
     }
 }

@@ -12,7 +12,7 @@ import java.util.List;
  */
 public interface AchievementService {
 
-    public List<Achievement> getAllResolutions(String pEmail) throws PJRaceException, PJRaceRuntimeException;
+    public List<Achievement> getAllAchievements(String pEmail) throws PJRaceException, PJRaceRuntimeException;
 
     public Achievement achieveChallenge(String pPhotoEncoding, String pIdChallenge, String pIdUser) throws PJRaceException, PJRaceRuntimeException;
 }

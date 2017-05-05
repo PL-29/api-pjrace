@@ -116,7 +116,7 @@ public class Controller extends ExceptionController{
     @RequestMapping(value = "achievement", method = RequestMethod.GET, headers = "Accept=application/json")
     public List<AchievementDTO> getAllAchievements(@RequestParam(value = "email") String pEmail) throws PJRaceException, PJRaceRuntimeException {
         List<AchievementDTO> lstAchievementsDTO = new ArrayList<>();
-        List<Achievement> lstAchievements = achievementService.getAllResolutions(pEmail);
+        List<Achievement> lstAchievements = achievementService.getAllAchievements(pEmail);
 
         for(Achievement achievement : lstAchievements){
             lstAchievementsDTO.add(BuilderDTO.generateAchievementDTO(achievement));
@@ -151,8 +151,8 @@ public class Controller extends ExceptionController{
 
 
     @RequestMapping(value = "rayon", method = RequestMethod.GET, headers = "Accept=application/json")
-    public MessageDTO getDistanceToClosestChallenge(@RequestParam(value = "lat") String pLatitude, @RequestParam(value = "lon") String pLongitude) throws PJRaceException, PJRaceRuntimeException {
-        MessageDTO message = new MessageDTO("distance(m)", etablissementService.getDistanceToClosestChallenge(pLatitude, pLongitude));
+    public MessageDTO getDistanceToClosestEtablissement(@RequestParam(value = "lat") String pLatitude, @RequestParam(value = "lon") String pLongitude) throws PJRaceException, PJRaceRuntimeException {
+        MessageDTO message = new MessageDTO("distance(m)", etablissementService.getDistanceToClosestEtablissement(pLatitude, pLongitude));
         return message;
     }
 
