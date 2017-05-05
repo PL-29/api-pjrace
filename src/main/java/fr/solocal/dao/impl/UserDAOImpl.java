@@ -46,7 +46,7 @@ public class UserDAOImpl extends Requester implements UserDAO {
         try {
             IndexUser indexUser = new IndexUser();
             String jsonResponse = super.sendGetRequest(url);
-            List<User> lstUsers = UsersListFromJson(pEmail, jsonResponse, indexUser);
+            List<User> lstUsers = usersListFromJson(pEmail, jsonResponse, indexUser);
             return makeRanking(lstUsers, indexUser);
         } catch (Exception e){
             // log.warn ...
@@ -76,7 +76,7 @@ public class UserDAOImpl extends Requester implements UserDAO {
         String url = SERVER_ADDRESS+"/pjrace_challenge/user/_search?q=email:\""+pEmail+"\" AND password:\""+pPassword+"\"";
         try {
             String jsonResponse = super.sendGetRequest(url);
-            return userFromJson(jsonResponse, pPassword);
+            return userFromJson(jsonResponse);
         } catch (Exception e){
             // log.warn ...
             throw new PJRaceRuntimeException("Erreur dans l'appel au moteur Elasticsearch : " + e.getMessage());
@@ -155,33 +155,6 @@ public class UserDAOImpl extends Requester implements UserDAO {
 
     }
 
-    public User userFromJson(String pJsonString, String pPassword) throws PJRaceException, PJRaceRuntimeException {
-        User user = null;
-        try {
-            JSONObject jsonObject = new JSONObject(pJsonString);
-            String hits = jsonObject.getJSONObject("hits").getString("hits");
-            JSONArray jsonHits = new JSONArray(hits);
-            JSONObject userInfos = new JSONObject(jsonHits.getJSONObject(0).getString("_source"));
-
-            user = new User();
-            user.setIdUser(userInfos.getString("email"));
-            user.setFirstname(userInfos.getString("firstname"));
-            user.setLastname(userInfos.getString("lastname"));
-            user.setEmail(userInfos.getString("email"));
-            user.setScore(userInfos.getInt("score"));
-        } catch (Exception e){
-            // log.warn
-            throw new PJRaceRuntimeException("Problème sur la sérialisation du JSON réponse Elasticsearch.");
-        }
-
-        if(user == null){
-            throw new PJRaceException("Login ou mot de passe incorrect.");
-        }
-
-        return user;
-    }
-
-
     public List<Achievement> achievementsFromJson(String pJsonString) throws PJRaceException, PJRaceRuntimeException {
         List<Achievement> lstAchievements = new ArrayList<>();
 
@@ -224,7 +197,7 @@ public class UserDAOImpl extends Requester implements UserDAO {
     }
 
 
-    public List<User> UsersListFromJson(String pEmailUser, String pJsonString, IndexUser pIndexUser) throws PJRaceException, PJRaceRuntimeException {
+    public List<User> usersListFromJson(String pEmailUser, String pJsonString, IndexUser pIndexUser) throws PJRaceException, PJRaceRuntimeException {
         List<User> lstUsers = new ArrayList<>();
         try {
             JSONObject jsonObject = new JSONObject(pJsonString);
